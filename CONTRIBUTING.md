@@ -5,7 +5,7 @@ Corrections, additions and status updates are welcome. This is a research datase
 ## What helps most
 
 1. **Enrolled statutory text** for an instrument currently coded from a tracker or law-firm summary. The definitional clause and its carve-out drive the `reaches` judgement, which is the column the analysis rests on.
-2. **Status changes.** Bills move, die, get vetoed, and take effect on dates well after enactment. Effective dates matter as much as enactment dates here — roughly half the enacted US state laws do not bite until 2027.
+2. **Status changes.** Bills move, die, get vetoed, and take effect on dates well after enactment. Effective dates matter as much as enactment dates here — roughly half the enacted US state laws do not bite until 2027. A bill that has died should be removed, not recoded — see the `statusClass` table below.
 3. **New instruments**, especially outside the United States. Coverage of jurisdictions beyond the US, EU and China is currently thin.
 4. **Disagreement with a coding.** The `reaches`, `test` and `narrowing` fields are interpretive judgements. If you read a definition differently, open an issue with the text and your reasoning.
 
@@ -46,8 +46,9 @@ These must match exactly or the row will render wrong or drop out of the matrix.
 | `law` | Enacted or in force |
 | `moving` | Advanced out of committee or passed a chamber |
 | `pending` | Introduced, filed, or a discussion draft |
-| `stalled` | Carried over, continued, or held |
-| `dead` | Failed, vetoed, or died |
+| `stalled` | Carried over, continued, or held — dormant, but still a live vehicle |
+
+There is no `dead` value. The tracker covers proposed, active and enacted policy only: when an instrument dies, is vetoed, goes inactive or is superseded, **delete the record** and add a line to the removal table in the README so the fate stays documented.
 
 **`reaches`** — whether the text covers general-purpose assistants:
 
