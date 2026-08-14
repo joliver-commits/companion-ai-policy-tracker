@@ -1,6 +1,10 @@
 // Companion AI Policy Tracker — dataset
 // Berkman Klein Center, Harvard University. Last verified: 13 August 2026.
 // Contributions welcome — see CONTRIBUTING.md.
+//
+// Scope: proposed, active and enacted policy only. Instruments that die, are
+// vetoed, or go inactive are removed from this file rather than kept with a
+// "dead" status — see README.md ("What is and is not tracked").
 
 const MECHS = [
   ["disclosure",       "Non-human disclosure", "Non-human disclosure"],
@@ -405,7 +409,7 @@ const DATA = [
   link:"https://www.capitol.tn.gov/"
 },
 
-/* ================= US STATES — PENDING / FAILED ================== */
+/* ================ US STATES — PROPOSED / IN PROGRESS ============== */
 {
   id:"il-sb3262", key:true, juris:"US State", body:"Illinois", cite:"SB 3262",
   name:"Companion AI Protection Act", status:"In committee", statusClass:"pending",
@@ -433,20 +437,6 @@ const DATA = [
   interval:"Every 30 minutes",
   note:"Continued to the next session on 9 February 2026, so it is dormant rather than live. It remains among the most instructive bills in the corpus even though it did not move, because SIIA is on record asking for a safe harbour covering 'customer-service chatbots, educational tutors, productivity assistants', arguing the definition is 'currently broad enough to capture beneficial conversational AI systems'. Industry lobbying to ADD a general-assistant exemption is direct evidence that one is currently absent — i.e. that the functional reading is the natural one.",
   link:"https://legiscan.com/VA/research/HB635/2026"
-},
-{
-  id:"fl-sb482", key:true, juris:"US State", body:"Florida", cite:"CS/SB 482",
-  name:"Artificial Intelligence Bill of Rights", status:"Died", statusClass:"dead",
-  dates:"Introduced Dec 2025 · passed Senate 35–2 on 4 Mar 2026 · DIED IN MESSAGES 13 Mar 2026",
-  scope:"Minors",
-  term:"Companion chatbot · companion chatbot platform", test:"capability + behaviour",
-  testNote:"Merges California's opening clause with New York's three prongs, joined conjunctively — producing a fourth distinct feature set",
-  narrowing:"Use carve-out, uniquely exempting 'artificial intelligence instructional tools'", reaches:"no",
-  mechs:["disclosure","parental","minorContent","training"],
-  enforce:["Mixed private and AG action"],
-  interval:"Notice at every interaction",
-  note:"This bill did not become law: it passed the Senate 35–2 on 4 March 2026 and died in Messages in the House on 13 March 2026. It is frequently miscatalogued as enacted. Substantively it remains the clearest evidence of cross-pollination between states, and its instructional-tools carve-out would have exempted exactly the tutoring use that surveys find is the most common use of all.",
-  link:"https://www.flsenate.gov/Session/Bill/2026/482/?Tab=BillHistory"
 },
 {
   id:"mo-hb1742", juris:"US State", body:"Missouri", cite:"HB 1742",
@@ -634,110 +624,5 @@ const DATA = [
   interval:"—",
   note:"New York's parallel to California SB 867 on the embodied-device question.",
   link:"https://www.nysenate.gov/"
-},
-{
-  id:"az-hb2311", juris:"US State", body:"Arizona", cite:"HB 2311",
-  name:"Companion chatbot act", status:"Vetoed", statusClass:"dead",
-  dates:"Introduced Jan 2026 · VETOED by Gov. Hobbs",
-  scope:"Minors",
-  term:"Companion chatbot", test:"capability", testNote:"Oregon-derived",
-  narrowing:"Use carve-out", reaches:"no",
-  mechs:["disclosure","crisis","minorContent","parental","sentience","engagement"],
-  enforce:["State AG"],
-  interval:"Every 3 hours",
-  note:"Vetoed. Worth tracking as a datapoint on where the political ceiling sits: the Oregon template is not universally acceptable, and the veto rationale is worth reading before assuming the model travels everywhere.",
-  link:"https://www.azleg.gov/"
-},
-{
-  id:"me-ld2162", juris:"US State", body:"Maine", cite:"LD 2162",
-  name:"AI companion restrictions", status:"Inactive", statusClass:"dead",
-  dates:"Introduced Jan 2026 · inactive",
-  scope:"Minors",
-  term:"AI companion", test:"capability",
-  testNote:"AI systems closely imitating humanlike qualities including sentience, distress and emotional attachment",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["accessBan","minorContent","dependence","sentience","crisis","ageAssurance"],
-  enforce:["State AG","Private action"],
-  interval:"—",
-  note:"Inactive, but its definition is unusually direct about the design properties at issue — sentience, distress and emotional attachment named as the imitated qualities rather than inferred from a relationship test.",
-  link:"https://legislature.maine.gov/"
-},
-{
-  id:"md-hb952", juris:"US State", body:"Maryland", cite:"HB 952",
-  name:"Chatbot disclosure and reporting", status:"Inactive", statusClass:"dead",
-  dates:"2026 session · inactive",
-  scope:"All users",
-  term:"Chatbot", test:"capability", testNote:"Verify",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["disclosure","reporting","minorContent","crisis","training"],
-  enforce:["Unverified"],
-  interval:"Hourly",
-  note:"Inactive. Hourly disclosure would have been at the demanding end of the enacted range.",
-  link:"https://mgaleg.maryland.gov/"
-},
-{
-  id:"ok-hb3544", juris:"US State", body:"Oklahoma", cite:"HB 3544 / SB 1521",
-  name:"Chatbot minor protections", status:"Inactive", statusClass:"dead",
-  dates:"2026 session · inactive",
-  scope:"Minors",
-  term:"Chatbot", test:"capability", testNote:"Verify",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["ageAssurance","accessBan","minorContent","crisis","parental","sentience"],
-  enforce:["Unverified"],
-  interval:"Every 30 minutes (SB 1521)",
-  note:"Two inactive Oklahoma vehicles. SB 1521's 30-minute interval is at the short end of the national spread.",
-  link:"http://www.oklegislature.gov/"
-},
-{
-  id:"ut-hb438", juris:"US State", body:"Utah", cite:"HB 438",
-  name:"Chatbot disclosure and reporting", status:"Inactive", statusClass:"dead",
-  dates:"2026 session · inactive",
-  scope:"All users",
-  term:"Chatbot", test:"capability", testNote:"Verify",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["disclosure","reporting","minorContent","crisis"],
-  enforce:["Unverified"],
-  interval:"Hourly",
-  note:"Inactive. Utah already has HB 452 on mental health chatbots in force.",
-  link:"https://le.utah.gov/"
-},
-{
-  id:"wa-sb5984", juris:"US State", body:"Washington", cite:"SB 5984",
-  name:"Chatbot safety act (superseded)", status:"Inactive", statusClass:"dead",
-  dates:"2026 session · inactive; HB 2225 enacted instead",
-  scope:"All users",
-  term:"Companion chatbot", test:"capability", testNote:"Verify",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["disclosure","reporting","minorContent","crisis","sentience"],
-  enforce:["Unverified"],
-  interval:"Every 3 hours plus hourly for minors",
-  note:"Superseded by HB 2225, which was enacted.",
-  link:"https://app.leg.wa.gov/"
-},
-{
-  id:"hi-hb1728", juris:"US State", body:"Hawaii", cite:"HB 1728 / HB 1782",
-  name:"Chatbot transparency act", status:"Inactive", statusClass:"dead",
-  dates:"Introduced Jan 2026 · inactive; SB 3001 enacted instead",
-  scope:"All users",
-  term:"Chatbot", test:"capability", testNote:"Verify",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["disclosure","sentience","proImpersonation","parental","ageAssurance","crisis"],
-  enforce:["State AG"],
-  interval:"—",
-  note:"Superseded by SB 3001. Required clarity that the user is not interacting with a human, barred claims of sentience, barred AIs posing as human professionals, and required parental tools.",
-  link:"https://www.capitol.hawaii.gov/"
-},
-{
-  id:"ne-lb1185", juris:"US State", body:"Nebraska", cite:"LB 1185",
-  name:"AI companion act (superseded)", status:"Inactive", statusClass:"dead",
-  dates:"Introduced Jan 2026 · superseded by LB 525",
-  scope:"All users",
-  term:"Artificial intelligence companion", test:"design purpose", testNote:"Oregon-derived",
-  narrowing:"Use carve-out", reaches:"no",
-  mechs:["disclosure","crisis","minorContent","dependence"],
-  enforce:["Unverified"],
-  interval:"Every 3 hours",
-  note:"One of the six Oregon copycats from the January–February 2026 wave. Superseded in Nebraska by LB 525 — confirm before citing either as the operative vehicle.",
-  link:"https://nebraskalegislature.gov/"
 }
 ];

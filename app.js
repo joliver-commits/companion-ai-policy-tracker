@@ -1,27 +1,65 @@
 const JCLASS={"US Federal":"j-fed","US State":"j-state","EU":"j-eu","China":"j-cn"};
 const JVAR={"US Federal":"var(--j-fed)","US State":"var(--j-state)","EU":"var(--j-eu)","China":"var(--j-cn)"};
 const MMAP=Object.fromEntries(MECHS);
-const STATUSES=["law","moving","pending","stalled","dead"];
-const SLABEL={law:"Enacted / in force",moving:"Moving",pending:"Pending",stalled:"Stalled",dead:"Dead or vetoed"};
-const state={q:"",j:new Set(),s:new Set(),m:"",r:"",sort:"status",dir:1,open:new Set()};
+const STATUSES=["law","moving","pending","stalled"];
+const SLABEL={law:"Enacted / in force",moving:"Moving",pending:"Pending",stalled:"Stalled"};
+const state={q:"",j:new Set(),s:new Set(),m:"",r:"",sort:"status",dir:1,open:new Set(),tile:null};
 
 const el=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-/* ---------- stat tiles ---------- */
-(function(){
-  const n=s=>DATA.filter(d=>d.statusClass===s).length;
-  const tiles=[
-    [DATA.length,"Instruments"],
-    [n("law"),"Enacted / in force"],
-    [new Set(DATA.filter(d=>d.juris==="US State"&&d.statusClass==="law").map(d=>d.body)).size,"US states with law"],
-    [n("moving"),"Moving"],
-    [DATA.filter(d=>d.mechs.includes("memory")).length,"Constrain memory"],
-    [DATA.filter(d=>d.mechs.includes("causation")).length,"Duty to test design"]
-  ];
-  el("tiles").innerHTML=tiles.map(([v,l],i)=>
-    `<div class="tile"><div class="v" ${i>=4?'style="color:var(--critical)"':''}>${v}</div><div class="l">${l}</div></div>`).join("");
-})();
+/* ---------- stat tiles (each one is a filter) ---------- */
+const nStatus=s=>DATA.filter(d=>d.statusClass===s).length;
+const stateLaw=DATA.filter(d=>d.juris==="US State"&&d.statusClass==="law");
+const TILES=[
+  {v:DATA.length, l:"Instruments", hint:"Show all", tip:"Clear every filter and show all instruments", f:{}},
+  {v:nStatus("law"), l:"Enacted / in force", hint:"Filter", tip:"Filter to enacted and in-force instruments", f:{s:["law"]}},
+  {v:new Set(stateLaw.map(d=>d.body)).size, l:"US states with law", hint:"Filter",
+   tip:`Filter to enacted US state law — ${stateLaw.length} instruments across ${new Set(stateLaw.map(d=>d.body)).size} states`,
+   f:{j:["US State"],s:["law"]}},
+  {v:nStatus("moving"), l:"Moving", hint:"Filter", tip:"Filter to instruments that have advanced out of committee or passed a chamber", f:{s:["moving"]}},
+  {v:DATA.filter(d=>d.mechs.includes("memory")).length, l:"Constrain memory", hint:"Filter", alert:true,
+   tip:"Filter to instruments carrying a memory or retention constraint", f:{m:"memory"}},
+  {v:DATA.filter(d=>d.mechs.includes("causation")).length, l:"Duty to test design", hint:"Filter", alert:true,
+   tip:"Filter to instruments imposing a duty to test the provider's own design against harm", f:{m:"causation"}}
+];
+el("tiles").innerHTML=TILES.map((t,i)=>
+  `<button type="button" class="tile" data-t="${i}" aria-pressed="false" title="${esc(t.tip)}">
+     <div class="v"${t.alert?' style="color:var(--critical)"':''}>${t.v}</div>
+     <div class="l">${esc(t.l)}</div>
+     <div class="h">${esc(t.hint)} →</div>
+   </button>`).join("");
+const nt=el("ntotal"); if(nt) nt.textContent=DATA.length;
+
+el("tiles").onclick=e=>{
+  const b=e.target.closest("[data-t]"); if(!b)return;
+  const i=+b.dataset.t, f=TILES[i].f;
+  resetFilters();
+  (f.j||[]).forEach(v=>state.j.add(v));
+  (f.s||[]).forEach(v=>state.s.add(v));
+  state.m=f.m||"";
+  state.tile=i;
+  syncControls();
+  showView("instruments");
+  render();
+};
+
+/* clear every filter without touching the tile highlight or re-rendering */
+function resetFilters(){
+  state.q="";state.j.clear();state.s.clear();state.m="";state.r="";state.tile=null;
+}
+/* push state back into the filter controls */
+function syncControls(){
+  el("q").value=state.q;
+  el("fm").value=state.m;
+  el("fr").value=state.r;
+  document.querySelectorAll("#fj [data-j]").forEach(c=>c.setAttribute("aria-pressed",String(state.j.has(c.dataset.j))));
+  document.querySelectorAll("#fs [data-s]").forEach(c=>c.setAttribute("aria-pressed",String(state.s.has(c.dataset.s))));
+}
+function paintTiles(){
+  document.querySelectorAll("#tiles [data-t]").forEach(b=>
+    b.setAttribute("aria-pressed",String(state.tile===+b.dataset.t)));
+}
 
 /* ---------- filter controls ---------- */
 el("fj").innerHTML=Object.keys(JCLASS).map(j=>
@@ -32,17 +70,16 @@ el("fm").innerHTML+=MECHS.map(([k,l])=>`<option value="${k}">${l}</option>`).joi
 
 el("fj").onclick=e=>{const b=e.target.closest("[data-j]");if(!b)return;
   const v=b.dataset.j;state.j.has(v)?state.j.delete(v):state.j.add(v);
-  b.setAttribute("aria-pressed",state.j.has(v));render();};
+  b.setAttribute("aria-pressed",state.j.has(v));state.tile=null;render();};
 el("fs").onclick=e=>{const b=e.target.closest("[data-s]");if(!b)return;
   const v=b.dataset.s;state.s.has(v)?state.s.delete(v):state.s.add(v);
-  b.setAttribute("aria-pressed",state.s.has(v));render();};
-el("q").oninput=e=>{state.q=e.target.value.toLowerCase();render();};
-el("fm").onchange=e=>{state.m=e.target.value;render();};
-el("fr").onchange=e=>{state.r=e.target.value;render();};
+  b.setAttribute("aria-pressed",state.s.has(v));state.tile=null;render();};
+el("q").oninput=e=>{state.q=e.target.value.toLowerCase();state.tile=null;render();};
+el("fm").onchange=e=>{state.m=e.target.value;state.tile=null;render();};
+el("fr").onchange=e=>{state.r=e.target.value;state.tile=null;render();};
 el("clearall").onclick=()=>{
-  state.q="";state.j.clear();state.s.clear();state.m="";state.r="";
-  el("q").value="";el("fm").value="";el("fr").value="";
-  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed","false"));
+  resetFilters();
+  syncControls();
   render();
 };
 document.querySelectorAll("#tbl th").forEach(th=>th.onclick=()=>{
@@ -82,6 +119,7 @@ function sortKey(d){
 /* ---------- render table ---------- */
 function render(){
   const rows=DATA.filter(match).sort((a,b)=>sortKey(a)<sortKey(b)?-state.dir:sortKey(a)>sortKey(b)?state.dir:0);
+  paintTiles();
   el("count").textContent=`${rows.length} of ${DATA.length} instruments`;
   el("tb").innerHTML=rows.map(d=>{
     const open=state.open.has(d.id);
@@ -161,11 +199,12 @@ function detail(d){
 })();
 
 /* ---------- tabs & theme ---------- */
+function showView(v){
+  document.querySelectorAll("nav.tabs button").forEach(x=>x.setAttribute("aria-selected",String(x.dataset.v===v)));
+  document.querySelectorAll("section.view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+}
 document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll("nav.tabs button").forEach(x=>x.setAttribute("aria-selected","false"));
-  b.setAttribute("aria-selected","true");
-  document.querySelectorAll("section.view").forEach(s=>s.classList.remove("on"));
-  el("v-"+b.dataset.v).classList.add("on");
+  showView(b.dataset.v);
   window.scrollTo({top:0,behavior:"smooth"});
 });
 el("themebtn").onclick=()=>{
@@ -196,13 +235,13 @@ el("gaps").innerHTML=`
 <p>A functional test that is then narrowed can end up back at a product category. Three devices do this work, and it is worth naming them separately because they are gameable to very different degrees:</p>
 <ul>
   <li><b>The marketing carve-out</b> — New York alone. Article 47 excludes systems "primarily designed <i>and marketed</i> for efficiency improvements, research, or technical assistance." A developer exits the regime by rewriting copy. This is the most gameable device in circulation and it is enacted law.</li>
-  <li><b>The use carve-out</b> — California, Oregon, Missouri, Florida, and now China. Excludes systems used "only for" or "solely for the purpose of" customer service, productivity, education and the like. Harder to game, because it turns on what the product is actually used for rather than how it is described — and California's, gated on <i>only</i>, arguably fails to exclude ChatGPT at all.</li>
+  <li><b>The use carve-out</b> — California, Oregon, Missouri, and now China. Excludes systems used "only for" or "solely for the purpose of" customer service, productivity, education and the like. Harder to game, because it turns on what the product is actually used for rather than how it is described — and California's, gated on <i>only</i>, arguably fails to exclude ChatGPT at all.</li>
   <li><b>The purpose-primacy gate</b> — the CHAT Act. No exclusions are needed because the words "exists for the primary purpose of" do the exclusionary work inside the definition. On the usage evidence, companionship is a use a general assistant is <i>put to</i> rather than the purpose it was <i>built for</i>, so a primacy test exempts precisely the tools where most relational use occurs.</li>
 </ul>
 <p>Illinois SB 3262 is the only instrument that refuses all three, defining its object "irrespective of how the system is marketed or labeled." It is also still sitting in committee.</p>
 
 <h3>3. Every instrument picks a different feature set</h3>
-<p>New York takes memory, unprompted emotional questioning and personal dialogue. California takes adaptive response, social needs, anthropomorphism and sustained relationship. Oregon takes design purpose. Florida joined California's and New York's with "and", producing a fourth construct. Illinois takes emotional resonance plus a memory presumption. China takes simulated personality plus continuous emotional interaction. Six instruments, six constructs — all circling the same underlying object, none acknowledging the others.</p>
+<p>New York takes memory, unprompted emotional questioning and personal dialogue. California takes adaptive response, social needs, anthropomorphism and sustained relationship. Oregon takes design purpose. Illinois takes emotional resonance plus a memory presumption. China takes simulated personality plus continuous emotional interaction. Five instruments, five constructs — all circling the same underlying object, none acknowledging the others.</p>
 <p>The consequence is not academic. A developer operating in twelve states faces twelve overlapping definitions of the same thing, which is an argument for federal preemption that the industry will make and that a clearly stated functional definition would answer better.</p>
 
 <h3>4. The same design property is put to opposite work</h3>
@@ -249,49 +288,4 @@ el("gaps").innerHTML=`
   <li><b>Constrain availability, do not merely annotate it.</b> Pair the Youth AI Privacy Act's feature list, the most granular design regulation in the corpus, with a duration limit, which nothing yet attempts. The feature-level half is the better-supported half; a drafter should be honest that the evidence does not yet say where to put a numerical threshold.</li>
   <li><b>Require research on design against harm.</b> Convert the reporting mechanism from an output count into a research obligation: a duty to test, and publish, the relationship between engagement-optimising features and harm outcomes. This is a gap in the whole landscape rather than a preference between existing options, and it is where an academic institution can be most useful.</li>
 </ul>
-`;
-
-el("method").innerHTML=`
-<h2>What this is</h2>
-<p>A working tracker of legislation regulating AI companions and conversational AI systems, covering the United States at federal and state level, the European Union, and China. It was built to support ongoing research at the Berkman Klein Center and is maintained as an open reference.</p>
-<p>It is deliberately not just a bill list. Several good bill lists already exist — the Future of Privacy Forum's chatbot tracker and MultiState's updates are the best of them, and both are cited below. What this adds is the <b>definitional coding</b>: for each instrument, the term it uses, the test that determines what the term covers, the narrowing device that pulls things back out, and a judgement about whether it reaches general-purpose assistants. That coding is the analytical contribution and it is not available anywhere else.</p>
-
-<h2>How to read the coding</h2>
-<ul>
-  <li><b>Test</b> — the kind of question the definition asks. <code>capability</code> (what can it do), <code>behaviour</code> (what does it do in interaction), <code>purpose</code> (what was it built for), <code>conduct</code> (what did it say), <code>training objective</code> (what was it optimised for), <code>technique + effect</code> (the EU route).</li>
-  <li><b>Narrowing device</b> — what pulls things back out of the definition: a marketing carve-out, a use carve-out, a purpose-primacy gate, an age gate, or none.</li>
-  <li><b>Reaches general assistants</b> — a judgement, not a measurement. <code>yes</code> means the text plainly covers ChatGPT-class systems; <code>arguably</code> means a plausible reading covers them and a plausible reading does not; <code>no</code> means the gating language excludes them by construction; <code>unclear</code> means the definitional clause has not been read against the enrolled text.</li>
-
-</ul>
-
-<div class="callout"><b>Frequently miscatalogued instruments.</b> Several bills circulate in secondary summaries with the wrong status. <b>Florida CS/SB 482</b> did not become law — it cleared the Senate 35–2 on 4 March 2026 and died in Messages on 13 March. <b>Missouri HB 1742</b> is coded here as introduced, not enacted. The <b>Youth AI Privacy Act</b>'s private right of action was removed in the 5 August 2026 markup. <b>China's measures are no longer a draft</b> — they were finalised and took effect 15 July 2026. <b>Virginia HB 635</b> was continued to the next session on 9 February 2026.</div>
-
-<h2>Updating the tracker</h2>
-<p>All data lives in a single <code>DATA</code> array in a <code>&lt;script&gt;</code> block near the bottom of this file. To add or amend an instrument, edit that array — nothing else needs to change, and every view, filter, count and matrix rebuilds from it automatically.</p>
-<p>A record looks like this:</p>
-<pre style="background:var(--page);border:1px solid var(--ring);border-radius:8px;padding:12px 14px;font-size:12px;overflow-x:auto">{
-  id:"xx-000", juris:"US State", body:"Ohio", cite:"HB 123",
-  name:"Companion chatbot act", status:"Enacted", statusClass:"law",
-  dates:"Introduced Jan 2027 · enacted ...",
-  scope:"Minors",
-  term:"Companion chatbot", test:"capability",
-  testNote:"Quote or close paraphrase of the operative definition",
-  narrowing:"Use carve-out", reaches:"arguably",
-  mechs:["disclosure","crisis"],        // keys from the MECHS list
-  enforce:["State AG"],
-  interval:"Every 3 hours",
-  note:"Why this instrument matters to the argument.",
-  conf:"secondary", link:"https://..."
-}</pre>
-<p><code>statusClass</code> must be one of <code>law</code>, <code>moving</code>, <code>pending</code>, <code>stalled</code>, <code>dead</code> — it drives the status dot colour and the sort order. <code>reaches</code> must be one of <code>yes</code>, <code>arguably</code>, <code>partial</code>, <code>no</code>, <code>unclear</code>. Mechanism keys must match the <code>MECHS</code> list exactly or the matrix will silently drop them.</p>
-
-<h2>Contributing</h2>\n<p>Corrections and additions are welcome. The highest-value contributions are <b>enrolled statutory text for instruments currently coded from tracker summaries</b> — the definitional clause and carve-out determine the “reaches general assistants” judgement, which is the analytically load-bearing column. Open an issue or a pull request against <code>data.js</code>.</p>\n<h2>Suggested review cadence</h2>
-<ul>
-  <li><b>Monthly during state sessions (January–June).</b> This is when the volume is: the 2026 wave went from five enacted instruments to more than a dozen between January and July.</li>
-  <li><b>On any federal committee action.</b> The GUARD Act and the Youth AI Privacy Act have both moved out of committee in 2026 and both changed materially in markup.</li>
-  <li><b>Watch the effective dates, not just the enactment dates.</b> A large share of the enacted state laws do not take effect until 1 January or 1 July 2027, so the compliance picture in 2027 will look very different from the statute book today.</li>
-</ul>
-
-<h2>Sources</h2>
-<p style="font-size:13.5px;color:var(--ink-2)">Primary bill and statutory text via Congress.gov, state legislature records and China Law Translate. Status verification and gap-filling via the Future of Privacy Forum 2026 Chatbot Legislation Tracker, MultiState, Orrick, Troutman Pepper, the Transparency Coalition legislative updates, FPF's analysis of Connecticut SB 5, Hunton and Bird &amp; Bird on the CAC measures, EPIC on the Youth AI Privacy Act, LegiScan and the Florida Senate bill history. Codings are drawn from statutory and bill text where obtainable and from legislative trackers and law-firm analyses otherwise; the source link on each record points to the best available reference for that instrument.</p>
 `;
