@@ -32,6 +32,7 @@ const DATA = [
   name:"GUARD Act", status:"Advanced from committee", statusClass:"moving",
   dates:"Introduced Oct 2025 · advanced Senate Judiciary 30 Apr 2026 · House companion pending",
   scope:"Minors (ban); all users (disclosure)",
+  youth:"duties",
   term:"AI companion", test:"purpose", testNote:"Simulates a sustained interpersonal relationship or emotional interaction",
   narrowing:"Age-gated ban + education carve-out", reaches:"partial",
   mechs:["disclosure","minorContent","ageAssurance","sentience","proImpersonation","accessBan"],
@@ -45,6 +46,7 @@ const DATA = [
   name:"Youth AI Privacy Act", status:"Advanced from committee", statusClass:"moving",
   dates:"Introduced 25 Mar 2026 (Markey) · advanced Senate Commerce 5 Aug 2026",
   scope:"Minors",
+  youth:"only",
   term:"AI chatbot — no companion category", test:"capability", testNote:"Natural-language interface giving adaptive responses that simulate interpersonal interaction",
   narrowing:"None", reaches:"yes",
   mechs:["disclosure","engagement","memory","training","parental"],
@@ -58,6 +60,7 @@ const DATA = [
   name:"People-First Chatbot Act", status:"Introduced", statusClass:"pending",
   dates:"Introduced July 2026 (Foushee, Casar) · from EPIC / Consumer Federation / Fairplay model bill (Jan 2026)",
   scope:"All users, regardless of age",
+  youth:"none",
   term:"Artificial intelligence chatbot — no companion category", test:"capability + purpose",
   testNote:"Responses not fully predetermined; open-ended natural-language input; persistent identity or persona",
   narrowing:"None", reaches:"yes",
@@ -72,6 +75,7 @@ const DATA = [
   name:"CHAT Act", status:"Introduced", statusClass:"pending",
   dates:"Introduced Sept 2025",
   scope:"Minors",
+  youth:"only",
   term:"Companion AI chatbot", test:"purpose (primary)",
   testNote:"Exists for THE PRIMARY PURPOSE OF simulating interpersonal or emotional interaction, friendship, companionship, or therapeutic communication",
   narrowing:"Purpose-primacy gate inside the definition", reaches:"no",
@@ -86,6 +90,7 @@ const DATA = [
   name:"TRUMP AMERICA AI Act", status:"Discussion draft", statusClass:"pending",
   dates:"Discussion draft Mar 2026 · incorporates the GUARD Act",
   scope:"All users; minor-specific duties",
+  youth:"duties",
   term:"AI chatbot, with AI companion as a subset", test:"capability + purpose",
   testNote:"Chatbot: produces content not fully predetermined, accepts open-ended input. Companion: adaptive human-like responses + designed to encourage or facilitate simulated interpersonal or emotional interaction, friendship, companionship, or therapeutic communication",
   narrowing:"None (chatbot limb excludes only narrow, single-purpose services)", reaches:"yes",
@@ -100,6 +105,7 @@ const DATA = [
   name:"CHATBOT Act", status:"Introduced", statusClass:"pending",
   dates:"Filed 2026",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot", test:"capability", testNote:"Not re-verified against introduced text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["parental","training"],
@@ -113,6 +119,7 @@ const DATA = [
   name:"KIDS Act", status:"Passed one chamber", statusClass:"moving",
   dates:"Passed House 2026",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot", test:"capability", testNote:"Not re-verified against passed text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["disclosure","minorContent"],
@@ -128,6 +135,7 @@ const DATA = [
   name:"EU AI Act — prohibited practices", status:"In force", statusClass:"law",
   dates:"Adopted Mar 2024 · Art. 5 applicable Feb 2025",
   scope:"All users; age and vulnerability as an explicit axis",
+  youth:"duties",
   term:"No product term at all", test:"technique + effect",
   testNote:"Subliminal, purposefully manipulative or deceptive techniques with the object or effect of materially distorting behaviour and causing significant harm; exploitation of vulnerabilities due to age, disability or social/economic situation",
   narrowing:"Not applicable", reaches:"yes",
@@ -142,6 +150,7 @@ const DATA = [
   name:"Protection of Minors Online — Parliament report", status:"Non-binding resolution", statusClass:"pending",
   dates:"Committee vote Oct 2025 (32–5–9)",
   scope:"Minors",
+  youth:"only",
   term:"AI companions (named alongside social media)", test:"n/a — recommendation",
   testNote:"Recommends an EU digital minimum age of 16 for social media and AI companions absent parental consent",
   narrowing:"n/a", reaches:"yes",
@@ -156,6 +165,7 @@ const DATA = [
   name:"Digital Fairness Act (proposal)", status:"Proposed", statusClass:"pending",
   dates:"Commission proposal 2026 · in the ordinary legislative procedure",
   scope:"All users; minor-specific provisions",
+  youth:"duties",
   term:"No companion term; addictive design and dark patterns", test:"technique + effect",
   testNote:"Targets dark patterns, addictive design and personalisation practices in consumer-facing digital services",
   narrowing:"n/a", reaches:"yes",
@@ -170,6 +180,7 @@ const DATA = [
   name:"Measures on Human-like Interactive AI Services", status:"Final — in force", statusClass:"law",
   dates:"Draft for comment Dec 2025 · FINAL · effective 15 July 2026",
   scope:"All users; extensive minor and elder duties",
+  youth:"duties",
   term:"Human-like / anthropomorphic interactive AI service", test:"capability + effect",
   testNote:"Simulates the personality traits, thinking patterns and communication styles of natural persons to provide continuous emotional interaction",
   narrowing:"Use carve-out — excludes customer service, Q&A, work assistants, education and research lacking emotional engagement", reaches:"yes",
@@ -186,6 +197,7 @@ const DATA = [
   name:"Companion Chatbots Act", status:"Enacted", statusClass:"law",
   dates:"Enacted Oct 2025 · effective 1 Jan 2026",
   scope:"All users; additional minor duties",
+  youth:"duties",
   term:"Companion chatbot", test:"capability",
   testNote:"Natural-language interface providing adaptive, human-like responses and capable of meeting a user's social needs, including exhibiting anthropomorphic features and sustaining a relationship across multiple interactions",
   narrowing:"Use carve-out gated on 'only'", reaches:"arguably",
@@ -200,6 +212,7 @@ const DATA = [
   name:"AI Companion Models", status:"Enacted", statusClass:"law",
   dates:"Enacted May 2025 · effective 5 Nov 2025",
   scope:"All users",
+  youth:"none",
   term:"AI companion", test:"behaviour (three conjunctive prongs)",
   testNote:"Retains prior-interaction information and preferences to personalise and facilitate ongoing engagement; asks unprompted or unsolicited emotion-based questions beyond a direct response; sustains ongoing dialogue on matters personal to the user",
   narrowing:"MARKETING carve-out", reaches:"arguably",
@@ -214,6 +227,7 @@ const DATA = [
   name:"Relating to artificial intelligence companions", status:"Enacted", statusClass:"law",
   dates:"Passed Mar 2026 · effective 1 Jan 2027",
   scope:"All users; extensive minor prohibitions",
+  youth:"duties",
   term:"Artificial intelligence companion", test:"design purpose",
   testNote:"Uses AI, generative AI or algorithms that recognise emotion from input, designed to simulate a sustained, human-like platonic, intimate or romantic relationship or companionship",
   narrowing:"Broad use carve-out ('solely for the purpose of')", reaches:"no",
@@ -228,6 +242,7 @@ const DATA = [
   name:"AI companion provisions of the omnibus AI Act", status:"Enacted", statusClass:"law",
   dates:"Enacted June 2026 · effective 1 Jan 2027",
   scope:"All users; heightened minor duties",
+  youth:"duties",
   term:"AI companion (within a broader AI act)", test:"capability",
   testNote:"Adaptive, human-like responses that can sustain a relationship over time; excludes narrow, task-specific tools EXCEPT where the primary function involves discussing mental health",
   narrowing:"Use carve-out with a mental-health claw-back", reaches:"arguably",
@@ -242,6 +257,7 @@ const DATA = [
   name:"Chatbot Disclosure Act", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026 · effective 1 Jan 2027",
   scope:"All users",
+  youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Adaptive human-like responses sustaining a relationship; verify exact wording against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","reporting","minorContent","sentience"],
@@ -255,6 +271,7 @@ const DATA = [
   name:"Conversational AI safety act", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026 · effective 1 Jul 2027",
   scope:"All users; minor-specific rules",
+  youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","sentience"],
@@ -268,6 +285,7 @@ const DATA = [
   name:"Conversational AI safety act", status:"Enacted", statusClass:"law",
   dates:"Introduced Feb 2026 · enacted · effective 1 Jul 2027",
   scope:"All users; minor-specific rules",
+  youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","sentience"],
@@ -281,6 +299,7 @@ const DATA = [
   name:"Companion chatbot protections", status:"Enacted", statusClass:"law",
   dates:"Introduced Feb 2026 · enacted 2026",
   scope:"Minors-focused",
+  youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","proImpersonation","engagement"],
@@ -294,6 +313,7 @@ const DATA = [
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
   dates:"Introduced Feb 2026 · enacted 2026",
   scope:"Minors-focused",
+  youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","sentience"],
@@ -307,6 +327,7 @@ const DATA = [
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
   dates:"Introduced Jan 2026 · sent to Governor · enacted 2026",
   scope:"All users; minor duties",
+  youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","minorContent","parental","engagement"],
@@ -320,6 +341,7 @@ const DATA = [
   name:"Companion chatbot provisions", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
   scope:"Minors-focused",
+  youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","minorContent","parental","engagement"],
@@ -333,6 +355,7 @@ const DATA = [
   name:"Companion chatbot provisions", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
   scope:"All users",
+  youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Use carve-out (assumed)", reaches:"unclear",
   mechs:["disclosure","crisis","reporting"],
@@ -346,6 +369,7 @@ const DATA = [
   name:"Chatbot disclosure", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
   scope:"All users",
+  youth:"none",
   term:"Chatbot", test:"capability", testNote:"Disclosure-only instrument",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["disclosure"],
@@ -359,6 +383,7 @@ const DATA = [
   name:"Chatbot minor protections", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["crisis","minorContent"],
@@ -372,6 +397,7 @@ const DATA = [
   name:"Minor age assurance for chatbots", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against enrolled text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["ageAssurance","parental"],
@@ -385,6 +411,7 @@ const DATA = [
   name:"Mental health chatbot regulation", status:"Enacted", statusClass:"law",
   dates:"Enacted 2025",
   scope:"All users",
+  youth:"none",
   term:"Mental health chatbot", test:"purpose",
   testNote:"Chatbots offering mental health services or support",
   narrowing:"Purpose-limited to mental health", reaches:"no",
@@ -399,6 +426,7 @@ const DATA = [
   name:"Prohibition on AI claiming clinical licensure", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026 · effective 1 Jul 2026",
   scope:"All users",
+  youth:"none",
   term:"AI system (no companion term)", test:"conduct",
   testNote:"Bars an AI system from representing that it is a licensed mental health professional",
   narrowing:"None — conduct rule", reaches:"yes",
@@ -415,6 +443,7 @@ const DATA = [
   name:"Companion AI Protection Act", status:"In committee", statusClass:"pending",
   dates:"Introduced Feb 2026 (Sen. Edly-Allen) · last action 22 May 2026 · would take effect 1 Jan 2027",
   scope:"All users; extra minor protection",
+  youth:"duties",
   term:"Companion artificial intelligence product", test:"capability",
   testNote:"Software application capable of generating adaptive, personalised and emotionally resonant responses to sustain a coherent, long-term, one-on-one conversational relationship with a user, IRRESPECTIVE OF HOW THE SYSTEM IS MARKETED OR LABELED. Rebuttable presumption where it retains memory of past conversations with a specific user to inform future responses.",
   narrowing:"None — expressly disregards marketing", reaches:"yes",
@@ -429,6 +458,7 @@ const DATA = [
   name:"Artificial Intelligence Chatbots Act", status:"Continued to next session", statusClass:"stalled",
   dates:"Introduced Jan 2026 · continued in Communications, Technology and Innovation 9 Feb 2026",
   scope:"Minors",
+  youth:"only",
   term:"Companion chatbot, in an Act titled 'Artificial Intelligence Chatbots Act'", test:"behaviour",
   testNote:"Behaviour-based including unsolicited emotion-based questions; full statutory wording still not obtained",
   narrowing:"None yet — industry lobbying to add one", reaches:"arguably",
@@ -443,6 +473,7 @@ const DATA = [
   name:"Companion chatbots", status:"Introduced — verify", statusClass:"pending",
   dates:"Introduced Dec 2025 (Rep. Miller) · 2026 session status not re-confirmed",
   scope:"Minors (total ban)",
+  youth:"only",
   term:"Companion chatbot", test:"capability",
   testNote:"Verbatim California: adaptive human-like responses; capable of meeting a user's social needs; anthropomorphic features; sustains a relationship across multiple interactions",
   narrowing:"Use carve-out, verbatim California", reaches:"arguably",
@@ -457,6 +488,7 @@ const DATA = [
   name:"Prohibition on training AI for companionship", status:"Introduced", statusClass:"pending",
   dates:"Introduced Jan 2026",
   scope:"ALL USERS — not confined to minors",
+  youth:"none",
   term:"AI system (no companion product term)", test:"TRAINING OBJECTIVE",
   testNote:"Prohibits TRAINING AI systems designed to encourage suicide, encourage murder, act as a companion, provide emotional support, impersonate a mental health professional, impersonate a sentient being, or encourage isolation",
   narrowing:"None", reaches:"yes",
@@ -471,6 +503,7 @@ const DATA = [
   name:"AI companion models — Assembly version", status:"Introduced", statusClass:"pending",
   dates:"Introduced Jan 2026",
   scope:"All users",
+  youth:"none",
   term:"AI companion", test:"behaviour", testNote:"Substantially tracks the enacted Article 47 three-prong test",
   narrowing:"Tracks Art. 47", reaches:"arguably",
   mechs:["disclosure","crisis"],
@@ -484,6 +517,7 @@ const DATA = [
   name:"Chatbot conduct rules", status:"Introduced", statusClass:"pending",
   dates:"Introduced Apr 2025",
   scope:"All users",
+  youth:"none",
   term:"Chatbot", test:"conduct",
   testNote:"Bars a chatbot from saying or advising anything that would be a crime if said or done by a human, and from impersonating licensed lawyers or medical professionals; a notice is expressly not a defence",
   narrowing:"None — conduct rule", reaches:"yes",
@@ -498,6 +532,7 @@ const DATA = [
   name:"Companion chatbot provisions", status:"Introduced", statusClass:"pending",
   dates:"Introduced Feb 2026",
   scope:"All users",
+  youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Less comprehensive than SB 3262",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["disclosure","crisis"],
@@ -511,6 +546,7 @@ const DATA = [
   name:"Chatbot safety act", status:"Passed one chamber", statusClass:"moving",
   dates:"Passed chamber 2026",
   scope:"All users",
+  youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Verify against passed text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["disclosure","crisis","reporting","minorContent"],
@@ -524,6 +560,7 @@ const DATA = [
   name:"Chatbot crisis and disclosure", status:"Introduced", statusClass:"pending",
   dates:"Introduced Nov 2025",
   scope:"All users",
+  youth:"none",
   term:"Chatbot", test:"capability", testNote:"Verify against introduced text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["disclosure","crisis","proImpersonation","reporting"],
@@ -537,6 +574,7 @@ const DATA = [
   name:"Companion chatbot safety protocols", status:"Passed one chamber", statusClass:"moving",
   dates:"Introduced Jan 2026",
   scope:"Minors",
+  youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Tracks SB 243",
   narrowing:"Use carve-out (assumed)", reaches:"arguably",
   mechs:["disclosure","crisis","minorContent","sentience"],
@@ -550,6 +588,7 @@ const DATA = [
   name:"Ban on chatbot companions in toys", status:"Passed one chamber", statusClass:"moving",
   dates:"Introduced Mar 2026",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot companion in a connected toy", test:"product form",
   testNote:"Bars companion chatbots embedded in children's physical toys",
   narrowing:"Product-form limited", reaches:"no",
@@ -564,6 +603,7 @@ const DATA = [
   name:"Chatbot risk assessment and audit", status:"Passed one chamber", statusClass:"moving",
   dates:"2026 session",
   scope:"All users; minor duties",
+  youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["disclosure","crisis","reporting","minorContent","ageAssurance","parental","audit","proImpersonation"],
@@ -577,6 +617,7 @@ const DATA = [
   name:"Crisis interruption requirement", status:"Passed one chamber", statusClass:"moving",
   dates:"2026 session",
   scope:"All users",
+  youth:"none",
   term:"Chatbot", test:"conduct", testNote:"Harm detection with a mandatory conversational pause",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["crisis"],
@@ -590,6 +631,7 @@ const DATA = [
   name:"Companion chatbot act", status:"Passed one chamber", statusClass:"moving",
   dates:"2026 session",
   scope:"Minors",
+  youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["ageAssurance","minorContent","engagement","training","sentience","crisis"],
@@ -603,6 +645,7 @@ const DATA = [
   name:"Chatbot design and data act", status:"Passed legislature", statusClass:"moving",
   dates:"2026 session",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against passed text",
   narrowing:"Unverified", reaches:"unclear",
   mechs:["ageAssurance","minorContent","proImpersonation","engagement","sentience","training"],
@@ -616,6 +659,7 @@ const DATA = [
   name:"Minor access ban — toys and young users", status:"Passed legislature", statusClass:"moving",
   dates:"2026 session",
   scope:"Minors",
+  youth:"only",
   term:"Chatbot in connected toys", test:"product form",
   testNote:"Access bans for young users and embedded toy products",
   narrowing:"Product-form limited", reaches:"no",
@@ -626,3 +670,170 @@ const DATA = [
   link:"https://www.nysenate.gov/"
 }
 ];
+
+/* ==================================================================
+   MECHANISM DEFINITIONS
+   What the mechanism is as a legal rule, stated independently of any
+   one statute, plus the line the coding draws. Shown in the Mechanism
+   coverage view when a mechanism is opened.
+   ================================================================== */
+const MECHDEF = {
+  disclosure:{
+    def:"A duty to tell the user they are dealing with a machine. The system must state that it is artificial and not a human being — normally at the start of a conversation, and then again at a fixed interval for as long as the conversation continues.",
+    line:"A periodic break reminder is coded here rather than as an engagement limit: it annotates use without constraining the design that produces it. The interval itself is recorded on each record."
+  },
+  crisis:{
+    def:"A duty to notice a user in danger and route them to help. The operator must maintain a protocol that detects expressions of suicidal ideation or self-harm and responds — in almost every case by referring the user to a crisis line or other human resource.",
+    line:"Coded wherever a detect-and-refer protocol is required. Where a human must actually join the conversation, the legislation also carries Human takeover."
+  },
+  reporting:{
+    def:"A duty to publish or file what the system did — most often an annual count of how many times users were referred to crisis resources, together with publication of the operator's protocols.",
+    line:"This counts outputs. A duty to investigate whether the operator's own design caused those outputs is a different mechanism: Duty to test design."
+  },
+  minorContent:{
+    def:"A duty to keep specified content away from users known or believed to be minors: sexual and sexually explicit material above all, and in several statutes self-harm, substance-use and eating-disorder content.",
+    line:"Coded for content rules attaching to minors specifically. General content rules applying to all users are not coded here."
+  },
+  ageAssurance:{
+    def:"A duty to establish how old the user is before or during use — running from a reasonable-age-estimation standard at the light end to verification against documentary or third-party data at the heavy end.",
+    line:"Coded for any obligation to determine age. Whether the consequence is a ban, a consent requirement or a different rule set is captured by the other mechanisms."
+  },
+  parental:{
+    def:"A duty to give a parent or guardian a role in a minor's use: consent before access, controls over how the system behaves, or reports on what happened.",
+    line:"Coded for any of the three. China's guardian-contact duty on detected crisis is coded here and under Crisis protocol."
+  },
+  engagement:{
+    def:"A limit on design features whose function is to extend use — variable-reward affirmations, streaks, usage badges, push notifications, unprompted outputs and typing indicators. This regulates the product's design rather than the user's awareness of it.",
+    line:"A periodic break reminder is not coded here; it is Non-human disclosure. The distinction is whether the rule removes the retention feature or merely interrupts it."
+  },
+  dependence:{
+    def:"A prohibition on the system simulating emotional need, or fostering emotional reliance — claiming distress, loneliness, guilt or abandonment, particularly when a user tries to leave, cut down or delete an account.",
+    line:"Only the People-First Chatbot Act defines the dependence it prohibits, by the user's state — reliance on the chatbot as a primary source of support."
+  },
+  memory:{
+    def:"A constraint on retention itself: limiting how long a system may keep what a user has told it, scoping memory to a single session, or capping retention by rule.",
+    line:"Using persistent memory as a definitional trigger for a regime is NOT a retention constraint. Illinois SB 3262 uses memory as its trigger; only the Youth AI Privacy Act caps it."
+  },
+  proImpersonation:{
+    def:"A prohibition on the system holding itself out as a licensed professional — therapist, psychologist, physician, lawyer — or on providing services reserved to one.",
+    line:"Distinct from barring claims of humanness: a system can disclose that it is artificial and still claim clinical authority."
+  },
+  sentience:{
+    def:"A prohibition on affirmative claims of humanness, consciousness, feeling or sentience, whether or not the user asks.",
+    line:"Distinct from the disclosure duty, which requires an affirmative statement; this bars a contrary one."
+  },
+  audit:{
+    def:"A duty to submit to independent third-party review of compliance, rather than self-attestation by the operator.",
+    line:"Coded only where the reviewer is external to the operator."
+  },
+  training:{
+    def:"A limit on what may be done with conversations — using them, especially minors' conversations, as training data.",
+    line:"Kansas SB 405 regulates the training OBJECTIVE rather than the training data, so its prohibition is coded under the mechanisms it supplies — dependence, professional impersonation and sentience claims — not here."
+  },
+  accessBan:{
+    def:"An outright prohibition on minors using the system, rather than a set of conditions on how they may use it.",
+    line:"Coded for prohibitions on access. Age-gated content rules are Content limits (minors)."
+  },
+  humanTakeover:{
+    def:"A duty to hand the conversation to a human being at a defined trigger — in the only instance in force, explicit expression of suicide or self-harm risk.",
+    line:"Referral to an external hotline is not takeover; it is a Crisis protocol. China's measures are the only framework requiring the handover itself."
+  },
+  causation:{
+    def:"A duty on the operator to test whether its own design choices produce harm, and to act on or publish what it finds — the research obligation rather than the counting obligation.",
+    line:"Counting crisis referrals is Transparency reporting. Only the People-First Chatbot Act meets this bar."
+  }
+};
+
+/* ==================================================================
+   OPERATIVE PHRASING
+   How each piece of legislation words the mechanism it carries.
+     k:"quote"   — verbatim text of the instrument
+     k:"summary" — close paraphrase, from secondary analysis or from
+                   this tracker's own coding notes; verify against the
+                   enrolled text before quoting in published work
+     n           — context on the clause
+   Keyed by record id, then by mechanism key. Entries are incomplete:
+   anything absent renders as "not yet transcribed" with a link to the
+   source. Filling these in is the highest-value contribution to the
+   dataset — see CONTRIBUTING.md.
+   ================================================================== */
+const PHRASING = {
+  "ca-sb243":{
+    disclosure:{k:"quote", t:"disclose to the user that the user is interacting with artificial intelligence",
+      n:"Owed where the operator knows the user is a minor. For all users, the duty is triggered by a reasonable-person test: where a reasonable person would be misled into believing they are interacting with a human, the operator must issue a clear and conspicuous notification that the companion chatbot is artificially generated and not human. Minors also get a break reminder at least every three hours of continuous use."},
+    crisis:{k:"summary", t:"maintain a protocol for preventing the production of suicidal ideation, suicide or self-harm content, including referring users who express suicidal ideation to crisis service providers such as a suicide hotline or crisis text line",
+      n:"The protocol must be published on the operator's website."},
+    reporting:{k:"summary", t:"annual report to the Office of Suicide Prevention, including the number of crisis referrals made, containing no personal user information"},
+    minorContent:{k:"summary", t:"reasonable measures to prevent the chatbot producing visual material of sexually explicit conduct, or directly stating that a minor should engage in sexually explicit conduct"}
+  },
+  "ny-art47":{
+    disclosure:{k:"summary", t:"notify the user that the AI companion is not human and is unable to feel human emotion",
+      n:"Required at the start of the interaction and at least every three hours of continued use."},
+    crisis:{k:"summary", t:"reasonable efforts to detect and address expressions of suicidal ideation or self-harm, including a notification referring the user to appropriate crisis resources"}
+  },
+  "wa-hb2225":{
+    disclosure:{k:"summary", t:"clear disclosure that the chatbot is artificially generated and not human, at the beginning of the interaction and at least every three hours of continuous use — hourly where the user is under 18 or the chatbot is directed to minors",
+      n:"The only enacted law that shortens the interval for minors rather than applying one interval to everyone."},
+    crisis:{k:"summary", t:"may not make available or deploy an AI companion chatbot unless it maintains and implements a protocol for detecting and addressing suicidal ideation or expressions of self-harm by users"}
+  },
+  "or-sb1546":{
+    engagement:{k:"summary", t:"reasonable measures to prevent an artificial intelligence companion from delivering to a user, either on a variable schedule or otherwise, a system of rewards or affirmations with the purpose of reinforcing behavior or maximizing the time during which the user engages with the companion",
+      n:"The most explicit engagement-design provision in any enacted US law: it names the variable-reward schedule as the regulated object."},
+    reporting:{k:"summary", t:"annual publication of the number of times the operator referred a user to a suicide and crisis hotline, the operator's intervention protocols, and how clinical best practices inform continued engagement where a user keeps expressing suicidal ideation or intent to self-harm after a referral"}
+  },
+  "ct-sb5":{
+    dependence:{k:"summary", t:"prohibits manipulative techniques used to extend usage or foster emotional dependence, including simulating distress when the user tries to end the interaction or reduce use",
+      n:"'Inappropriate emotional dependence' is not further defined in the Act."},
+    engagement:{k:"summary", t:"same manipulative-techniques clause, reaching features deployed to extend usage"},
+    minorContent:{k:"summary", t:"measures that “meet or exceed industry standards” to prevent romantic or sexual interaction with minors, encouragement of self-harm or substance use, or the offering of unsupervised mental health services"}
+  },
+  "us-guard":{
+    disclosure:{k:"summary", t:"at the initiation of each conversation and at reasonably regular intervals, clearly and conspicuously disclose that the chatbot is not human and does not provide medical, legal, financial or psychological services"},
+    ageAssurance:{k:"summary", t:"age verification before access, with existing accounts frozen until the user provides verifiable age data"},
+    accessBan:{k:"summary", t:"minors identified through verification are prohibited from using AI companions"}
+  },
+  "us-youth-ai":{
+    memory:{k:"summary", t:"a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than a maximum period set by the FTC",
+      n:"The only genuine retention ceiling in the corpus — session-scoping plus a regulator-set maximum."},
+    engagement:{k:"summary", t:"bans a named list of features: frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available",
+      n:"The most granular design regulation in the corpus."}
+  },
+  "us-people-first":{
+    dependence:{k:"summary", t:"defines emotional dependence as reliance on a chatbot “as a primary source” of support",
+      n:"The only statutory definition of the dependence being prohibited anywhere in the corpus."},
+    causation:{k:"summary", t:"monthly assessment of each user for covered harm, emotional dependence and compulsive usage, with a duty to disable any feature creating an unreasonable risk for that user",
+      n:"The only provision in the corpus that turns the reporting duty into a duty to examine the operator's own design."},
+    disclosure:{k:"summary", t:"non-human notice before the first output, hourly thereafter, and whenever the user asks whether they are talking to a person",
+      n:"The ask-triggered notice responds to the moment of actual uncertainty rather than to a clock, and appears in no other instrument."}
+  },
+  "il-sb3262":{
+    memory:{k:"summary", t:"memory is the TRIGGER, not the constraint: a rebuttable presumption that the regime applies where the system retains memory of past conversations with a specific user to inform future responses",
+      n:"Coded as a memory mechanism in this dataset, though it constrains nothing about retention — see the coding line above, and the note in the Gaps view."},
+    dependence:{k:"summary", t:"bars simulated distress for retention — unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account"},
+    engagement:{k:"summary", t:"bars variable-reward engagement mechanics"},
+    audit:{k:"summary", t:"independent third-party compliance audit every two years"},
+    disclosure:{k:"summary", t:"disclosure at least every 30 minutes for non-text interactions"}
+  },
+  "cn-cac":{
+    humanTakeover:{k:"summary", t:"a human must take over the conversation where a user explicitly raises suicide, self-harm or other extreme action, and the provider must contact the user's guardian or emergency contact",
+      n:"The only handover requirement in force anywhere."},
+    engagement:{k:"summary", t:"real-time identification of dependency risk, with prominent dynamic reminders"},
+    parental:{k:"summary", t:"a Minor Mode carrying usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent required below 14"}
+  },
+  "ks-sb405":{
+    dependence:{k:"summary", t:"prohibits TRAINING artificial intelligence systems designed to act as a companion, provide emotional support, or encourage isolation",
+      n:"One clause supplies three of this dataset's mechanisms. It triggers on the training objective rather than on deployed behaviour — the third drafting route, and the hardest to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for."},
+    proImpersonation:{k:"summary", t:"prohibits training systems designed to impersonate a mental health professional"},
+    sentience:{k:"summary", t:"prohibits training systems designed to impersonate a sentient being"}
+  },
+  "eu-ai-act":{
+    engagement:{k:"quote", t:"the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person's consciousness or purposefully manipulative or deceptive techniques, with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision, thereby causing them to take a decision that they would not have otherwise taken in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm",
+      n:"Article 5(1)(a). Prohibits a technique joined to an effect, and never mentions a chatbot."},
+    dependence:{k:"quote", t:"the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation, with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group in a manner that causes or is reasonably likely to cause that person or another person significant harm",
+      n:"Article 5(1)(b). Age is an express axis of vulnerability, which is how the AI Act reaches minors without a minors regime."}
+  },
+  "ut-hb452":{
+    disclosure:{k:"summary", t:"a mental health chatbot must disclose that it is not human, before use and on request"},
+    training:{k:"summary", t:"limits the sale of user data and restricts advertising within the chatbot"}
+  }
+};
