@@ -76,7 +76,7 @@ The sixteen mechanisms are grouped into five families by the `MECHGROUPS` array 
 | Design and data constraints | `engagement` `dependence` `memory` `training` | Rules constraining the product itself, and what it retains |
 | Accountability and evidence | `reporting` `audit` `causation` | What must be documented, audited or investigated |
 
-Grouping is what makes the central result of the coverage view legible: honesty obligations reach 35 of the 44 records and harm-response obligations 26, while the cluster that constrains the product's own design reaches 19 and accountability 12. Sixteen ungrouped bars do not show that; five clusters do.
+Grouping is what makes the central result of the coverage view legible: honesty obligations reach 36 of the 45 records and harm-response obligations 26, while the cluster that constrains the product's own design reaches 20 and accountability 12. Sixteen ungrouped bars do not show that; five clusters do.
 
 Every key in `MECHS` must appear in exactly one cluster's `mechs` list. A key in no cluster is dropped from the coverage view and the matrix silently, so the check is in the validation snippet below.
 
@@ -120,7 +120,7 @@ Two structures in `data.js` drive this.
 - `k:"summary"` — close paraphrase drawn from secondary analysis or from this tracker's own coding notes. Tagged **close paraphrase**; verify against the enrolled text before quoting it in published work.
 - `n` — optional context on the clause.
 
-**This layer is deliberately incomplete.** 36 of the 179 mechanism/legislation pairs currently carry wording; the rest render as *not yet transcribed* with a link to the source, and the panel header states the transcribed count for that mechanism. Nothing is invented to fill a gap: a pair with no sourced wording shows no wording. Every mechanism has at least one worked example, and the analytically load-bearing ones — memory, dependence, engagement, human takeover, duty to test design — are covered in full.
+**This layer is deliberately incomplete.** 36 of the 181 mechanism/legislation pairs currently carry wording; the rest render as *not yet transcribed* with a link to the source, and the panel header states the transcribed count for that mechanism. Nothing is invented to fill a gap: a pair with no sourced wording shows no wording. Every mechanism has at least one worked example, and the analytically load-bearing ones — memory, dependence, engagement, human takeover, duty to test design — are covered in full.
 
 Transcribing the remaining pairs from enrolled text is now the highest-value contribution to this repository.
 
@@ -129,10 +129,37 @@ Transcribing the remaining pairs from enrolled text is now the highest-value con
 Several bills circulate in secondary summaries with the wrong status.
 
 - **Florida CS/SB 482** did not become law — it cleared the Senate 35–2 on 4 March 2026 and died in Messages on 13 March. It is no longer carried in the dataset.
-- **Missouri HB 1742** is coded here as introduced, not enacted.
-- The **Youth AI Privacy Act**'s private right of action was removed in the 5 August 2026 markup.
-- **China's measures are no longer a draft** — they were finalised and took effect 15 July 2026.
+- **Missouri HB 1742** is not enacted. It was prefiled 1 December 2025, had its first reading on 7 January 2026 and was referred to House Emerging Issues on 15 May 2026, where it remains — coded `pending`, status "In committee".
+- The **Youth AI Privacy Act**'s private right of action was removed in the 5 August 2026 markup, so `enforce` carries the FTC and state attorneys general only.
+- **China's measures are no longer a draft** — issued 10 April 2026 by five bodies jointly (the CAC, the NDRC, the MIIT, the Ministry of Public Security and the SAMR) and in force since 15 July 2026.
+- **Tennessee has two separate instruments**, and they are routinely merged. SB 1580 is the enacted clinical-licensure conduct rule; SB 1493 / HB 1455 is a distinct pending bill criminalising the training of AI for companionship. Both are carried, separately.
+- **New York GBL Art. 47 has a use carve-out as well as its marketing carve-out.** § 1700(4)(c) contains three exclusions, and summaries that mention only the marketing limb understate how much the section pulls back out.
 - **Virginia HB 635** was continued to the next session on 9 February 2026, so it is coded `stalled` rather than dropped.
+
+## Related resources
+
+Three other trackers cover this ground, and a reader comparing them should know what each is for.
+
+| Tracker | Access | Coverage | Frames its object as |
+|---|---|---|---|
+| [Future of Privacy Forum](https://fpf.org/) 2026 Chatbot Legislation Tracker | Free | US state and federal | "Chatbots" generally |
+| [MultiState](https://www.multistate.ai/) | Paid subscription | US state only | Bill status and obligations |
+| [White & Case, AI Watch: Global Regulatory Tracker](https://www.whitecase.com/insight-our-thinking/ai-watch-global-regulatory-tracker) | Free | Global, 40+ jurisdictions; companion chatbot statutes sit inside its US page | National AI regulation |
+
+Those three track **status and obligations** — what a bill requires and how far it has travelled. This tracker codes the **definitional test**, the **narrowing device**, and whether the definition **reaches general-purpose assistants**. Use FPF or MultiState to find out whether a bill has moved; use this one to find out what its definition actually catches. Where a status here disagrees with theirs, theirs is more likely to be current and this file should be corrected — see the review cadence below.
+
+## Reviewed and excluded
+
+General AI governance statutes are **out of scope** where they reach companion products only as an instance of a broader class. The test applied is whether the instrument says something about the relationship between a system and its user, rather than something about AI outputs or AI decisions in general. A statute that would catch a companion chatbot the same way it catches a hiring algorithm is not tracked here.
+
+Instruments checked against that test and excluded are recorded below, so a later reader knows they were considered rather than missed.
+
+| Instrument | Status | Why excluded |
+|---|---|---|
+| Texas HB 149 (TRAIGA) | Signed 22 Jun 2025, effective 1 Jan 2026 | Prohibits AI used to "incite or encourage self-harm, crime, or violence", alongside CSAM, deepfake and discrimination provisions. Never uses the words "companion" or "chatbot"; its prohibitions operate on output content irrespective of any relationship with the user. |
+| Colorado SB 24-205 | Signed 17 May 2024, obligations from 1 Feb 2026 | General algorithmic-discrimination statute for high-risk AI making consequential decisions. No chatbot, companion or relational provision. |
+
+Colorado SB 24-205 is **not** the Colorado record in the dataset. `co-hb1263` is Colorado's companion chatbot statute and is tracked; SB 24-205 is a separate, general instrument and is not. The two are easily conflated in secondary summaries.
 
 ## Updating the tracker
 

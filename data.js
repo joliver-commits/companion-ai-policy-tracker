@@ -185,8 +185,8 @@ const DATA = [
 {
   id:"eu-ai-act", juris:"EU", body:"European Union", cite:"Reg. 2024/1689, Art. 5(1)(a)–(b)",
   name:"EU AI Act — prohibited practices", status:"In force", statusClass:"law",
-  dates:"Adopted Mar 2024 · Art. 5 applicable Feb 2025",
-  chron:{first:"2024-03", latest:"2024-03", effective:"2025-02"},
+  dates:"Published OJ 12 Jul 2024 · in force 1 Aug 2024 · Art. 5 applicable 2 Feb 2025",
+  chron:{first:"2024-07-12", latest:"2024-08-01", effective:"2025-02-02"},
   scope:"All users; age and vulnerability as an explicit axis",
   youth:"duties",
   term:"No product term at all", test:"technique + effect",
@@ -231,10 +231,10 @@ const DATA = [
   link:"https://www.europarl.europa.eu/legislative-train/theme-protecting-our-democracy-upholding-our-values/file-digital-fairness-act"
 },
 {
-  id:"cn-cac", juris:"China", body:"China (CAC)", cite:"Interim Measures",
+  id:"cn-cac", juris:"China", body:"China (CAC and four others)", cite:"Interim Measures",
   name:"Measures on Human-like Interactive AI Services", status:"Final — in force", statusClass:"law",
-  dates:"Draft for comment Dec 2025 · FINAL · effective 15 July 2026",
-  chron:{first:"2025-12", latest:"2026-07-15", effective:"2026-07-15"},
+  dates:"Draft for comment Dec 2025 · issued 10 Apr 2026 · effective 15 Jul 2026",
+  chron:{first:"2025-12", latest:"2026-04-10", effective:"2026-07-15"},
   scope:"All users; extensive minor and elder duties",
   youth:"duties",
   term:"Human-like / anthropomorphic interactive AI service", test:"capability + effect",
@@ -243,7 +243,7 @@ const DATA = [
   mechs:["disclosure","crisis","engagement","dependence","parental","ageAssurance","training","humanTakeover","reporting","audit"],
   enforce:["CAC administrative supervision","Mandatory security assessments"],
   interval:"Break reminder after roughly 2 hours of use",
-  note:"MAJOR UPDATE: this is no longer a draft. The measures were finalised and took effect 15 July 2026, making China the first jurisdiction with a comprehensive in-force framework aimed squarely at emotional companionship services. It is also the only instrument anywhere that requires a HUMAN to take over the conversation when a user explicitly raises suicide, self-harm or other extreme action, and to contact the user's guardian or emergency contact. Requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode with usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; and security assessments at launch, at 1m registered users and at 100k monthly actives. Note the use carve-out — China arrives at the same narrowing device as California and Oregon by a different route.",
+  note:"MAJOR UPDATE: this is no longer a draft. The measures were issued 10 April 2026 and took effect 15 July 2026, making China the first jurisdiction with a comprehensive in-force framework aimed squarely at emotional companionship services. They were issued jointly by five bodies — the Cyberspace Administration of China, the National Development and Reform Commission, the Ministry of Industry and Information Technology, the Ministry of Public Security, and the State Administration for Market Regulation — which is itself a signal of how the file is being handled: this is industrial and public-security policy as much as it is content regulation. It is also the only instrument anywhere that requires a HUMAN to take over the conversation when a user explicitly raises suicide, self-harm or other extreme action, and to contact the user's guardian or emergency contact. Requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode with usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; and security assessments at launch, at 1m registered users and at 100k monthly actives. Note the use carve-out — China arrives at the same narrowing device as California and Oregon by a different route.",
   link:"https://www.chinalawtranslate.com/en/human-like-ai/"
 },
 
@@ -273,11 +273,11 @@ const DATA = [
   youth:"none",
   term:"AI companion", test:"behaviour (three conjunctive prongs)",
   testNote:"Retains prior-interaction information and preferences to personalise and facilitate ongoing engagement; asks unprompted or unsolicited emotion-based questions beyond a direct response; sustains ongoing dialogue on matters personal to the user",
-  narrowing:"MARKETING carve-out", reaches:"arguably",
+  narrowing:"MARKETING carve-out + use carve-out", reaches:"arguably",
   mechs:["disclosure","crisis"],
   enforce:["State AG (public nuisance)"],
   interval:"At the start of interaction and no more than once per day thereafter",
-  note:"The only instrument whose exemption turns expressly on marketing: it excludes systems 'primarily designed AND MARKETED for efficiency improvements, research, or technical assistance'. A functional test with a self-presentation exemption bolted on — a functional test with a self-presentation exemption attached. ChatGPT most likely falls outside anyway on prong (ii), since it does not ask unprompted emotion-based questions. Note also that the Youth AI Privacy Act would BAN unprompted outputs, the very behaviour New York uses to IDENTIFY a companion. Same property, opposite work.",
+  note:"The only instrument whose exemption turns expressly on marketing — but not the only device it uses. GBL § 1700(4)(c) carries three exclusions, and the other two are use-based, so New York pairs the marketing carve-out with the same kind of use carve-out California, Oregon and China rely on: '(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.' Limb (2) is the one with no counterpart anywhere else in the corpus: a developer exits the regime by rewriting copy. ChatGPT most likely falls outside the definition anyway on prong (ii), since it does not ask unprompted emotion-based questions. Note also that the Youth AI Privacy Act would BAN unprompted outputs, the very behaviour New York uses to IDENTIFY a companion. Same property, opposite work.",
   link:"https://www.nysenate.gov/legislation/bills/2025/S3008"
 },
 {
@@ -545,9 +545,9 @@ const DATA = [
 },
 {
   id:"mo-hb1742", juris:"US State", body:"Missouri", cite:"HB 1742",
-  name:"Companion chatbots", status:"Introduced — verify", statusClass:"pending",
-  dates:"Introduced Dec 2025 (Rep. Miller) · 2026 session status not re-confirmed",
-  chron:{first:"2025-12", latest:"2025-12"},
+  name:"Companion chatbots", status:"In committee", statusClass:"pending",
+  dates:"Prefiled 1 Dec 2025 (Rep. Miller) · first reading 7 Jan 2026 · referred House Emerging Issues 15 May 2026",
+  chron:{first:"2025-12-01", latest:"2026-05-15"},
   scope:"Minors (total ban)",
   youth:"only",
   term:"Companion chatbot", test:"capability",
@@ -556,14 +556,14 @@ const DATA = [
   mechs:["accessBan","disclosure","dependence"],
   enforce:["Unverified"],
   interval:"—",
-  note:"Sometimes listed as enacted; that is not supported by the legislature record consulted here, and the bill is coded as introduced. Substantively it is a word-for-word California clone in its definition with a far harsher operative rule bolted on — no minor access at all, and no humanlike avatars. The clearest single illustration that definitional text travels between states even when the policy does not.",
+  note:"Sometimes listed as enacted; that is not supported by the legislature record, which has it referred to House Emerging Issues on 15 May 2026 and no further. Substantively it is a word-for-word California clone in its definition with a far harsher operative rule bolted on — no minor access at all, and no humanlike avatars. The clearest single illustration that definitional text travels between states even when the policy does not.",
   link:"https://legiscan.com/MO/text/HB1742/id/3287590"
 },
 {
   id:"ks-sb405", key:true, juris:"US State", body:"Kansas", cite:"SB 405",
   name:"Prohibition on training AI for companionship", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Jan 2026",
-  chron:{first:"2026-01", latest:"2026-01"},
+  dates:"Introduced 28 Jan 2026",
+  chron:{first:"2026-01-28", latest:"2026-01-28"},
   scope:"ALL USERS — not confined to minors",
   youth:"none",
   term:"AI system (no companion product term)", test:"TRAINING OBJECTIVE",
@@ -574,6 +574,22 @@ const DATA = [
   interval:"—",
   note:"The most structurally unusual instrument in the corpus and an underused option. It triggers on the TRAINING OBJECTIVE rather than on deployed behaviour, which is easier to evidence and much harder to argue around than a capability test — a developer cannot rewrite marketing copy to escape what it optimised for. It is also one of only a handful of instruments covering all users rather than minors only. A third drafting route alongside capability and purpose tests.",
   link:"https://www.kslegislature.org/"
+},
+{
+  id:"tn-sb1493", juris:"US State", body:"Tennessee", cite:"SB 1493 / HB 1455",
+  name:"Prohibition on training AI for companionship — criminal", status:"Introduced", statusClass:"pending",
+  dates:"Introduced 18 Dec 2025",
+  chron:{first:"2025-12-18", latest:"2025-12-18"},
+  scope:"All users",
+  youth:"none",
+  term:"AI (no companion product term)", test:"TRAINING OBJECTIVE",
+  testNote:"Prohibits knowingly TRAINING AI to simulate a human being, including in appearance, voice, or other mannerisms; to act as a companion to an individual; or to provide emotional support",
+  narrowing:"None", reaches:"yes",
+  mechs:["dependence","sentience"],
+  enforce:["Criminal penalties (Class A felony)"],
+  interval:"—",
+  note:"The second instrument in the corpus to trigger on the TRAINING OBJECTIVE, and the first to put the criminal law behind one. Proposed § 39-17-2002(8) would make it a Class A felony to knowingly train AI to '[s]imulate a human being, including in appearance, voice, or other mannerisms', to 'act as a companion to an individual', or to 'provide emotional support'. It is near-textually identical to Kansas SB 405 on the companion and emotional-support limbs, which makes the pair the cleanest comparison in the corpus on enforcement design alone: near-identical operative text, Kansas civil — attorney general or aggrieved individual, $150,000 liquidated damages — and Tennessee criminal. Two states reaching the same drafting route within weeks of one another is evidence that the training-objective test is now travelling between legislatures the way California's capability definition already has. Introduced by Sen. Becky Massey in the 114th General Assembly; House companion HB 1455. Fiscal memorandum at https://capitol.tn.gov/Bills/114/Fiscal/FM3336.pdf",
+  link:"https://wapp.capitol.tn.gov/apps/BillInfo/Default?BillNumber=SB1493&ga=114"
 },
 {
   id:"ny-a6767", juris:"US State", body:"New York", cite:"A6767",
@@ -817,7 +833,7 @@ const MECHDEF = {
   },
   training:{
     def:"A limit on what may be done with conversations — using them, especially minors' conversations, as training data.",
-    line:"Kansas SB 405 regulates the training OBJECTIVE rather than the training data, so its prohibition is coded under the mechanisms it supplies — dependence, professional impersonation and sentience claims — not here."
+    line:"Kansas SB 405 and Tennessee SB 1493 regulate the training OBJECTIVE rather than the training data, so their prohibitions are coded under the mechanisms they supply — dependence, sentience claims, and professional impersonation in the Kansas text — not here."
   },
   accessBan:{
     def:"An outright prohibition on minors using the system, rather than a set of conditions on how they may use it.",
@@ -1032,7 +1048,7 @@ const GLOSSARY = {
   "test:conduct":{t:"Conduct test",
     d:"Asks what the system said or did on a specific occasion, rather than what it is. A conduct rule needs no product definition at all, which is why records coded this way usually carry no narrowing device."},
   "test:training":{t:"Training-objective test",
-    d:"Asks what the system was optimised for — training a model to act as a companion, provide emotional support, or impersonate a sentient being. Kansas SB 405 is the only example. Easier to evidence than deployed behaviour and much harder to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for."},
+    d:"Asks what the system was optimised for — training a model to act as a companion, provide emotional support, or impersonate a sentient being. Two instruments take this route: Kansas SB 405 and Tennessee SB 1493, near-textual twins that diverge entirely on enforcement — Kansas civil, Tennessee a Class A felony. Easier to evidence than deployed behaviour and much harder to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for."},
   "test:technique":{t:"Technique-plus-effect test",
     d:"Prohibits a named technique joined to a named effect, without defining a product at all — the EU AI Act Article 5 route. Proof that the regulatory object is specifiable without deciding what a companion is; the cost is that no companion-specific machinery follows from it."},
   "test:form":{t:"Product-form test",
