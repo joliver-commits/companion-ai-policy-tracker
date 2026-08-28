@@ -25,12 +25,58 @@ const MECHS = [
   ["causation",        "Duty to test own design against harm", "Duty to test design"]
 ];
 
+/* ==================================================================
+   MECHANISM CLUSTERS
+   The sixteen mechanisms fall into five families. Comparing the
+   families is usually more informative than comparing sixteen
+   separate bars: the interesting result in this corpus is that the
+   honesty and harm-response clusters are near-universal while the
+   design cluster is nearly empty, and that only shows up when the
+   mechanisms are grouped.
+
+   Every mechanism key belongs to exactly one cluster, and every key
+   in MECHS must appear in exactly one `mechs` list here or the
+   coverage view and the matrix will silently drop it.
+     key   — stable id, used in the mechanism filter as "g:<key>"
+     label — full name
+     short — column-band label in the matrix
+     def   — what the cluster is, shown on hover and in the panel
+   ================================================================== */
+const MECHGROUPS = [
+  {
+    key:"honesty", label:"Honesty about what the system is", short:"Honesty about the system",
+    def:"Rules about what the system may say about its own nature and standing: that it must admit to being a machine, that it must not claim to be human or sentient, and that it must not hold itself out as a licensed professional. These regulate the user's awareness of a design property rather than the property itself, which is why they are the cheapest to comply with and the most widely adopted.",
+    mechs:["disclosure","sentience","proImpersonation"]
+  },
+  {
+    key:"harm", label:"Harm response", short:"Harm response",
+    def:"Duties that fire when a user is in danger: detecting expressions of suicidal ideation or self-harm and routing the user to help — in almost every case to an external crisis line, and in one framework to a human being who joins the conversation.",
+    mechs:["crisis","humanTakeover"]
+  },
+  {
+    key:"age", label:"Age gating and parental control", short:"Age gating & parents",
+    def:"Rules that turn on how old the user is: establishing their age, barring their access outright, restricting what they may be shown, and giving a parent or guardian a role. This is the cluster that stops at eighteen — an adult using the same product gets none of it.",
+    mechs:["ageAssurance","accessBan","minorContent","parental"]
+  },
+  {
+    key:"design", label:"Design and data constraints", short:"Design & data",
+    def:"Rules that constrain the product itself rather than the user's awareness of it: the features engineered to extend use, the simulation of emotional need, how long the system may remember what it was told, and what may be done with conversations afterwards. This is the relational machinery, and it is the thinnest cluster in the corpus.",
+    mechs:["engagement","dependence","memory","training"]
+  },
+  {
+    key:"account", label:"Accountability and evidence", short:"Accountability",
+    def:"What the operator must document, submit to outside review, or investigate: counts of what the system did, independent audit of compliance, and — in one instrument only — a duty to test whether its own design produces the harm it is counting.",
+    mechs:["reporting","audit","causation"]
+  }
+];
+
 const DATA = [
 /* ============================ US FEDERAL ============================ */
 {
   id:"us-guard", juris:"US Federal", body:"US Congress", cite:"S. 3062 / H.R. 8623",
   name:"GUARD Act", status:"Advanced from committee", statusClass:"moving",
   dates:"Introduced Oct 2025 · advanced Senate Judiciary 30 Apr 2026 · House companion pending",
+  chron:{first:"2025-10", latest:"2026-04-30"},
   scope:"Minors (ban); all users (disclosure)",
   youth:"duties",
   term:"AI companion", test:"purpose", testNote:"Simulates a sustained interpersonal relationship or emotional interaction",
@@ -45,6 +91,7 @@ const DATA = [
   id:"us-youth-ai", juris:"US Federal", body:"US Senate", cite:"S. 4199",
   name:"Youth AI Privacy Act", status:"Advanced from committee", statusClass:"moving",
   dates:"Introduced 25 Mar 2026 (Markey) · advanced Senate Commerce 5 Aug 2026",
+  chron:{first:"2026-03-25", latest:"2026-08-05"},
   scope:"Minors",
   youth:"only",
   term:"AI chatbot — no companion category", test:"capability", testNote:"Natural-language interface giving adaptive responses that simulate interpersonal interaction",
@@ -59,6 +106,7 @@ const DATA = [
   id:"us-people-first", key:true, juris:"US Federal", body:"US House", cite:"People-First Chatbot Act",
   name:"People-First Chatbot Act", status:"Introduced", statusClass:"pending",
   dates:"Introduced July 2026 (Foushee, Casar) · from EPIC / Consumer Federation / Fairplay model bill (Jan 2026)",
+  chron:{first:"2026-07", latest:"2026-07"},
   scope:"All users, regardless of age",
   youth:"none",
   term:"Artificial intelligence chatbot — no companion category", test:"capability + purpose",
@@ -74,6 +122,7 @@ const DATA = [
   id:"us-chat", key:true, juris:"US Federal", body:"US Senate", cite:"S. 2714",
   name:"CHAT Act", status:"Introduced", statusClass:"pending",
   dates:"Introduced Sept 2025",
+  chron:{first:"2025-09", latest:"2025-09"},
   scope:"Minors",
   youth:"only",
   term:"Companion AI chatbot", test:"purpose (primary)",
@@ -89,6 +138,7 @@ const DATA = [
   id:"us-trump-ai", key:true, juris:"US Federal", body:"US Congress", cite:"Discussion draft",
   name:"TRUMP AMERICA AI Act", status:"Discussion draft", statusClass:"pending",
   dates:"Discussion draft Mar 2026 · incorporates the GUARD Act",
+  chron:{first:"2026-03", latest:"2026-03"},
   scope:"All users; minor-specific duties",
   youth:"duties",
   term:"AI chatbot, with AI companion as a subset", test:"capability + purpose",
@@ -104,6 +154,7 @@ const DATA = [
   id:"us-chatbot-act", juris:"US Federal", body:"US Senate", cite:"S. 4407",
   name:"CHATBOT Act", status:"Introduced", statusClass:"pending",
   dates:"Filed 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Not re-verified against introduced text",
@@ -118,6 +169,7 @@ const DATA = [
   id:"us-kids-act", juris:"US Federal", body:"US House", cite:"H.R. 7757",
   name:"KIDS Act", status:"Passed one chamber", statusClass:"moving",
   dates:"Passed House 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Not re-verified against passed text",
@@ -133,7 +185,8 @@ const DATA = [
 {
   id:"eu-ai-act", juris:"EU", body:"European Union", cite:"Reg. 2024/1689, Art. 5(1)(a)–(b)",
   name:"EU AI Act — prohibited practices", status:"In force", statusClass:"law",
-  dates:"Adopted Mar 2024 · Art. 5 applicable Feb 2025",
+  dates:"Published OJ 12 Jul 2024 · in force 1 Aug 2024 · Art. 5 applicable 2 Feb 2025",
+  chron:{first:"2024-07-12", latest:"2024-08-01", effective:"2025-02-02"},
   scope:"All users; age and vulnerability as an explicit axis",
   youth:"duties",
   term:"No product term at all", test:"technique + effect",
@@ -149,6 +202,7 @@ const DATA = [
   id:"eu-imco", key:true, juris:"EU", body:"European Parliament (IMCO)", cite:"2025/2060(INI)",
   name:"Protection of Minors Online — Parliament report", status:"Non-binding resolution", statusClass:"pending",
   dates:"Committee vote Oct 2025 (32–5–9)",
+  chron:{first:"2025-10", latest:"2025-10"},
   scope:"Minors",
   youth:"only",
   term:"AI companions (named alongside social media)", test:"n/a — recommendation",
@@ -164,6 +218,7 @@ const DATA = [
   id:"eu-dfa", key:true, juris:"EU", body:"European Commission", cite:"Digital Fairness Act",
   name:"Digital Fairness Act (proposal)", status:"Proposed", statusClass:"pending",
   dates:"Commission proposal 2026 · in the ordinary legislative procedure",
+  chron:{first:"2026", latest:"2026"},
   scope:"All users; minor-specific provisions",
   youth:"duties",
   term:"No companion term; addictive design and dark patterns", test:"technique + effect",
@@ -176,9 +231,10 @@ const DATA = [
   link:"https://www.europarl.europa.eu/legislative-train/theme-protecting-our-democracy-upholding-our-values/file-digital-fairness-act"
 },
 {
-  id:"cn-cac", juris:"China", body:"China (CAC)", cite:"Interim Measures",
+  id:"cn-cac", juris:"China", body:"China (CAC and four others)", cite:"Interim Measures",
   name:"Measures on Human-like Interactive AI Services", status:"Final — in force", statusClass:"law",
-  dates:"Draft for comment Dec 2025 · FINAL · effective 15 July 2026",
+  dates:"Draft for comment Dec 2025 · issued 10 Apr 2026 · effective 15 Jul 2026",
+  chron:{first:"2025-12", latest:"2026-04-10", effective:"2026-07-15"},
   scope:"All users; extensive minor and elder duties",
   youth:"duties",
   term:"Human-like / anthropomorphic interactive AI service", test:"capability + effect",
@@ -187,7 +243,7 @@ const DATA = [
   mechs:["disclosure","crisis","engagement","dependence","parental","ageAssurance","training","humanTakeover","reporting","audit"],
   enforce:["CAC administrative supervision","Mandatory security assessments"],
   interval:"Break reminder after roughly 2 hours of use",
-  note:"MAJOR UPDATE: this is no longer a draft. The measures were finalised and took effect 15 July 2026, making China the first jurisdiction with a comprehensive in-force framework aimed squarely at emotional companionship services. It is also the only instrument anywhere that requires a HUMAN to take over the conversation when a user explicitly raises suicide, self-harm or other extreme action, and to contact the user's guardian or emergency contact. Requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode with usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; and security assessments at launch, at 1m registered users and at 100k monthly actives. Note the use carve-out — China arrives at the same narrowing device as California and Oregon by a different route.",
+  note:"MAJOR UPDATE: this is no longer a draft. The measures were issued 10 April 2026 and took effect 15 July 2026, making China the first jurisdiction with a comprehensive in-force framework aimed squarely at emotional companionship services. They were issued jointly by five bodies — the Cyberspace Administration of China, the National Development and Reform Commission, the Ministry of Industry and Information Technology, the Ministry of Public Security, and the State Administration for Market Regulation — which is itself a signal of how the file is being handled: this is industrial and public-security policy as much as it is content regulation. It is also the only instrument anywhere that requires a HUMAN to take over the conversation when a user explicitly raises suicide, self-harm or other extreme action, and to contact the user's guardian or emergency contact. Requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode with usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; and security assessments at launch, at 1m registered users and at 100k monthly actives. Note the use carve-out — China arrives at the same narrowing device as California and Oregon by a different route.",
   link:"https://www.chinalawtranslate.com/en/human-like-ai/"
 },
 
@@ -196,6 +252,7 @@ const DATA = [
   id:"ca-sb243", juris:"US State", body:"California", cite:"SB 243",
   name:"Companion Chatbots Act", status:"Enacted", statusClass:"law",
   dates:"Enacted Oct 2025 · effective 1 Jan 2026",
+  chron:{first:"2025-10", latest:"2025-10", effective:"2026-01-01"},
   scope:"All users; additional minor duties",
   youth:"duties",
   term:"Companion chatbot", test:"capability",
@@ -211,21 +268,23 @@ const DATA = [
   id:"ny-art47", juris:"US State", body:"New York", cite:"GBL Art. 47 (S3008)",
   name:"AI Companion Models", status:"Enacted", statusClass:"law",
   dates:"Enacted May 2025 · effective 5 Nov 2025",
+  chron:{first:"2025-05", latest:"2025-05", effective:"2025-11-05"},
   scope:"All users",
   youth:"none",
   term:"AI companion", test:"behaviour (three conjunctive prongs)",
   testNote:"Retains prior-interaction information and preferences to personalise and facilitate ongoing engagement; asks unprompted or unsolicited emotion-based questions beyond a direct response; sustains ongoing dialogue on matters personal to the user",
-  narrowing:"MARKETING carve-out", reaches:"arguably",
+  narrowing:"MARKETING carve-out + use carve-out", reaches:"arguably",
   mechs:["disclosure","crisis"],
   enforce:["State AG (public nuisance)"],
   interval:"At the start of interaction and no more than once per day thereafter",
-  note:"The only instrument whose exemption turns expressly on marketing: it excludes systems 'primarily designed AND MARKETED for efficiency improvements, research, or technical assistance'. A functional test with a self-presentation exemption bolted on — a functional test with a self-presentation exemption attached. ChatGPT most likely falls outside anyway on prong (ii), since it does not ask unprompted emotion-based questions. Note also that the Youth AI Privacy Act would BAN unprompted outputs, the very behaviour New York uses to IDENTIFY a companion. Same property, opposite work.",
+  note:"The only instrument whose exemption turns expressly on marketing — but not the only device it uses. GBL § 1700(4)(c) carries three exclusions, and the other two are use-based, so New York pairs the marketing carve-out with the same kind of use carve-out California, Oregon and China rely on: '(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.' Limb (2) is the one with no counterpart anywhere else in the corpus: a developer exits the regime by rewriting copy. ChatGPT most likely falls outside the definition anyway on prong (ii), since it does not ask unprompted emotion-based questions. Note also that the Youth AI Privacy Act would BAN unprompted outputs, the very behaviour New York uses to IDENTIFY a companion. Same property, opposite work.",
   link:"https://www.nysenate.gov/legislation/bills/2025/S3008"
 },
 {
   id:"or-sb1546", juris:"US State", body:"Oregon", cite:"SB 1546",
   name:"Relating to artificial intelligence companions", status:"Enacted", statusClass:"law",
   dates:"Passed Mar 2026 · effective 1 Jan 2027",
+  chron:{first:"2026-03", latest:"2026-03", effective:"2027-01-01"},
   scope:"All users; extensive minor prohibitions",
   youth:"duties",
   term:"Artificial intelligence companion", test:"design purpose",
@@ -241,6 +300,7 @@ const DATA = [
   id:"ct-sb5", juris:"US State", body:"Connecticut", cite:"SB 5",
   name:"AI companion provisions of the omnibus AI Act", status:"Enacted", statusClass:"law",
   dates:"Enacted June 2026 · effective 1 Jan 2027",
+  chron:{first:"2026-06", latest:"2026-06", effective:"2027-01-01"},
   scope:"All users; heightened minor duties",
   youth:"duties",
   term:"AI companion (within a broader AI act)", test:"capability",
@@ -256,6 +316,7 @@ const DATA = [
   id:"wa-hb2225", juris:"US State", body:"Washington", cite:"HB 2225",
   name:"Chatbot Disclosure Act", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026 · effective 1 Jan 2027",
+  chron:{first:"2026", latest:"2026", effective:"2027-01-01"},
   scope:"All users",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Adaptive human-like responses sustaining a relationship; verify exact wording against enrolled text",
@@ -270,6 +331,7 @@ const DATA = [
   id:"ne-lb525", juris:"US State", body:"Nebraska", cite:"LB 525",
   name:"Conversational AI safety act", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026 · effective 1 Jul 2027",
+  chron:{first:"2026", latest:"2026", effective:"2027-07-01"},
   scope:"All users; minor-specific rules",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -284,6 +346,7 @@ const DATA = [
   id:"id-sb1297", juris:"US State", body:"Idaho", cite:"SB 1297",
   name:"Conversational AI safety act", status:"Enacted", statusClass:"law",
   dates:"Introduced Feb 2026 · enacted · effective 1 Jul 2027",
+  chron:{first:"2026-02", latest:"2026", effective:"2027-07-01"},
   scope:"All users; minor-specific rules",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -298,6 +361,7 @@ const DATA = [
   id:"co-hb1263", juris:"US State", body:"Colorado", cite:"HB 1263",
   name:"Companion chatbot protections", status:"Enacted", statusClass:"law",
   dates:"Introduced Feb 2026 · enacted 2026",
+  chron:{first:"2026-02", latest:"2026"},
   scope:"Minors-focused",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -312,6 +376,7 @@ const DATA = [
   id:"ga-sb540", juris:"US State", body:"Georgia", cite:"SB 540",
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
   dates:"Introduced Feb 2026 · enacted 2026",
+  chron:{first:"2026-02", latest:"2026"},
   scope:"Minors-focused",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -326,6 +391,7 @@ const DATA = [
   id:"hi-sb3001", juris:"US State", body:"Hawaii", cite:"SB 3001",
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
   dates:"Introduced Jan 2026 · sent to Governor · enacted 2026",
+  chron:{first:"2026-01", latest:"2026"},
   scope:"All users; minor duties",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -340,6 +406,7 @@ const DATA = [
   id:"ia-sf2417", juris:"US State", body:"Iowa", cite:"SF 2417",
   name:"Companion chatbot provisions", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors-focused",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -354,6 +421,7 @@ const DATA = [
   id:"ri-sb2195", juris:"US State", body:"Rhode Island", cite:"SB 2195",
   name:"Companion chatbot provisions", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"All users",
   youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -368,6 +436,7 @@ const DATA = [
   id:"me-ld1727", juris:"US State", body:"Maine", cite:"LD 1727",
   name:"Chatbot disclosure", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"capability", testNote:"Disclosure-only instrument",
@@ -382,6 +451,7 @@ const DATA = [
   id:"nh-hb143", juris:"US State", body:"New Hampshire", cite:"HB 143",
   name:"Chatbot minor protections", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -396,6 +466,7 @@ const DATA = [
   id:"ny-s9008", juris:"US State", body:"New York", cite:"S 9008C",
   name:"Minor age assurance for chatbots", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -410,6 +481,7 @@ const DATA = [
   id:"ut-hb452", juris:"US State", body:"Utah", cite:"HB 452",
   name:"Mental health chatbot regulation", status:"Enacted", statusClass:"law",
   dates:"Enacted 2025",
+  chron:{first:"2025", latest:"2025"},
   scope:"All users",
   youth:"none",
   term:"Mental health chatbot", test:"purpose",
@@ -425,6 +497,7 @@ const DATA = [
   id:"tn-sb1580", juris:"US State", body:"Tennessee", cite:"SB 1580",
   name:"Prohibition on AI claiming clinical licensure", status:"Enacted", statusClass:"law",
   dates:"Enacted 2026 · effective 1 Jul 2026",
+  chron:{first:"2026", latest:"2026", effective:"2026-07-01"},
   scope:"All users",
   youth:"none",
   term:"AI system (no companion term)", test:"conduct",
@@ -442,6 +515,7 @@ const DATA = [
   id:"il-sb3262", key:true, juris:"US State", body:"Illinois", cite:"SB 3262",
   name:"Companion AI Protection Act", status:"In committee", statusClass:"pending",
   dates:"Introduced Feb 2026 (Sen. Edly-Allen) · last action 22 May 2026 · would take effect 1 Jan 2027",
+  chron:{first:"2026-02", latest:"2026-05-22", effective:"2027-01-01"},
   scope:"All users; extra minor protection",
   youth:"duties",
   term:"Companion artificial intelligence product", test:"capability",
@@ -457,6 +531,7 @@ const DATA = [
   id:"va-hb635", key:true, juris:"US State", body:"Virginia", cite:"HB 635",
   name:"Artificial Intelligence Chatbots Act", status:"Continued to next session", statusClass:"stalled",
   dates:"Introduced Jan 2026 · continued in Communications, Technology and Innovation 9 Feb 2026",
+  chron:{first:"2026-01", latest:"2026-02-09"},
   scope:"Minors",
   youth:"only",
   term:"Companion chatbot, in an Act titled 'Artificial Intelligence Chatbots Act'", test:"behaviour",
@@ -470,8 +545,9 @@ const DATA = [
 },
 {
   id:"mo-hb1742", juris:"US State", body:"Missouri", cite:"HB 1742",
-  name:"Companion chatbots", status:"Introduced — verify", statusClass:"pending",
-  dates:"Introduced Dec 2025 (Rep. Miller) · 2026 session status not re-confirmed",
+  name:"Companion chatbots", status:"In committee", statusClass:"pending",
+  dates:"Prefiled 1 Dec 2025 (Rep. Miller) · first reading 7 Jan 2026 · referred House Emerging Issues 15 May 2026",
+  chron:{first:"2025-12-01", latest:"2026-05-15"},
   scope:"Minors (total ban)",
   youth:"only",
   term:"Companion chatbot", test:"capability",
@@ -480,13 +556,14 @@ const DATA = [
   mechs:["accessBan","disclosure","dependence"],
   enforce:["Unverified"],
   interval:"—",
-  note:"Sometimes listed as enacted; that is not supported by the legislature record consulted here, and the bill is coded as introduced. Substantively it is a word-for-word California clone in its definition with a far harsher operative rule bolted on — no minor access at all, and no humanlike avatars. The clearest single illustration that definitional text travels between states even when the policy does not.",
+  note:"Sometimes listed as enacted; that is not supported by the legislature record, which has it referred to House Emerging Issues on 15 May 2026 and no further. Substantively it is a word-for-word California clone in its definition with a far harsher operative rule bolted on — no minor access at all, and no humanlike avatars. The clearest single illustration that definitional text travels between states even when the policy does not.",
   link:"https://legiscan.com/MO/text/HB1742/id/3287590"
 },
 {
   id:"ks-sb405", key:true, juris:"US State", body:"Kansas", cite:"SB 405",
   name:"Prohibition on training AI for companionship", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Jan 2026",
+  dates:"Introduced 28 Jan 2026",
+  chron:{first:"2026-01-28", latest:"2026-01-28"},
   scope:"ALL USERS — not confined to minors",
   youth:"none",
   term:"AI system (no companion product term)", test:"TRAINING OBJECTIVE",
@@ -499,9 +576,26 @@ const DATA = [
   link:"https://www.kslegislature.org/"
 },
 {
+  id:"tn-sb1493", juris:"US State", body:"Tennessee", cite:"SB 1493 / HB 1455",
+  name:"Prohibition on training AI for companionship — criminal", status:"Introduced", statusClass:"pending",
+  dates:"Introduced 18 Dec 2025",
+  chron:{first:"2025-12-18", latest:"2025-12-18"},
+  scope:"All users",
+  youth:"none",
+  term:"AI (no companion product term)", test:"TRAINING OBJECTIVE",
+  testNote:"Prohibits knowingly TRAINING AI to simulate a human being, including in appearance, voice, or other mannerisms; to act as a companion to an individual; or to provide emotional support",
+  narrowing:"None", reaches:"yes",
+  mechs:["dependence","sentience"],
+  enforce:["Criminal penalties (Class A felony)"],
+  interval:"—",
+  note:"The second instrument in the corpus to trigger on the TRAINING OBJECTIVE, and the first to put the criminal law behind one. Proposed § 39-17-2002(8) would make it a Class A felony to knowingly train AI to '[s]imulate a human being, including in appearance, voice, or other mannerisms', to 'act as a companion to an individual', or to 'provide emotional support'. It is near-textually identical to Kansas SB 405 on the companion and emotional-support limbs, which makes the pair the cleanest comparison in the corpus on enforcement design alone: near-identical operative text, Kansas civil — attorney general or aggrieved individual, $150,000 liquidated damages — and Tennessee criminal. Two states reaching the same drafting route within weeks of one another is evidence that the training-objective test is now travelling between legislatures the way California's capability definition already has. Introduced by Sen. Becky Massey in the 114th General Assembly; House companion HB 1455. Fiscal memorandum at https://capitol.tn.gov/Bills/114/Fiscal/FM3336.pdf",
+  link:"https://wapp.capitol.tn.gov/apps/BillInfo/Default?BillNumber=SB1493&ga=114"
+},
+{
   id:"ny-a6767", juris:"US State", body:"New York", cite:"A6767",
   name:"AI companion models — Assembly version", status:"Introduced", statusClass:"pending",
   dates:"Introduced Jan 2026",
+  chron:{first:"2026-01", latest:"2026-01"},
   scope:"All users",
   youth:"none",
   term:"AI companion", test:"behaviour", testNote:"Substantially tracks the enacted Article 47 three-prong test",
@@ -516,6 +610,7 @@ const DATA = [
   id:"ny-s7263", juris:"US State", body:"New York", cite:"S7263",
   name:"Chatbot conduct rules", status:"Introduced", statusClass:"pending",
   dates:"Introduced Apr 2025",
+  chron:{first:"2025-04", latest:"2025-04"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"conduct",
@@ -531,6 +626,7 @@ const DATA = [
   id:"il-sb3384", juris:"US State", body:"Illinois", cite:"SB 3384",
   name:"Companion chatbot provisions", status:"Introduced", statusClass:"pending",
   dates:"Introduced Feb 2026",
+  chron:{first:"2026-02", latest:"2026-02"},
   scope:"All users",
   youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Less comprehensive than SB 3262",
@@ -545,6 +641,7 @@ const DATA = [
   id:"pa-sb1090", juris:"US State", body:"Pennsylvania", cite:"SB 1090",
   name:"Chatbot safety act", status:"Passed one chamber", statusClass:"moving",
   dates:"Passed chamber 2026",
+  chron:{first:"2026", latest:"2026"},
   scope:"All users",
   youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Verify against passed text",
@@ -559,6 +656,7 @@ const DATA = [
   id:"pa-hb2006", juris:"US State", body:"Pennsylvania", cite:"HB 2006",
   name:"Chatbot crisis and disclosure", status:"Introduced", statusClass:"pending",
   dates:"Introduced Nov 2025",
+  chron:{first:"2025-11", latest:"2025-11"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"capability", testNote:"Verify against introduced text",
@@ -573,6 +671,7 @@ const DATA = [
   id:"ca-sb300", juris:"US State", body:"California", cite:"SB 300",
   name:"Companion chatbot safety protocols", status:"Passed one chamber", statusClass:"moving",
   dates:"Introduced Jan 2026",
+  chron:{first:"2026-01", latest:"2026-01"},
   scope:"Minors",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Tracks SB 243",
@@ -587,6 +686,7 @@ const DATA = [
   id:"ca-sb867", juris:"US State", body:"California", cite:"SB 867",
   name:"Ban on chatbot companions in toys", status:"Passed one chamber", statusClass:"moving",
   dates:"Introduced Mar 2026",
+  chron:{first:"2026-03", latest:"2026-03"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot companion in a connected toy", test:"product form",
@@ -602,6 +702,7 @@ const DATA = [
   id:"ca-sb1119", juris:"US State", body:"California", cite:"SB 1119 / AB 2023",
   name:"Chatbot risk assessment and audit", status:"Passed one chamber", statusClass:"moving",
   dates:"2026 session",
+  chron:{first:"2026", latest:"2026"},
   scope:"All users; minor duties",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against text",
@@ -616,6 +717,7 @@ const DATA = [
   id:"ca-ab1988", juris:"US State", body:"California", cite:"AB 1988",
   name:"Crisis interruption requirement", status:"Passed one chamber", statusClass:"moving",
   dates:"2026 session",
+  chron:{first:"2026", latest:"2026"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"conduct", testNote:"Harm detection with a mandatory conversational pause",
@@ -630,6 +732,7 @@ const DATA = [
   id:"mi-sb760", juris:"US State", body:"Michigan", cite:"SB 760",
   name:"Companion chatbot act", status:"Passed one chamber", statusClass:"moving",
   dates:"2026 session",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against text",
@@ -644,6 +747,7 @@ const DATA = [
   id:"ny-s9051", juris:"US State", body:"New York", cite:"S 9051",
   name:"Chatbot design and data act", status:"Passed legislature", statusClass:"moving",
   dates:"2026 session",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against passed text",
@@ -658,6 +762,7 @@ const DATA = [
   id:"ny-s9408", juris:"US State", body:"New York", cite:"S 9408",
   name:"Minor access ban — toys and young users", status:"Passed legislature", statusClass:"moving",
   dates:"2026 session",
+  chron:{first:"2026", latest:"2026"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot in connected toys", test:"product form",
@@ -728,7 +833,7 @@ const MECHDEF = {
   },
   training:{
     def:"A limit on what may be done with conversations — using them, especially minors' conversations, as training data.",
-    line:"Kansas SB 405 regulates the training OBJECTIVE rather than the training data, so its prohibition is coded under the mechanisms it supplies — dependence, professional impersonation and sentience claims — not here."
+    line:"Kansas SB 405 and Tennessee SB 1493 regulate the training OBJECTIVE rather than the training data, so their prohibitions are coded under the mechanisms they supply — dependence, sentience claims, and professional impersonation in the Kansas text — not here."
   },
   accessBan:{
     def:"An outright prohibition on minors using the system, rather than a set of conditions on how they may use it.",
@@ -836,4 +941,156 @@ const PHRASING = {
     disclosure:{k:"summary", t:"a mental health chatbot must disclose that it is not human, before use and on request"},
     training:{k:"summary", t:"limits the sale of user data and restricts advertising within the chatbot"}
   }
+};
+
+/* ==================================================================
+   GLOSSARY
+   Definitions surfaced on hover (and on focus, and on tap) wherever a
+   coded term appears on the site — column headings, filter labels,
+   the value chips inside the table, and the named devices in the
+   written analysis.
+
+   Keys are referenced from the markup and the renderers as
+   data-gl="<key>". Four families are resolved programmatically rather
+   than listed here: "mech:<key>" reads MECHDEF, "group:<key>" reads
+   MECHGROUPS, and both fall back to nothing if the key is unknown.
+
+   These are the tracker's own definitions, not quotations from any
+   statute. Where a term is a term of art in the corpus rather than in
+   general usage, the entry says so.
+   ================================================================== */
+const GLOSSARY = {
+  /* ---- the columns of the legislation table ---- */
+  legislation:{t:"Legislation",
+    d:"One bill, statute, regulation or formal proposal. The tracker carries proposed, active and enacted policy only: anything that dies, is vetoed, goes inactive or is superseded is removed from the dataset rather than kept with a “dead” status, so the counts describe the live landscape."},
+  juris:{t:"Jurisdiction",
+    d:"The body whose law this is: the United States at federal level, an individual US state, the European Union, or China. Coverage outside those four is currently thin."},
+  status:{t:"Status",
+    d:"How far the legislation has travelled — enacted and in force, moving (out of committee or through one chamber), pending (introduced or a discussion draft), or stalled (carried over or held, dormant but still a live vehicle in the next session)."},
+  latest:{t:"Latest action",
+    d:"The date of the most recent thing that actually happened to this legislation — introduction, a committee vote, passage, enactment, or entry into force. It is not the effective date: a law can be enacted long before it bites."},
+  first:{t:"First action",
+    d:"The date the legislation first entered the record — introduced, filed, proposed, or published as a draft for comment."},
+  effective:{t:"Effective date",
+    d:"When the obligations actually start to bind. It matters as much as the enactment date here: roughly half the enacted US state laws do not take effect until 2027, so the statute book today and the compliance picture in 2027 look very different. For legislation not yet enacted this is the date the text proposes."},
+  datePrecision:{t:"Date precision",
+    d:"Dates are recorded at whatever precision the source supports, and half the corpus is dated only to the year — a state record that says “enacted 2026” and no more. Where the day or the month is missing, the date is placed at the middle of the period it is known to fall in: a year sorts as 30 June, a month as the 15th. Ordering between a year-only row and a precisely dated one in the same year is therefore an estimate rather than a record, and such dates are marked with a dotted underline in the table."},
+  youth:{t:"Youth focus",
+    d:"Who the legislation actually binds: minors only, all users but with duties specific to minors, or all users with no minor-specific rules. The split matters to the analysis — the legislation that covers all users is disproportionately the legislation that triggers functionally."},
+  test:{t:"Functional test",
+    d:"The kind of question the legislation's definition asks in order to decide what it covers. This is the analytically load-bearing field: nearly every piece of legislation in the corpus defines its object by what the system does rather than by what kind of product it is, even where the vocabulary still sounds categorical."},
+  narrowing:{t:"Narrowing device",
+    d:"What pulls things back out of a definition that would otherwise be broad — a marketing carve-out, a use carve-out, a purpose-primacy gate, an age gate, or nothing. A functional test that is then narrowed can end up back at a product category, which is why the device is coded separately from the test."},
+  reaches:{t:"Reaches general assistants",
+    d:"Whether the text covers general-purpose assistants of the ChatGPT class, as opposed to only purpose-built companion apps. This is a judgement about the statutory language, not a measurement, and it is the column the analysis rests on."},
+  nmech:{t:"Mechanisms carried",
+    d:"How many of the sixteen coded regulatory mechanisms this legislation imposes. It counts breadth, not stringency: a law with one demanding obligation may matter more than a law with six weak ones."},
+
+  /* ---- fields inside an expanded row ---- */
+  timeline:{t:"Timeline",
+    d:"The recorded history of the legislation in the words of the source — introduction, committee action, passage, enactment and effective date, at whatever precision the source supports."},
+  scope:{t:"Scope",
+    d:"Who the legislation applies to, as stated in the text. The Youth focus coding is derived from this field and must stay consistent with it."},
+  term:{t:"Term used",
+    d:"The defined term the legislation actually uses — “companion chatbot”, “AI companion”, “AI chatbot” and so on. The term and the test behind it frequently do not line up: several instruments keep a categorical noun while the operative definition is functional."},
+  interval:{t:"Disclosure interval",
+    d:"How often the system must repeat that it is not a human being. Intervals in force or proposed run from every 30 minutes to once a day — a sixfold spread with no stated rationale anywhere in the corpus."},
+  enforce:{t:"Enforcement",
+    d:"Who can act on a breach: an attorney general, a federal regulator, a criminal prosecution, or the harmed individual. This is the single most consequential variable in the corpus — two statutes with identical operative text and different enforcement routes are, in practice, different laws."},
+  note:{t:"Why it matters",
+    d:"The tracker's own note on what is analytically interesting about this piece of legislation and how it bears on the argument. Not a summary of the text."},
+
+  /* ---- mechanisms and clusters ---- */
+  mechanism:{t:"Mechanism",
+    d:"An operative obligation the legislation imposes, coded to one of sixteen keys so that instruments can be compared on what they actually require rather than on what they are called. Coding records whether a mechanism is present, not how demanding it is."},
+  cluster:{t:"Mechanism cluster",
+    d:"The five families the sixteen mechanisms fall into. Comparing families is usually more informative than comparing sixteen separate bars: honesty and harm-response obligations are near-universal, while the cluster that constrains the product's own design is nearly empty — a contrast that only becomes visible once the mechanisms are grouped."},
+  phrasing:{t:"Operative wording",
+    d:"How this particular piece of legislation words the mechanism, with its provenance marked. The layer is deliberately incomplete: where no sourced wording is held, the panel says so rather than paraphrasing from nothing."},
+
+  /* ---- status values ---- */
+  "st:law":{t:"Enacted / in force",
+    d:"Signed into law, adopted, or otherwise in force. Note that being enacted does not mean being effective — check the effective date."},
+  "st:moving":{t:"Moving",
+    d:"Advanced out of committee or passed one chamber. The most predictive status in the corpus: most of the 2026 wave passed within a session of reaching this point."},
+  "st:pending":{t:"Pending",
+    d:"Introduced, filed, or circulating as a discussion draft, with no recorded action beyond that yet."},
+  "st:stalled":{t:"Stalled",
+    d:"Carried over, continued or held — dormant, but still a live vehicle in the next session. Distinct from dead: legislation that actually dies is removed from the dataset."},
+
+  /* ---- reaches values ---- */
+  "r:yes":{t:"Reaches assistants: yes",
+    d:"The text plainly covers ChatGPT-class general-purpose systems."},
+  "r:arguably":{t:"Reaches assistants: arguably",
+    d:"A plausible reading of the definition covers general assistants and a plausible reading does not. Usually the carve-out, rather than the test, is doing the work."},
+  "r:partial":{t:"Reaches assistants: partial",
+    d:"Some obligations reach general assistants and others do not — most often because a categorical ban is age-gated to labelled companion products while a disclosure duty applies across the board."},
+  "r:no":{t:"Reaches assistants: no",
+    d:"The gating language excludes general assistants by construction, normally through a purpose-primacy test or a product-form limit."},
+  "r:unclear":{t:"Reaches assistants: unclear",
+    d:"The definitional clause has not yet been read against the enrolled text. A coding gap, not a finding — enrolled text for these rows is the most useful contribution to the dataset."},
+
+  /* ---- youth focus values ---- */
+  "youth:only":{t:"Minors only",
+    d:"The obligations apply only where the user is a minor. An adult using the same product on the same design gets nothing from this legislation."},
+  "youth:duties":{t:"Minor-specific duties",
+    d:"The legislation applies to all users but carries additional duties where the user is, or is believed to be, a minor."},
+  "youth:none":{t:"All users",
+    d:"Applies to every user with no minor-specific rules. Disproportionately the legislation that defines its object functionally."},
+
+  /* ---- families of functional test ---- */
+  "test:capability":{t:"Capability test",
+    d:"Asks what the system is able to do — sustain a conversation, adapt to the user, retain what it was told, respond to emotional cues. The most common route in the corpus, and the hardest to escape by relabelling, since it turns on the build rather than the pitch."},
+  "test:behaviour":{t:"Behaviour test",
+    d:"Asks what the system actually does in interaction: asks unprompted emotional questions, remembers prior sessions, sustains a persona. Close to a capability test, but evidenced from deployed conduct rather than from what the system could do."},
+  "test:purpose":{t:"Purpose test",
+    d:"Asks what the system was built or designed for. Its reach depends entirely on the verb phrase: “designed to encourage or facilitate” is broad, while “exists for the primary purpose of” exempts precisely the general assistants where most relational use actually occurs."},
+  "test:conduct":{t:"Conduct test",
+    d:"Asks what the system said or did on a specific occasion, rather than what it is. A conduct rule needs no product definition at all, which is why records coded this way usually carry no narrowing device."},
+  "test:training":{t:"Training-objective test",
+    d:"Asks what the system was optimised for — training a model to act as a companion, provide emotional support, or impersonate a sentient being. Two instruments take this route: Kansas SB 405 and Tennessee SB 1493, near-textual twins that diverge entirely on enforcement — Kansas civil, Tennessee a Class A felony. Easier to evidence than deployed behaviour and much harder to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for."},
+  "test:technique":{t:"Technique-plus-effect test",
+    d:"Prohibits a named technique joined to a named effect, without defining a product at all — the EU AI Act Article 5 route. Proof that the regulatory object is specifiable without deciding what a companion is; the cost is that no companion-specific machinery follows from it."},
+  "test:form":{t:"Product-form test",
+    d:"Turns on what kind of thing the product is rather than on what it does. The categorical route, and the one most easily escaped by shipping the same capability inside a differently-labelled product."},
+
+  /* ---- families of narrowing device ---- */
+  "narrow:marketing":{t:"Marketing carve-out",
+    d:"Excludes systems designed and marketed for some benign purpose — efficiency, research, technical assistance. The most gameable device in circulation, because a developer exits the regime by rewriting copy. New York's Article 47 is the only enacted example."},
+  "narrow:use":{t:"Use carve-out",
+    d:"Excludes systems used only, or solely, for customer service, productivity, education and the like. Harder to game than a marketing carve-out because it turns on what the product is actually used for — and where it is gated on the word “only”, it arguably fails to exclude general assistants at all."},
+  "narrow:primacy":{t:"Purpose-primacy gate",
+    d:"No exclusion list is needed because the words “exists for the primary purpose of” do the exclusionary work inside the definition itself. On the usage evidence, companionship is a use a general assistant is put to rather than the purpose it was built for, so a primacy test exempts the tools where most relational use occurs."},
+  "narrow:age":{t:"Age gate",
+    d:"The obligation attaches only where the user is, or is believed to be, a minor. Narrowing by user rather than by product: the design property is left intact for everyone over eighteen."},
+  "narrow:form":{t:"Product-form limit",
+    d:"Restricts the regime to a named kind of product, so the same capability shipped inside a different kind of product falls outside it."},
+  "narrow:mentalhealth":{t:"Purpose limit — mental health",
+    d:"Restricts the regime to systems offering mental-health or therapeutic services, leaving the general-purpose system that is in fact being used for emotional support untouched."},
+  "narrow:na":{t:"Narrowing device not applicable",
+    d:"The record is a recommendation, a committee report or another instrument that imposes no obligations, so there is no definition for a narrowing device to narrow."},
+  "narrow:unverified":{t:"Narrowing device unverified",
+    d:"The text has not been read closely enough to code the narrowing device. A coding gap rather than a finding — enrolled or bill text for these rows is the most useful contribution to the dataset."},
+  "narrow:none":{t:"No narrowing device",
+    d:"Nothing pulls anything back out of the definition. Rare, and analytically important: Illinois SB 3262 goes further and defines its object “irrespective of how the system is marketed or labeled”, foreclosing the classification move companies already make."},
+
+  /* ---- provenance of quoted wording ---- */
+  "prov:quote":{t:"Verbatim text",
+    d:"The words of the legislation itself, quoted from the bill or enrolled text. Safe to quote in published work, though the citation should still be checked against the current version."},
+  "prov:summary":{t:"Close paraphrase",
+    d:"A close paraphrase drawn from secondary analysis or from this tracker's own coding notes, not the words of the statute. Verify against the enrolled text before quoting it in published work."},
+  "prov:none":{t:"Not yet transcribed",
+    d:"This legislation carries the mechanism, but no sourced wording for it is held yet. Nothing is invented to fill the gap — the row links to the source instead. Transcribing these from enrolled text is the highest-value contribution to the dataset."},
+
+  /* ---- terms of art used in the written analysis ---- */
+  assistants:{t:"General-purpose assistant",
+    d:"A conversational system built for open-ended use — ChatGPT, Claude, Gemini and their kin — as opposed to a product built and sold as a companion. The distinction matters because the survey evidence puts most relational use by young people on the general assistants, not on the labelled companion apps."},
+  functional:{t:"Functional definition",
+    d:"Defining the regulated object by what the system does — simulating interaction, sustaining a relationship, retaining memory, responding to emotion — rather than by what kind of product it is. Most of this corpus is functional in its tests even where the vocabulary remains categorical."},
+  categorical:{t:"Categorical definition",
+    d:"Defining the regulated object as a kind of product: a companion app, a companion chatbot. Survives in this corpus mainly in the vocabulary and in the exclusions rather than in the operative tests."},
+  pra:{t:"Private right of action",
+    d:"A statutory route for the harmed individual to sue, rather than leaving enforcement to a regulator. The most consequential enforcement variable in the corpus: New York's enacted Article 47 is attorney-general only while its substantively identical Assembly twin lets individuals sue, and the Youth AI Privacy Act's private right of action was stripped in the 5 August 2026 markup."},
+  retention:{t:"Retention ceiling",
+    d:"A hard limit on how long a system may keep what a user told it. Only the Youth AI Privacy Act has one — personalisation is barred unless the data was collected in the current session and more recently than an FTC-set maximum. Nothing in force anywhere caps retention."}
 };
