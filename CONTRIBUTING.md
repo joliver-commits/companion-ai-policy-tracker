@@ -93,7 +93,7 @@ const PHRASING = {
 
 ### Coding conventions
 
-- **`memory`** means a constraint on retention or on using retained data — *not* merely using memory as a definitional trigger. The Youth AI Privacy Act caps retention and is coded `memory`. Illinois SB 3262 uses memory only as a trigger, and its `memory` coding is a known inconsistency with this convention — see the note in its `PHRASING` entry.
+- **`memory`** means a clear and explicit cap on retention — a rule stating how long a system may keep what a user told it. **No record currently carries it, and the mechanism is kept in the list to mark the gap.** Do not code it for legislation that merely uses persistent memory as a definitional trigger (Illinois SB 3262) or that limits the data processed to personalise outputs (the Youth AI Privacy Act). Both were coded `memory` until September 2026 and both were wrong.
 - **`engagement`** means a limit on features designed to extend use (variable rewards, streaks, push alerts, retention prompts). A periodic break reminder is `disclosure`, not `engagement`.
 - **`causation`** means a duty to test whether the provider's *own design* produces harm. Counting crisis referrals is `reporting`. Only one piece of legislation in the corpus meets the `causation` bar.
 - **`testNote`** should quote the operative definition where the text is available. Quote rather than paraphrase wherever you can.

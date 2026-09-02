@@ -30,8 +30,8 @@ const TILES=[
   {v:nStatus("moving"), l:"Moving", hint:"Filter", tip:"Filter to legislation that has advanced out of committee or passed a chamber", f:{s:["moving"]}},
   {v:DATA.filter(d=>d.youth==="only").length, l:"Youth-specific", hint:"Filter", youth:true,
    tip:"Filter to legislation that applies to minors only", f:{y:["only"]}},
-  {v:DATA.filter(d=>d.mechs.includes("memory")).length, l:"Constrain memory", hint:"Filter", alert:true,
-   tip:"Filter to legislation carrying a memory or retention constraint", f:{m:"memory"}},
+  {v:DATA.filter(d=>d.mechs.includes("memory")).length, l:"Cap memory", hint:"Filter", alert:true,
+   tip:"No legislation in the corpus caps memory — see Mechanism coverage for the two that come closest", f:{m:"memory"}},
   {v:DATA.filter(d=>d.mechs.includes("causation")).length, l:"Duty to test design", hint:"Filter", alert:true,
    tip:"Filter to legislation imposing a duty to test the provider's own design against harm", f:{m:"causation"}}
 ];
@@ -157,6 +157,9 @@ function render(){
       <td style="font-variant-numeric:tabular-nums">${d.mechs.length}</td>
     </tr>`+(open?detail(d):"");
   }).join("");
+  if(!rows.length)el("tb").innerHTML=
+    `<tr><td colspan="8" style="color:var(--muted);padding:22px 12px">No legislation matches these filters.${
+      state.m?` Nothing in the corpus carries <b>${esc(MMAP[state.m])}</b> — open Mechanism coverage for what comes closest and why it falls short.`:""}</td></tr>`;
   el("tb").querySelectorAll("tr.row").forEach(tr=>tr.onclick=()=>{
     const id=tr.dataset.id;
     state.open.has(id)?state.open.delete(id):state.open.add(id);
@@ -319,6 +322,7 @@ el("gaps").innerHTML=`
   <div class="card ok"><h4>Crisis protocols are near-universal</h4><p>Detection of suicidal ideation plus referral to a crisis line appears in nearly every enacted law. China alone requires a human to take over the conversation.</p></div>
   <div class="card partial"><h4>Engagement design is reached only at the edges</h4><p>Oregon names variable-reward affirmations, Illinois names simulated distress for retention, the Youth AI Privacy Act names push alerts and typing indicators. Everywhere else the design layer is untouched.</p></div>
   <div class="card gap"><h4>Nobody regulates duration</h4><p>No legislation in any jurisdiction sets a session cap, a cooling-off period, or an overnight restriction for minors. China's two-hour break reminder is the closest thing that exists, and it is still a reminder.</p></div>
+  <div class="card gap"><h4>Nobody caps memory</h4><p>Persistent memory appears throughout the corpus as a <i>definitional signal</i> — evidence that a system is a companion — and nowhere as a design property to be limited. No instrument states how long a system may keep what a user told it.</p></div>
 </div>
 
 <h2>The five recurring weaknesses</h2>
@@ -347,7 +351,7 @@ el("gaps").innerHTML=`
 
 <h2>The gaps — what no legislation does</h2>
 
-<div class="card gap"><h4>No retention ceiling in any enacted law</h4><p>Persistent memory is the feature most heavily advertised by the products and the one most central to making an exchange feel like an accumulating relationship. Illinois would use memory to <i>trigger</i> the regime; only the Youth AI Privacy Act would <i>cap</i> it, via session-scoping plus an FTC-set maximum. Neither is law. All legislation currently in force treats memory as a definitional signal and none treats it as a design property to be constrained.</p></div>
+<div class="card gap"><h4>No cap on memory anywhere in the corpus</h4><p>Persistent memory is the feature most heavily advertised by the products and the one most central to making an exchange feel like an accumulating relationship. <b>Not one piece of legislation in this corpus — enacted, moving or proposed — caps it.</b> Two come closest and neither arrives. Illinois SB 3262 makes persistent memory the rebuttable <i>trigger</i> for its regime, which constrains nothing about retention. The Youth AI Privacy Act limits the data a deployer may <i>process</i> to personalise outputs, session-scoped and within an FTC-set recency window — a limit on personalisation, not on how long the record of a conversation may be kept. A cap on memory would state a retention period. Nothing states one.</p></div>
 
 <div class="card gap"><h4>No limit on duration anywhere</h4><p>No session cap, no cooling-off period after extended use, no overnight restriction for minors, in any of the jurisdictions surveyed. Constant availability is one of the four functions and it is regulated exclusively by reminder.</p></div>
 
@@ -379,7 +383,7 @@ el("gaps").innerHTML=`
 <ul>
   <li><b>Adopt Illinois's formula.</b> A definition that applies "irrespective of how the system is marketed or labeled," paired with the rebuttable memory presumption, forecloses the classification move companies already make.</li>
   <li><b>Prefer the least gameable narrowing device.</b> Some narrowing is needed or the definition reaches every conversational interface. A use-based carve-out is the least gameable of the three in circulation. Replace marketing-based exemptions; drop the purpose-primacy gate.</li>
-  <li><b>Regulate memory as trigger <i>and</i> constraint.</b> Illinois's presumption as the trigger, the Youth AI Privacy Act's session-scoping plus an FTC-set ceiling as the constraint — and add the prohibition nobody has written yet, on using retained emotional disclosures for re-engagement.</li>
+  <li><b>Regulate memory as trigger <i>and</i> constraint — and note that the constraint has no model to copy.</b> Illinois's presumption supplies the trigger. For the constraint there is no precedent in this corpus to adapt: a drafter has to write the retention period, and the nearest analogue, the Youth AI Privacy Act's session-scoped personalisation limit, governs processing rather than retention. Add to it the prohibition nobody has written either, on using retained emotional disclosures for re-engagement.</li>
   <li><b>Constrain availability, do not merely annotate it.</b> Pair the Youth AI Privacy Act's feature list, the most granular design regulation in the corpus, with a duration limit, which nothing yet attempts. The feature-level half is the better-supported half; a drafter should be honest that the evidence does not yet say where to put a numerical threshold.</li>
   <li><b>Require research on design against harm.</b> Convert the reporting mechanism from an output count into a research obligation: a duty to test, and publish, the relationship between engagement-optimising features and harm outcomes. This is a gap in the whole landscape rather than a preference between existing options, and it is where an academic institution can be most useful.</li>
 </ul>

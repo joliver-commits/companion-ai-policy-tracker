@@ -15,7 +15,7 @@ const MECHS = [
   ["parental",         "Parental consent or controls", "Parental consent"],
   ["engagement",       "Engagement / addictive design limits", "Engagement limits"],
   ["dependence",       "Bars simulating dependence or distress", "Bars dependence sim"],
-  ["memory",           "Memory or retention constraint", "Memory constraint"],
+  ["memory",           "Explicit cap on memory or retention", "Cap on memory"],
   ["proImpersonation", "Bars impersonating licensed professionals", "Bars pro impersonation"],
   ["sentience",        "Bars claims of humanness or sentience", "Bars sentience claims"],
   ["audit",            "Independent audit", "Independent audit"],
@@ -49,10 +49,10 @@ const DATA = [
   youth:"only",
   term:"AI chatbot — no companion category", test:"capability", testNote:"Natural-language interface giving adaptive responses that simulate interpersonal interaction",
   narrowing:"None", reaches:"yes",
-  mechs:["disclosure","engagement","memory","training","parental"],
+  mechs:["disclosure","engagement","training","parental"],
   enforce:["FTC","State AG"],
   interval:"Clear, repeated notice (30 min in tracker summaries)",
-  note:"The most important instrument in the corpus for design regulation. Contains the only genuine retention ceiling anywhere: a deployer may not process personal data to personalise outputs unless collected in the current session and more recently than an FTC-set maximum. Also bans a named list of engagement features — frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available. The private right of action present in the introduced bill was removed during the 5 August 2026 Commerce markup, so enforcement now runs through the FTC and state attorneys general only.",
+  note:"The most important instrument in the corpus for design regulation. It comes closest to reaching retention without getting there: a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than an FTC-set maximum. That governs what may be PROCESSED for personalisation, not how long the system may keep what a user told it, so it is not coded as a memory constraint — no legislation in this corpus caps memory. Also bans a named list of engagement features — frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available. The private right of action present in the introduced bill was removed during the 5 August 2026 Commerce markup, so enforcement now runs through the FTC and state attorneys general only.",
   link:"https://www.congress.gov/bill/119th-congress/senate-bill/4199/text"
 },
 {
@@ -447,7 +447,7 @@ const DATA = [
   term:"Companion artificial intelligence product", test:"capability",
   testNote:"Software application capable of generating adaptive, personalised and emotionally resonant responses to sustain a coherent, long-term, one-on-one conversational relationship with a user, IRRESPECTIVE OF HOW THE SYSTEM IS MARKETED OR LABELED. Rebuttable presumption where it retains memory of past conversations with a specific user to inform future responses.",
   narrowing:"None — expressly disregards marketing", reaches:"yes",
-  mechs:["disclosure","crisis","reporting","engagement","dependence","memory","sentience","audit"],
+  mechs:["disclosure","crisis","reporting","engagement","dependence","sentience","audit"],
   enforce:["State AG ($5,000 negligent / $10,000 intentional)","Private right of action","Product-defect claims; Section 230 barred as a defence"],
   interval:"At least every 30 minutes for non-text interactions",
   note:"The single most consequential instrument in the corpus for the definitional question, and still not enacted — it remains in committee as of 22 May 2026. It states the functional approach in statutory language ('irrespective of how the system is marketed or labeled') and makes persistent memory the rebuttable trigger for the whole regime. It also bars variable-reward engagement mechanics and 'simulated distress for retention' — unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account. Requires an independent third-party compliance audit every two years. Illinois is the only instrument refusing all three narrowing devices, and also the one that has not passed.",
@@ -711,8 +711,8 @@ const MECHDEF = {
     line:"Only the People-First Chatbot Act defines the dependence it prohibits, by the user's state — reliance on the chatbot as a primary source of support."
   },
   memory:{
-    def:"A constraint on retention itself: limiting how long a system may keep what a user has told it, scoping memory to a single session, or capping retention by rule.",
-    line:"Using persistent memory as a definitional trigger for a regime is NOT a retention constraint. Illinois SB 3262 uses memory as its trigger; only the Youth AI Privacy Act caps it."
+    def:"A clear and explicit cap on retention itself: a rule limiting how long a system may keep what a user has told it. NOTHING IN THIS CORPUS CARRIES IT — the mechanism is listed to mark the gap.",
+    line:"Two pieces of legislation come closest and neither reaches the bar. Illinois SB 3262 makes persistent memory the rebuttable TRIGGER for its regime, which constrains nothing about retention. The Youth AI Privacy Act limits the data a deployer may PROCESS to personalise outputs — session-scoped, within an FTC-set recency window — which governs personalisation rather than retention. A cap on memory would say how long the record of a conversation may be kept, and no instrument says it."
   },
   proImpersonation:{
     def:"A prohibition on the system holding itself out as a licensed professional — therapist, psychologist, physician, lawyer — or on providing services reserved to one.",
@@ -793,8 +793,6 @@ const PHRASING = {
     accessBan:{k:"summary", t:"minors identified through verification are prohibited from using AI companions"}
   },
   "us-youth-ai":{
-    memory:{k:"summary", t:"a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than a maximum period set by the FTC",
-      n:"The only genuine retention ceiling in the corpus — session-scoping plus a regulator-set maximum."},
     engagement:{k:"summary", t:"bans a named list of features: frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available",
       n:"The most granular design regulation in the corpus."}
   },
@@ -807,8 +805,6 @@ const PHRASING = {
       n:"The ask-triggered notice responds to the moment of actual uncertainty rather than to a clock, and appears in no other instrument."}
   },
   "il-sb3262":{
-    memory:{k:"summary", t:"memory is the TRIGGER, not the constraint: a rebuttable presumption that the regime applies where the system retains memory of past conversations with a specific user to inform future responses",
-      n:"Coded as a memory mechanism in this dataset, though it constrains nothing about retention — see the coding line above, and the note in the Gaps view."},
     dependence:{k:"summary", t:"bars simulated distress for retention — unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account"},
     engagement:{k:"summary", t:"bars variable-reward engagement mechanics"},
     audit:{k:"summary", t:"independent third-party compliance audit every two years"},

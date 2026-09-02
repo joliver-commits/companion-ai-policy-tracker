@@ -62,6 +62,8 @@ Two structures in `data.js` drive this.
 
 **`MECHDEF`** — one entry per mechanism key, with `def` (the rule, stated independently of any one statute) and `line` (the coding boundary, e.g. that a break reminder is disclosure rather than an engagement limit). Every mechanism has a definition; these are the tracker's own, not quotations.
 
+A mechanism can legitimately sit at zero. **`memory` — an explicit cap on retention — is carried by nothing in the corpus**, and is kept in `MECHS` to mark the gap: it renders as a red zero bar in the coverage view and a zero stat tile. Its `line` records the two that come closest and why neither reaches the bar (Illinois SB 3262 uses memory as a definitional trigger; the Youth AI Privacy Act limits processing for personalisation, not retention).
+
 **`PHRASING`** — keyed by record id, then by mechanism key. Each entry carries the wording and its provenance:
 
 ```js
@@ -75,7 +77,7 @@ Two structures in `data.js` drive this.
 - `k:"summary"` — close paraphrase drawn from secondary analysis or from this tracker's own coding notes. Tagged **close paraphrase**; verify against the enrolled text before quoting it in published work.
 - `n` — optional context on the clause.
 
-**This layer is deliberately incomplete.** 36 of the 179 mechanism/legislation pairs currently carry wording; the rest render as *not yet transcribed* with a link to the source, and the panel header states the transcribed count for that mechanism. Nothing is invented to fill a gap: a pair with no sourced wording shows no wording. Every mechanism has at least one worked example, and the analytically load-bearing ones — memory, dependence, engagement, human takeover, duty to test design — are covered in full.
+**This layer is deliberately incomplete.** 34 of the 177 mechanism/legislation pairs currently carry wording; the rest render as *not yet transcribed* with a link to the source, and the panel header states the transcribed count for that mechanism. Nothing is invented to fill a gap: a pair with no sourced wording shows no wording. Every mechanism that any legislation carries has at least one worked example, and the analytically load-bearing ones — dependence, engagement, human takeover, duty to test design — are covered in full.
 
 Transcribing the remaining pairs from enrolled text is now the highest-value contribution to this repository.
 
