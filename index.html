@@ -184,6 +184,82 @@ tr.detail td{background:var(--page);padding:0}
 .prov.summary{border-color:var(--warn);color:var(--serious)}
 .mp-key{font-size:12px;color:var(--muted);margin:14px 0 0;padding:10px 0 4px;border-top:1px solid var(--grid)}
 
+/* glossary tooltips */
+.gl{border-bottom:1px dotted var(--axis);cursor:help}
+.gl:hover{border-bottom-color:var(--seq-400)}
+th .gl,.k.gl{border-bottom-style:dotted}
+.yb[data-gl],.st[data-gl],.reach[data-gl],.badge[data-gl],.prov[data-gl],.mtag[data-gl]{cursor:help}
+.tip{
+  position:fixed;z-index:80;max-width:360px;background:var(--surface-1);
+  border:1px solid var(--axis);border-left:3px solid var(--seq-400);border-radius:10px;
+  padding:11px 13px;box-shadow:0 8px 28px rgba(0,0,0,.16);
+  font-size:13px;line-height:1.5;color:var(--ink);
+  opacity:0;transition:opacity .1s ease;pointer-events:none
+}
+.tip.on{opacity:1}
+.tip .tip-tag{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
+.tip .tip-t{font-weight:600;font-size:13.5px;margin-bottom:3px}
+.tip .tip-d{color:var(--ink-2)}
+.tip .tip-l{margin-top:7px;padding-top:7px;border-top:1px solid var(--grid);font-size:12.5px;color:var(--ink-2)}
+.tip .tip-l b{color:var(--ink)}
+.glhint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.glhint b{color:var(--ink-2);font-weight:500;border-bottom:1px dotted var(--axis)}
+
+/* sort control */
+.sortbtn{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--axis);
+  background:var(--page);color:var(--ink);cursor:pointer;min-width:132px;text-align:left}
+.sortbtn:hover{border-color:var(--seq-400)}
+.sortbtn:focus-visible{outline:2px solid var(--seq-400);outline-offset:2px}
+
+/* date column */
+td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
+#tbl th[data-k="latest"],#tbl th[data-k="reaches"],#tbl th[data-k="nmech"]{white-space:normal}
+.dt-m{font-size:13.5px}
+.dt-m.approx{color:var(--ink-2);cursor:help;display:inline-block;border-bottom:1px dotted var(--axis)}
+.dt-m.approx:hover{border-bottom-color:var(--seq-400)}
+.dt-e{font-size:11.5px;color:var(--muted);cursor:help}
+.dts{margin-top:4px;font-size:12.5px;color:var(--ink-2)}
+.dts span{cursor:help}
+.dts b{font-weight:600;color:var(--ink)}
+
+/* mechanism clusters — summary cards */
+.clusters{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:10px;margin-bottom:18px}
+.cl{background:var(--surface-1);border:1px solid var(--ring);border-radius:12px;padding:12px 14px;
+  font:inherit;color:inherit;text-align:left;cursor:pointer;display:block;
+  transition:border-color .12s ease}
+.cl:hover{border-color:var(--seq-400)}
+.cl:focus-visible{outline:2px solid var(--seq-400);outline-offset:2px}
+.cl-v{font-size:23px;font-weight:600;line-height:1.15}
+.cl-of{font-size:13px;font-weight:400;color:var(--muted)}
+.cl-l{font-size:12.5px;line-height:1.35;margin:2px 0 8px;min-height:34px;display:inline-block}
+.cl-track{background:var(--grid);border-radius:3px;height:6px;overflow:hidden}
+.cl-fill{height:100%;background:var(--seq-400);border-radius:0 3px 3px 0}
+.cl-h{font-size:10.5px;color:var(--muted);margin-top:5px;opacity:0;transition:opacity .12s ease}
+.cl:hover .cl-h,.cl:focus-visible .cl-h{opacity:1}
+
+/* mechanism clusters — bar groups */
+.bgroup + .bgroup{margin-top:18px;padding-top:14px;border-top:1px solid var(--grid)}
+.bghd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 9px;padding-left:6px}
+.bgt{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.bgn{font-size:12px;color:var(--muted)}
+.bgf{background:none;border:none;font:inherit;font-size:12px;color:var(--seq-400);cursor:pointer;padding:0}
+.bgf:hover{text-decoration:underline}
+
+/* matrix cluster bands */
+.mx th.mxband{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2);
+  padding:4px 3px;text-align:center;cursor:default;background:color-mix(in srgb,var(--seq-400) 9%,transparent);
+  border-radius:4px;white-space:normal;line-height:1.25;vertical-align:middle}
+.mx th.mxcorner{background:none;cursor:default;width:200px}
+.mx th.gstart,.mx td.gstart{border-left:2px solid var(--axis)}
+.mx thead tr:first-child th.gstart{border-left:none}
+.mx th.mxband .gl{border-bottom:none}
+
+/* mechanism panel — cluster line */
+.mp-grp{margin:0 0 4px}
+.mp-gb{background:none;border:none;padding:0;font:inherit;font-size:11px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--seq-400);cursor:pointer}
+.mp-gb:hover{text-decoration:underline}
+
 /* prose */
 .prose{max-width:82ch}
 .prose h2{font-size:20px;margin:30px 0 10px;letter-spacing:-0.01em}
@@ -207,6 +283,8 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
   .bar{grid-template-columns:150px 1fr 40px}
   input[type=search]{min-width:180px}
   .mx th.colh{height:108px}
+  .tip{max-width:calc(100vw - 24px)}
+  .cl-l{min-height:0}
 }
 </style>
 </head>
@@ -237,52 +315,65 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
       <button class="clear" id="clearall">Reset all filters</button>
     </div>
     <div class="frow">
-      <span class="flab">Jurisdiction</span>
+      <span class="flab gl" data-gl="juris">Jurisdiction</span>
       <div id="fj" style="display:flex;gap:6px;flex-wrap:wrap"></div>
     </div>
     <div class="frow">
-      <span class="flab">Status</span>
+      <span class="flab gl" data-gl="status">Status</span>
       <div id="fs" style="display:flex;gap:6px;flex-wrap:wrap"></div>
     </div>
     <div class="frow">
-      <span class="flab">Youth focus</span>
+      <span class="flab gl" data-gl="youth">Youth focus</span>
       <div id="fy" style="display:flex;gap:6px;flex-wrap:wrap"></div>
     </div>
     <div class="frow">
-      <span class="flab">Mechanism</span>
-      <select id="fm"><option value="">Any mechanism</option></select>
-      <span class="flab" style="min-width:auto">Reaches general assistants</span>
-      <select id="fr">
+      <span class="flab gl" data-gl="cluster">Mechanism</span>
+      <select id="fm" aria-label="Filter by mechanism or mechanism cluster"><option value="">Any mechanism</option></select>
+      <span class="flab gl" data-gl="reaches" style="min-width:auto">Reaches general assistants</span>
+      <select id="fr" aria-label="Filter by whether the legislation reaches general-purpose assistants">
         <option value="">Any</option><option value="yes">Yes</option>
         <option value="arguably">Arguably</option><option value="partial">Partial</option>
         <option value="no">No</option><option value="unclear">Unclear</option>
       </select>
     </div>
+    <div class="frow">
+      <span class="flab">Sort</span>
+      <select id="fsort" aria-label="Sort legislation by"></select>
+      <button class="sortbtn" id="fdir" type="button">Enacted first ↑</button>
+      <span style="font-size:12.5px;color:var(--muted)">Choose a date to order the corpus chronologically, then flip between
+        <b class="gl" data-gl="datePrecision">newest and oldest</b>.</span>
+    </div>
   </div>
+  <p class="glhint">Hover — or tap, or tab to — any <b>dotted term</b> for its definition.</p>
   <p class="count" id="count"></p>
   <table id="tbl">
     <thead><tr>
-      <th data-k="name">Legislation <span class="ar">↕</span></th>
-      <th data-k="juris">Jurisdiction <span class="ar">↕</span></th>
-      <th data-k="status">Status <span class="ar">↕</span></th>
-      <th data-k="youth">Youth focus <span class="ar">↕</span></th>
-      <th data-k="test">Test <span class="ar">↕</span></th>
-      <th data-k="narrowing">Narrowing device <span class="ar">↕</span></th>
-      <th data-k="reaches">Reaches assistants <span class="ar">↕</span></th>
-      <th data-k="nmech">Mechs <span class="ar">↕</span></th>
+      <th data-k="name" style="min-width:186px"><span class="gl" data-gl="legislation">Legislation</span> <span class="ar">↕</span></th>
+      <th data-k="juris"><span class="gl" data-gl="juris">Jurisdiction</span> <span class="ar">↕</span></th>
+      <th data-k="status"><span class="gl" data-gl="status">Status</span> <span class="ar">↕</span></th>
+      <th data-k="latest"><span class="gl" data-gl="latest">Latest action</span> <span class="ar">↕</span></th>
+      <th data-k="youth"><span class="gl" data-gl="youth">Youth focus</span> <span class="ar">↕</span></th>
+      <th data-k="test"><span class="gl" data-gl="test">Test</span> <span class="ar">↕</span></th>
+      <th data-k="narrowing"><span class="gl" data-gl="narrowing">Narrowing device</span> <span class="ar">↕</span></th>
+      <th data-k="reaches"><span class="gl" data-gl="reaches">Reaches assistants</span> <span class="ar">↕</span></th>
+      <th data-k="nmech"><span class="gl" data-gl="nmech">Mechs</span> <span class="ar">↕</span></th>
     </tr></thead>
     <tbody id="tb"></tbody>
   </table>
 </section>
 
 <section class="view" id="v-coverage">
-  <div class="prose"><p style="color:var(--ink-2)">Which regulatory mechanisms each piece of legislation actually carries. The count below is how much legislation touches each mechanism at all — it says nothing about how well. Read it alongside the Gaps view, where the thin rows are the argument.</p>
-  <p style="color:var(--ink-2)"><b>Click any mechanism</b> for what it means as a legal rule and how every piece of legislation carrying it is worded.</p></div>
+  <div class="prose"><p style="color:var(--ink-2)">Which regulatory mechanisms each piece of legislation actually carries. The counts below are how much legislation touches each mechanism at all — they say nothing about how well. Read them alongside the Gaps view, where the thin rows are the argument.</p>
+  <p style="color:var(--ink-2)">The sixteen mechanisms group into five <span class="gl" data-gl="cluster">clusters</span>. Comparing the clusters is usually the more informative read: honesty and harm-response obligations are near-universal, while the cluster that constrains the product's own design is nearly empty.</p>
+  <p style="color:var(--ink-2)"><b>Click a cluster</b> to filter the corpus to it, or <b>click any mechanism</b> for what it means as a legal rule and how every piece of legislation carrying it is worded.</p></div>
+  <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 9px">Legislation carrying at least one mechanism in the cluster</h3>
+  <div class="clusters" id="clusters"></div>
+  <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 9px">Mechanism by mechanism, within the cluster</h3>
   <div class="bars" id="bars"></div>
   <div class="legend"><span><i style="background:var(--seq-400)"></i>Legislation carrying the mechanism</span><span><i style="background:var(--critical)"></i>No legislation reaches it</span></div>
   <div id="mechpanel"></div>
   <h2 style="font-size:18px;margin:32px 0 10px">Legislation × mechanism matrix</h2>
-  <p style="color:var(--ink-2);font-size:14px;margin-bottom:14px">Enacted and in-force law, legislation that has moved out of committee, and the key pending vehicles the analysis relies on. Hover any cell for the legislation and mechanism. Use the Legislation tab for all <span id="ntotal"></span>.</p>
+  <p style="color:var(--ink-2);font-size:14px;margin-bottom:14px">Enacted and in-force law, legislation that has moved out of committee, and the key pending vehicles the analysis relies on. Columns run in cluster order, banded across the top. Hover any cell for the legislation and mechanism, or any column heading for the mechanism's definition. Use the Legislation tab for all <span id="ntotal"></span>.</p>
   <div style="overflow-x:auto"><table class="mx" id="mx"></table></div>
 </section>
 

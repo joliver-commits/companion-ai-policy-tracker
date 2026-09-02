@@ -20,6 +20,7 @@ A record looks like this:
   id:"oh-hb123", juris:"US State", body:"Ohio", cite:"HB 123",
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
   dates:"Introduced Jan 2027 · enacted Jun 2027 · effective 1 Jan 2028",
+  chron:{first:"2027-01", latest:"2027-06", effective:"2028-01-01"},
   scope:"Minors",
   youth:"only",
   term:"Companion chatbot", test:"capability",
@@ -69,9 +70,27 @@ There is no `dead` value. The tracker covers proposed, active and enacted policy
 | `duties` | Applies to all users, and carries duties specific to minors |
 | `none` | Applies to all users, with no minor-specific rules |
 
-**`mechs`** — keys only, from the `MECHS` list at the top of `data.js`:
+**`mechs`** — keys only, from the `MECHS` list at the top of `data.js`, grouped here by the cluster each belongs to in `MECHGROUPS`:
 
-`disclosure` · `crisis` · `reporting` · `minorContent` · `ageAssurance` · `parental` · `engagement` · `dependence` · `memory` · `proImpersonation` · `sentience` · `audit` · `training` · `accessBan` · `humanTakeover` · `causation`
+| Cluster | Keys |
+|---|---|
+| Honesty about what the system is | `disclosure` · `sentience` · `proImpersonation` |
+| Harm response | `crisis` · `humanTakeover` |
+| Age gating and parental control | `ageAssurance` · `accessBan` · `minorContent` · `parental` |
+| Design and data constraints | `engagement` · `dependence` · `memory` · `training` |
+| Accountability and evidence | `reporting` · `audit` · `causation` |
+
+A new mechanism needs three things, not one: a `MECHS` entry (key, full label, short label for the matrix), a `MECHDEF` entry (the rule and the coding line), and a place in exactly one `MECHGROUPS` cluster. A key missing from a cluster is dropped from the coverage view and the matrix without an error.
+
+**`chron`** — the dates the chronological sort orders on. `first` and `latest` are required; `effective` only where the text states a date.
+
+| Field | What it records |
+|---|---|
+| `chron.first` | When the legislation first entered the record: introduced, filed, proposed, published as a draft |
+| `chron.latest` | The most recent thing that actually **happened** — a committee vote, passage, enactment, entry into force. Not the effective date |
+| `chron.effective` | When the obligations start to bind. Optional. For a bill not yet enacted, the date the text proposes |
+
+Write each as `YYYY-MM-DD`, `YYYY-MM` or `YYYY`, at whatever precision the source actually supports — do not invent a month or a day to make a row look precise. A partial date is placed at the midpoint of its period for sorting (a year sorts as 30 June, a month as the 15th) and is marked on the site as an estimate, so a real month is worth finding where one exists. Keep `chron` consistent with the human-readable `dates` string: if you change one, change the other.
 
 ### Adding operative wording
 
@@ -97,18 +116,45 @@ const PHRASING = {
 - **`engagement`** means a limit on features designed to extend use (variable rewards, streaks, push alerts, retention prompts). A periodic break reminder is `disclosure`, not `engagement`.
 - **`causation`** means a duty to test whether the provider's *own design* produces harm. Counting crisis referrals is `reporting`. Only one piece of legislation in the corpus meets the `causation` bar.
 - **`testNote`** should quote the operative definition where the text is available. Quote rather than paraphrase wherever you can.
+- **`chron.latest`** is the last thing that *happened*, never a scheduled future event. An enacted law that does not bite until 2027 has `latest` at its enactment and `effective` in 2027 — putting the effective date in `latest` would report the law as more recent activity than it is.
+
+## Defining a term on hover
+
+Coded terms on the site carry a definition that appears on hover, on keyboard focus and on tap, marked by a dotted underline. The definitions are in the `GLOSSARY` map at the foot of `data.js`, referenced from the markup and the renderers as `data-gl="<key>"`:
+
+```js
+const GLOSSARY = {
+  narrowing:{t:"Narrowing device",
+    d:"What pulls things back out of a definition that would otherwise be broad — …"}
+};
+```
+
+Two families resolve programmatically and must not be duplicated into `GLOSSARY`: `data-gl="mech:<key>"` reads `MECHDEF`, and `data-gl="group:<key>"` reads `MECHGROUPS`. Adding a mechanism definition to `MECHDEF` is therefore enough to make it appear on the coverage bars, the matrix column headings and the mechanism tags inside a legislation row.
+
+- `t` is the term as a reader would name it; `d` is one or two sentences. These are the tracker's own definitions, not quotations — where a term is a term of art in this corpus rather than in general usage, say so in `d`.
+- Add the `gl` class alongside `data-gl` on anything that should carry the dotted underline. Chips and badges take `data-gl` alone, since an underline inside a coloured pill reads as damage.
+- Value-level keys are namespaced by field: `st:law`, `r:arguably`, `youth:only`, `test:capability`, `narrow:use`, `prov:quote`. The free-text `test` and `narrowing` values are matched to a family by first mention in `app.js`, so a new phrasing that no pattern recognises gets no tooltip rather than a wrong one — extend the pattern list there if you add one.
 
 ## Verifying a change
 
-There is no build step. Open `index.html` in a browser and confirm the row renders, the counts update, and the console is clean. To sanity-check the whole file:
+There is no build step. Open `index.html` in a browser and confirm the row renders, the counts update, the row appears where you expect under each of the three chronological orderings, and the console is clean. To sanity-check the whole file:
 
 ```bash
 node -e "
-  const f = new Function(require('fs').readFileSync('data.js','utf8')+';return {DATA,MECHS,MECHDEF,PHRASING}');
-  const {DATA,MECHS,MECHDEF,PHRASING}=f(); const keys=new Set(MECHS.map(m=>m[0]));
+  const f = new Function(require('fs').readFileSync('data.js','utf8')+';return {DATA,MECHS,MECHDEF,PHRASING,MECHGROUPS,GLOSSARY}');
+  const {DATA,MECHS,MECHDEF,PHRASING,MECHGROUPS,GLOSSARY}=f(); const keys=new Set(MECHS.map(m=>m[0]));
   DATA.forEach(d=>d.mechs.forEach(k=>{ if(!keys.has(k)) console.log('bad mech',d.id,k) }));
   DATA.forEach(d=>{ if(!['only','duties','none'].includes(d.youth)) console.log('bad youth',d.id,d.youth) });
   [...keys].forEach(k=>{ if(!MECHDEF[k]) console.log('mechanism with no definition',k) });
+  const grouped=MECHGROUPS.flatMap(g=>g.mechs);
+  [...keys].forEach(k=>{ if(grouped.filter(x=>x===k).length!==1)
+    console.log('mechanism not in exactly one cluster',k) });
+  grouped.forEach(k=>{ if(!keys.has(k)) console.log('cluster references unknown mechanism',k) });
+  Object.entries(GLOSSARY).forEach(([k,e])=>{ if(!e.t||!e.d) console.log('incomplete glossary entry',k) });
+  const D=/^\\d{4}(-\\d{2}){0,2}\$/;
+  DATA.forEach(d=>{ const c=d.chron||{};
+    ['first','latest'].forEach(f=>{ if(!D.test(c[f]||'')) console.log('bad chron.'+f,d.id,c[f]) });
+    if(c.effective&&!D.test(c.effective)) console.log('bad chron.effective',d.id,c.effective) });
   let pairs=0, filled=0;
   DATA.forEach(d=>d.mechs.forEach(k=>{ pairs++; if((PHRASING[d.id]||{})[k]) filled++ }));
   Object.entries(PHRASING).forEach(([id,o])=>{ const d=DATA.find(x=>x.id===id);
@@ -119,7 +165,8 @@ node -e "
     }) });
   const ids=DATA.map(d=>d.id);
   console.log('records',DATA.length,'| dupes',ids.filter((v,i)=>ids.indexOf(v)!==i));
-  console.log('phrasing',filled+'/'+pairs,'pairs');
+  console.log('phrasing',filled+'/'+pairs,'pairs | clusters',MECHGROUPS.length,
+    '| glossary',Object.keys(GLOSSARY).length);
 "
 ```
 
