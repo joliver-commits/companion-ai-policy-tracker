@@ -2,7 +2,18 @@
 
 A working tracker of legislation regulating AI companions and conversational AI systems, covering the United States at federal and state level, the European Union, and China. It was built to support the companion AI policy paper and is intended to stay useful afterwards as a standing reference for BKC staff.
 
-The site is a static page: `index.html` (layout and styling), `data.js` (the dataset), `app.js` (rendering, filters and the written analysis). There is no build step — open `index.html` in a browser.
+The site is a static page: `index.html` (layout and styling), `data.js` (the dataset), `app.js` (rendering and filters). There is no build step — open `index.html` in a browser.
+
+**The analysis has moved to the accompanying paper.** The tracker previously carried a fourth tab, *Gaps & analysis*, arguing from the dataset; that argument now lives in the paper, and the tracker documents its own coding instead. The dataset itself is written to describe rather than to evaluate: a record's `note` carries dates, operative detail, quoted statutory language, enforcement provisions and the reasoning behind a coding decision, and does not tell the reader what to conclude from it.
+
+### The four views
+
+| Tab | What it holds |
+|---|---|
+| **Legislation** | One row per instrument, filterable by jurisdiction, status, youth focus, mechanism and reach, and sortable on any coded column or date. Clicking a row expands it: timeline, scope, term, disclosure interval, enforcement, the quoted definitional clause, the coding note, and the mechanisms it carries. |
+| **Mechanism coverage** | How many instruments carry each of the sixteen coded mechanisms, grouped into five clusters, with an instrument × mechanism matrix beneath. Clicking a mechanism opens the drill-down: what the mechanism is as a legal rule, where this dataset draws the line around it, and how each instrument carrying it is worded. |
+| **Definitional anatomy** | Every instrument's term, test, narrowing device, reach coding and scope side by side — the three definitional fields held apart, because they routinely disagree with one another. |
+| **How to use this tracker** | What the corpus is and what it is not, how to read a row, the filter path for the questions the tracker is built to answer, how far the reading behind each coding goes, and where to send corrections. Every figure on it is computed from `data.js` at render time. |
 
 ---
 
@@ -37,7 +48,7 @@ The following nine pieces of legislation were removed under this policy in Augus
 | HB 1728 / HB 1782 | Hawaii | Inactive; superseded by SB 3001, which was enacted and is tracked. |
 | LB 1185 | Nebraska | Inactive; superseded by LB 525, which is tracked. |
 
-Because Florida CS/SB 482 is no longer in the corpus, two passages in the Gaps & analysis view were adjusted: it is no longer listed among the use carve-out states, and the count of distinct definitional constructs is now five rather than six.
+Every count on the site is computed from `DATA` at render time, so a removal propagates to the tiles, the coverage bars, the matrix and the How to use this tracker view without any copy needing to be edited.
 
 ## How to read the coding
 
@@ -97,7 +108,7 @@ Coded terms on the site carry a definition that appears on hover, on keyboard fo
 
 The definitions live in the `GLOSSARY` map at the foot of `data.js` and are referenced from the markup and the renderers as `data-gl="<key>"`. Two families resolve programmatically instead of being listed twice: `data-gl="mech:<key>"` reads `MECHDEF`, and `data-gl="group:<key>"` reads `MECHGROUPS`. Anything covered is covered once — a mechanism's definition is written in `MECHDEF` and appears in the drill-down panel, on the coverage bars, on the matrix column headings and on the mechanism tags inside a legislation row without being duplicated.
 
-Column headings, filter labels, the status, youth-focus and reach chips inside the table, the provenance tags in the mechanism panel, and the named drafting devices in the Gaps view all carry one. The `test` and `narrowing` values are free text that combines and qualifies its families ("capability + purpose", "Use carve-out gated on 'only'"), so the family is read off the value by first mention; an unrecognised value simply gets no tooltip rather than a wrong one.
+Column headings, filter labels, the status, youth-focus and reach chips inside the table, the provenance tags in the mechanism panel, and the coded terms in the How to use this tracker view all carry one. The `test` and `narrowing` values are free text that combines and qualifies its families ("capability + purpose", "Use carve-out gated on 'only'"), so the family is read off the value by first mention; an unrecognised value simply gets no tooltip rather than a wrong one.
 
 ## Mechanism definitions and operative phrasing
 
@@ -183,7 +194,7 @@ A record looks like this:
   mechs:["disclosure","crisis"],        // keys from the MECHS list
   enforce:["State AG"],
   interval:"Every 3 hours",
-  note:"Why this legislation matters to the argument.",
+  note:"Dates, operative detail, quoted language, enforcement, and why it is coded this way.",
   link:"https://..."
 }
 ```
@@ -213,7 +224,7 @@ node -e "
 
 ## Contributing
 
-Corrections and additions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the controlled vocabularies and coding conventions. The two highest-value contributions are **enrolled statutory text for legislation currently coded from tracker summaries** — the definitional clause and carve-out determine the "reaches general assistants" judgement, which is the analytically load-bearing column — and **operative wording for the `PHRASING` map**, which is 20% populated. Open an issue or a pull request against `data.js`.
+Corrections and additions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the controlled vocabularies and coding conventions. The two highest-value contributions are **enrolled statutory text for legislation currently coded from tracker summaries** — the definitional clause and carve-out determine the "reaches general assistants" judgement, which is the analytically load-bearing column — and **operative wording for the `PHRASING` map**, which is 19% populated. Open an issue or a pull request against `data.js`.
 
 ## Suggested review cadence
 

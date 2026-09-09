@@ -1,5 +1,5 @@
 // Companion AI Policy Tracker — dataset
-// Berkman Klein Center, Harvard University. Last verified: 13 August 2026.
+// Berkman Klein Center, Harvard University. Last verified: 9 September 2026.
 // Contributions welcome — see CONTRIBUTING.md.
 //
 // Scope: proposed, active and enacted policy only. Instruments that die, are
@@ -27,12 +27,10 @@ const MECHS = [
 
 /* ==================================================================
    MECHANISM CLUSTERS
-   The sixteen mechanisms fall into five families. Comparing the
-   families is usually more informative than comparing sixteen
-   separate bars: the interesting result in this corpus is that the
-   honesty and harm-response clusters are near-universal while the
-   design cluster is nearly empty, and that only shows up when the
-   mechanisms are grouped.
+   The sixteen mechanisms fall into five families. The cluster
+   figure counts the records carrying at least one mechanism in the
+   family, so it is not the sum of the bars beneath it, and it is
+   the level at which the coverage view invites comparison.
 
    Every mechanism key belongs to exactly one cluster, and every key
    in MECHS must appear in exactly one `mechs` list here or the
@@ -45,7 +43,7 @@ const MECHS = [
 const MECHGROUPS = [
   {
     key:"honesty", label:"Honesty about what the system is", short:"Honesty about the system",
-    def:"Rules about what the system may say about its own nature and standing: that it must admit to being a machine, that it must not claim to be human or sentient, and that it must not hold itself out as a licensed professional. These regulate the user's awareness of a design property rather than the property itself, which is why they are the cheapest to comply with and the most widely adopted.",
+    def:"Rules about what the system may say about its own nature and standing: that it must admit to being a machine, that it must not claim to be human or sentient, and that it must not hold itself out as a licensed professional. These attach to what the user is told about a design property rather than to the property itself.",
     mechs:["disclosure","sentience","proImpersonation"]
   },
   {
@@ -55,17 +53,17 @@ const MECHGROUPS = [
   },
   {
     key:"age", label:"Age gating and parental control", short:"Age gating & parents",
-    def:"Rules that turn on how old the user is: establishing their age, barring their access outright, restricting what they may be shown, and giving a parent or guardian a role. This is the cluster that stops at eighteen — an adult using the same product gets none of it.",
+    def:"Rules that turn on how old the user is: establishing their age, barring their access outright, restricting what they may be shown, and giving a parent or guardian a role. Obligations in this cluster attach only where the user is, or is believed to be, a minor.",
     mechs:["ageAssurance","accessBan","minorContent","parental"]
   },
   {
     key:"design", label:"Design and data constraints", short:"Design & data",
-    def:"Rules that constrain the product itself rather than the user's awareness of it: the features engineered to extend use, the simulation of emotional need, how long the system may remember what it was told, and what may be done with conversations afterwards. This is the relational machinery, and it is the thinnest cluster in the corpus.",
+    def:"Rules that constrain the product itself rather than what the user is told about it: features engineered to extend use, the simulation of emotional need, how long the system may remember what it was told, and what may be done with conversations afterwards.",
     mechs:["engagement","dependence","memory","training"]
   },
   {
     key:"account", label:"Accountability and evidence", short:"Accountability",
-    def:"What the operator must document, submit to outside review, or investigate: counts of what the system did, independent audit of compliance, and — in one instrument only — a duty to test whether its own design produces the harm it is counting.",
+    def:"What the operator must document, submit to outside review, or investigate: counts of what the system did, independent audit of compliance, and a duty to test whether its own design produces the harm being counted.",
     mechs:["reporting","audit","causation"]
   }
 ];
@@ -84,7 +82,7 @@ const DATA = [
   mechs:["disclosure","minorContent","ageAssurance","sentience","proImpersonation","accessBan"],
   enforce:["Criminal penalties","State AG"],
   interval:"At start of chat and every 30 minutes",
-  note:"The categorical route at federal level. Bans minors from AI companions outright, requires age verification, bars the system from claiming to be human or holding professional credentials, and creates criminal penalties for knowingly serving sexual content to minors. Advanced unanimously out of Senate Judiciary. Because the ban attaches to the labelled category, it reaches the products at the bottom of the youth-usage distribution and not the assistants at the top.",
+  note:"Bans minors from AI companions outright, requires age verification with existing accounts frozen until verifiable age data is supplied, bars the system from claiming to be human or holding professional credentials, and creates criminal penalties for knowingly serving sexual content to minors. Advanced unanimously out of Senate Judiciary on 30 April 2026; the House companion is pending. Reach is coded partial because the duties split: the access ban attaches to the defined “AI companion” category and is gated on the user being a minor, while the non-human disclosure duty is owed to all users.",
   link:"https://www.congress.gov/bill/119th-congress/senate-bill/3062/text"
 },
 {
@@ -99,7 +97,7 @@ const DATA = [
   mechs:["disclosure","engagement","training","parental"],
   enforce:["FTC","State AG"],
   interval:"Clear, repeated notice (30 min in tracker summaries)",
-  note:"The most important instrument in the corpus for design regulation. It comes closest to reaching retention without getting there: a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than an FTC-set maximum. That governs what may be PROCESSED for personalisation, not how long the system may keep what a user told it, so it is not coded as a memory constraint — no legislation in this corpus caps memory. Also bans a named list of engagement features — frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available. The private right of action present in the introduced bill was removed during the 5 August 2026 Commerce markup, so enforcement now runs through the FTC and state attorneys general only.",
+  note:"Comes close to reaching retention without doing so: a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than an FTC-set maximum. That governs what may be PROCESSED for personalisation, not how long the system may keep what a user told it, which is why it is not coded as a memory constraint — no instrument in this corpus is. Bans a named list of engagement features: frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available. The private right of action present in the introduced bill was removed during the 5 August 2026 Commerce markup, so enforcement now runs through the FTC and state attorneys general only.",
   link:"https://www.congress.gov/bill/119th-congress/senate-bill/4199/text"
 },
 {
@@ -115,7 +113,7 @@ const DATA = [
   mechs:["disclosure","crisis","engagement","dependence","proImpersonation","causation"],
   enforce:["FTC","State AG","Private right of action"],
   interval:"Before first output, hourly, and whenever the user asks if it is a person",
-  note:"The only instrument that defines emotional dependence in statutory text — reliance on a chatbot 'as a primary source' of support — and requires monthly assessment for covered harm, emotional dependence and compulsive usage, with a duty to disable any feature creating an unreasonable risk for that user. Statutory damages up to $250,000 for violations causing covered harm. Its trigger for the non-human notice — when a user asks whether they are talking to a person — responds to the moment of actual uncertainty rather than to a clock, and appears nowhere else.",
+  note:"Defines emotional dependence in statutory text — reliance on a chatbot ‘as a primary source’ of support — and requires monthly assessment of each user for covered harm, emotional dependence and compulsive usage, with a duty to disable any feature creating an unreasonable risk for that user. Statutory damages up to $250,000 for violations causing covered harm, alongside FTC and state attorney general enforcement. The non-human notice is owed before the first output, hourly, and whenever the user asks whether they are talking to a person; the ask-triggered limb appears in no other record. Reach is coded yes: the definition turns on open-ended input, responses not fully predetermined and a persistent identity or persona, and carries no carve-out.",
   link:"https://epic.org/"
 },
 {
@@ -131,7 +129,7 @@ const DATA = [
   mechs:["disclosure","crisis","ageAssurance","parental","minorContent"],
   enforce:["State AG (public nuisance)"],
   interval:"At start of chat and every 60 minutes",
-  note:"The narrowest test in the corpus, and the clearest demonstration that reach sits in the gating verb rather than the vocabulary. It builds its definition from the same four limbs as the federal discussion draft — interpersonal or emotional interaction, friendship, companionship, therapeutic communication — but gates them on 'exists for the primary purpose of', which excludes general assistants by construction and so needs no carve-out at all.",
+  note:"Builds its definition from the same four limbs as the federal discussion draft — interpersonal or emotional interaction, friendship, companionship, therapeutic communication — but gates them on ‘exists for the primary purpose of’. Reach is coded no on that gate: a system whose primary purpose is something else falls outside the definition without any exclusion list being needed, which is why the narrowing device is recorded as sitting inside the definition rather than beside it. Enforced by the state attorney general as a public nuisance.",
   link:"https://www.congress.gov/"
 },
 {
@@ -147,7 +145,7 @@ const DATA = [
   mechs:["disclosure","minorContent","ageAssurance","sentience","accessBan"],
   enforce:["Criminal penalties","State AG"],
   interval:"Per incorporated GUARD Act provisions",
-  note:"The cleanest drafting architecture available: it nests the two categories, defining 'chatbot' broadly enough to capture ChatGPT, Claude and Gemini unambiguously, then making 'AI companion' a narrower designation inside it. This is Bernardi's subset structure used as statutory architecture. Its companion limb reaches 'therapeutic communication', which covers the therapist-like role directly.",
+  note:"Nests two categories. ‘AI chatbot’ is defined broadly — produces content not fully predetermined, accepts open-ended input — and excludes only narrow, single-purpose services; ‘AI companion’ is a narrower designation inside it, turning on adaptive human-like responses plus a design to encourage or facilitate simulated interpersonal or emotional interaction, friendship, companionship or therapeutic communication. Reach is coded yes on the chatbot limb, which is the limb carrying the disclosure duties. Incorporates the GUARD Act’s provisions, including its criminal penalties.",
   link:"https://www.congress.gov/"
 },
 {
@@ -162,7 +160,7 @@ const DATA = [
   mechs:["parental","training"],
   enforce:["Unverified"],
   interval:"—",
-  note:"Newer federal filing picked up from the FPF tracker; requires parental consent and family accounts, restricts advertising to minors and limits data collection. Full text not yet read — treat the coding here as provisional and confirm against the introduced bill before citing.",
+  note:"Federal filing picked up from the FPF tracker; requires parental consent and family accounts, restricts advertising to minors and limits data collection. Full text not yet read — the term, test, narrowing device and enforcement coding here are provisional, and reach is coded unclear on that basis. Confirm against the introduced bill before citing.",
   link:"https://www.congress.gov/"
 },
 {
@@ -177,7 +175,7 @@ const DATA = [
   mechs:["disclosure","minorContent"],
   enforce:["Unverified"],
   interval:"Every 3 hours",
-  note:"Passed the House. Disclosure plus prohibited content for minors. Coding provisional — confirm against the engrossed text.",
+  note:"Passed the House in 2026. Carries disclosure plus prohibited content for minors, with a three-hour disclosure interval. The definitional clause has not been read against the engrossed text, so narrowing is unverified and reach is coded unclear.",
   link:"https://www.congress.gov/"
 },
 
@@ -195,7 +193,7 @@ const DATA = [
   mechs:["engagement","dependence"],
   enforce:["National market surveillance authorities","Fines to €35m or 7% of global turnover"],
   interval:"—",
-  note:"The proof that the regulatory object can be specified without a product category at all. Article 5 names no chatbot, no companion, no app class — it prohibits a technique joined to an effect, and it applies to any system producing that effect. The cost of the approach is that none of the companion-specific machinery follows from it: no crisis protocol, no disclosure interval, no memory rule. It is a ceiling on manipulation, not a design code.",
+  note:"Article 5 names no chatbot, no companion and no app class: it prohibits a technique joined to an effect — subliminal, purposefully manipulative or deceptive techniques materially distorting behaviour and causing significant harm, and exploitation of vulnerabilities due to age, disability or social or economic situation. Reach is coded yes and the narrowing device is not applicable, because there is no product definition for a carve-out to narrow. None of the companion-specific machinery follows from it either: no crisis protocol, no disclosure interval, no retention rule. In force 1 August 2024, with Article 5 applicable from 2 February 2025; enforced by national market surveillance authorities with fines to €35m or 7% of global turnover.",
   link:"https://artificialintelligenceact.eu/article/5/"
 },
 {
@@ -211,7 +209,7 @@ const DATA = [
   mechs:["ageAssurance","parental","engagement"],
   enforce:["Recommendation only"],
   interval:"—",
-  note:"Non-binding but agenda-setting. Calls for a digital minimum age of 16 for AI companions without parental consent, a ban on engagement-based recommender algorithms for minors with the most addictive design features off by default, personal liability for senior management in cases of serious and persistent breaches of minor-protection provisions, and firm enforcement of existing AI Act rules against manipulative and deceptive chatbots. The personal-liability proposal has no analogue in any US instrument.",
+  note:"A committee report adopted 32–5–9 in October 2025, non-binding on its face. Calls for an EU digital minimum age of 16 for AI companions without parental consent, a ban on engagement-based recommender algorithms for minors with the most addictive design features off by default, personal liability for senior management in cases of serious and persistent breaches of minor-protection provisions, and enforcement of existing AI Act rules against manipulative and deceptive chatbots. The personal-liability proposal has no analogue in any US record in this corpus.",
   link:"https://www.europarl.europa.eu/news/en/press-room/20251013IPR30892/new-eu-measures-needed-to-make-online-services-safer-for-minors"
 },
 {
@@ -227,7 +225,7 @@ const DATA = [
   mechs:["engagement"],
   enforce:["Consumer protection authorities"],
   interval:"—",
-  note:"Worth watching precisely because it is not a companion instrument. If the EU regulates addictive design horizontally, the engagement-optimising features that US companion statutes reach only glancingly would be covered in Europe without anyone having to define a companion. Status moves quickly — re-check before relying on it.",
+  note:"Not a companion instrument: it addresses dark patterns, addictive design and personalisation practices across consumer-facing digital services generally, which is why it carries the engagement mechanism without defining a companion and why reach is coded yes. In the ordinary legislative procedure as of 2026; re-check the status before relying on it.",
   link:"https://www.europarl.europa.eu/legislative-train/theme-protecting-our-democracy-upholding-our-values/file-digital-fairness-act"
 },
 {
@@ -243,7 +241,7 @@ const DATA = [
   mechs:["disclosure","crisis","engagement","dependence","parental","ageAssurance","training","humanTakeover","reporting","audit"],
   enforce:["CAC administrative supervision","Mandatory security assessments"],
   interval:"Break reminder after roughly 2 hours of use",
-  note:"MAJOR UPDATE: this is no longer a draft. The measures were issued 10 April 2026 and took effect 15 July 2026, making China the first jurisdiction with a comprehensive in-force framework aimed squarely at emotional companionship services. They were issued jointly by five bodies — the Cyberspace Administration of China, the National Development and Reform Commission, the Ministry of Industry and Information Technology, the Ministry of Public Security, and the State Administration for Market Regulation — which is itself a signal of how the file is being handled: this is industrial and public-security policy as much as it is content regulation. It is also the only instrument anywhere that requires a HUMAN to take over the conversation when a user explicitly raises suicide, self-harm or other extreme action, and to contact the user's guardian or emergency contact. Requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode with usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; and security assessments at launch, at 1m registered users and at 100k monthly actives. Note the use carve-out — China arrives at the same narrowing device as California and Oregon by a different route.",
+  note:"No longer a draft: issued 10 April 2026, effective 15 July 2026, jointly by five bodies — the Cyberspace Administration of China, the National Development and Reform Commission, the Ministry of Industry and Information Technology, the Ministry of Public Security, and the State Administration for Market Regulation. Requires a human to take over the conversation where a user explicitly raises suicide, self-harm or other extreme action, and the provider to contact the user’s guardian or emergency contact; it is the only human-takeover duty in force in the corpus. Also requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode carrying usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; a break reminder after roughly two hours of use; and security assessments at launch, at 1m registered users and at 100k monthly actives. Reach is coded yes: the definition turns on simulating personality traits, thinking patterns and communication styles to provide continuous emotional interaction, and its use carve-out excludes customer service, Q&A, work assistants, and education and research lacking emotional engagement — the same narrowing device California, Oregon and New York use.",
   link:"https://www.chinalawtranslate.com/en/human-like-ai/"
 },
 
@@ -261,7 +259,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent"],
   enforce:["State AG","District attorneys","Up to $2,500 per violation"],
   interval:"Every 3 hours for minors, with a break prompt",
-  note:"The carve-out excludes bots 'used only for' customer service, business operations, productivity, internal research or technical assistance. ChatGPT is not used only for those things, gives adaptive human-like responses, and sustains a relationship across sessions through memory — so on the face of the text it is arguably inside the definition. That is the opposite of what a category-based reading assumes, and it is the point most often missed by readers who assume this law targets dedicated companion apps only.",
+  note:"The carve-out excludes bots ‘used only for’ customer service, business operations, productivity, internal research or technical assistance. Reach is coded arguably on the strength of that word: a general assistant is not used only for those things, gives adaptive human-like responses, and sustains a relationship across sessions through memory, so one reading of the text puts it inside the definition and another puts it outside. Effective 1 January 2026. Enforced by the attorney general and district attorneys at up to $2,500 per violation, with a three-hour disclosure interval and break prompt for minors.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -277,7 +275,7 @@ const DATA = [
   mechs:["disclosure","crisis"],
   enforce:["State AG (public nuisance)"],
   interval:"At the start of interaction and no more than once per day thereafter",
-  note:"The only instrument whose exemption turns expressly on marketing — but not the only device it uses. GBL § 1700(4)(c) carries three exclusions, and the other two are use-based, so New York pairs the marketing carve-out with the same kind of use carve-out California, Oregon and China rely on: '(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.' Limb (2) is the one with no counterpart anywhere else in the corpus: a developer exits the regime by rewriting copy. ChatGPT most likely falls outside the definition anyway on prong (ii), since it does not ask unprompted emotion-based questions. Note also that the Youth AI Privacy Act would BAN unprompted outputs, the very behaviour New York uses to IDENTIFY a companion. Same property, opposite work.",
+  note:"The only record in the corpus whose exemption turns expressly on marketing, and it pairs that with use-based exclusions. GBL § 1700(4)(c) carries three: ‘(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.’ Limb (2) is the only marketing-based exclusion in the dataset; limbs (1) and (3) are the same use-based device California, Oregon and China rely on. Reach is coded arguably rather than yes for a second reason as well: the test has three conjunctive prongs, and a general assistant most likely fails prong (ii), since it does not ask unprompted or unsolicited emotion-based questions. Effective 5 November 2025; attorney-general enforcement as a public nuisance.",
   link:"https://www.nysenate.gov/legislation/bills/2025/S3008"
 },
 {
@@ -293,7 +291,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent","engagement","dependence","sentience"],
   enforce:["Private right of action ($1,000 per violation)"],
   interval:"Every 3 hours for minors",
-  note:"The template other states copied. Takes a design-purpose route rather than a capability route, which puts it closer to Andoh's intent-based line than to a feature list. Its minor prohibitions are unusually granular: bars claims of humanness or sentience, simulated emotional dependence, simulated romantic interest, resisting the end of a conversation, and — notably — 'delivering to a user, either on a variable schedule or otherwise, a system of rewards or affirmations with the purpose of reinforcing behaviour or maximizing the time during which the user engages'. That clause is one of the few places any enacted law names variable-reward design directly.",
+  note:"The drafting the rest of the 2026 state cohort tracks. Takes a design-purpose route rather than a capability route: the system must be designed to simulate a sustained, human-like platonic, intimate or romantic relationship or companionship. Its minor prohibitions are granular — bars claims of humanness or sentience, simulated emotional dependence, simulated romantic interest, resisting the end of a conversation, and ‘delivering to a user, either on a variable schedule or otherwise, a system of rewards or affirmations with the purpose of reinforcing behaviour or maximizing the time during which the user engages’, which names variable-reward design directly. Reach is coded no: the carve-out reaches systems used ‘solely for the purpose of’ the excluded functions. Effective 1 January 2027, enforced by private right of action at $1,000 per violation.",
   link:"https://olis.oregonlegislature.gov/"
 },
 {
@@ -309,7 +307,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","engagement","dependence","parental","proImpersonation"],
   enforce:["State AG (unfair or deceptive trade practice)","No private right of action"],
   interval:"Every hour for minors; every 3 hours for adults",
-  note:"The most interesting carve-out drafting in the corpus. Connecticut excludes narrow task-specific tools — the standard move — but then claws the exclusion back where the primary function involves discussing mental health, so a 'wellness' tool cannot escape by calling itself task-specific. For minors it bars romantic interaction and, expressly, manipulative techniques used to extend engagement or foster emotional dependence. That is one of the few enacted prohibitions that names dependence-building as a design practice rather than as a user state.",
+  note:"Excludes narrow task-specific tools, then claws the exclusion back where the primary function involves discussing mental health, so a tool cannot rely on the task-specific exclusion for its wellness features. For minors it bars romantic interaction and, expressly, manipulative techniques used to extend engagement or foster emotional dependence, naming dependence-building as a design practice rather than as a user state; ‘inappropriate emotional dependence’ is not further defined in the Act. Reach is coded arguably: the capability limb is broad and the exclusion is use-based. Effective 1 January 2027. Attorney-general enforcement as an unfair or deceptive trade practice, with no private right of action. Disclosure hourly for minors and every three hours for adults.",
   link:"https://www.cga.ct.gov/"
 },
 {
@@ -324,7 +322,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent","sentience"],
   enforce:["State enforcement"],
   interval:"Every 3 hours plus hourly for minors",
-  note:"Disclosure-led. Confirm the definitional clause and carve-out against the enrolled bill before citing the reach coding.",
+  note:"Disclosure-led, and the only enacted law in the corpus that shortens the interval for minors rather than applying one interval to everyone: every three hours of continuous use, hourly where the user is under 18 or the chatbot is directed to minors. Effective 1 January 2027. Reach is coded unclear pending the definitional clause and carve-out being read against the enrolled bill.",
   link:"https://app.leg.wa.gov/"
 },
 {
@@ -339,7 +337,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","sentience"],
   enforce:["State enforcement"],
   interval:"At session start plus periodic reminders",
-  note:"Part of the Oregon-derived family. Long runway to the 1 Jul 2027 effective date. Confirm definition and carve-out against the enrolled text.",
+  note:"Part of the Oregon-derived family, with a long runway to its 1 July 2027 effective date. Reach is coded unclear and the carve-out recorded as assumed; both need confirming against the enrolled text.",
   link:"https://nebraskalegislature.gov/"
 },
 {
@@ -354,7 +352,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","sentience"],
   enforce:["State enforcement"],
   interval:"Every 3 hours plus non-human notice",
-  note:"Tracks Nebraska closely. Another instance of definitional text travelling between states even where the operative policy differs.",
+  note:"Tracks Nebraska LB 525 closely, down to the 1 July 2027 effective date — an instance of definitional text travelling between states where the operative policy also matches. Reach is coded unclear pending the enrolled text.",
   link:"https://legislature.idaho.gov/"
 },
 {
@@ -369,7 +367,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","proImpersonation","engagement"],
   enforce:["State AG"],
   interval:"Every 3 hours",
-  note:"One of the more complete minor-protection packages among the enacted state laws — age assurance, parental consent, professional-impersonation limits and engagement limits together. Distinct from Colorado's earlier algorithmic-discrimination AI Act (SB 24-205), which is unrelated to companions and should not be conflated with it.",
+  note:"Carries age assurance, parental consent, professional-impersonation limits and engagement limits alongside disclosure and a crisis protocol, a wider mechanism set than most of the enacted state laws. Distinct from Colorado’s earlier algorithmic-discrimination AI Act (SB 24-205), which is unrelated to companions and is not tracked here. Reach is coded unclear pending the enrolled text.",
   link:"https://leg.colorado.gov/"
 },
 {
@@ -384,7 +382,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","ageAssurance","parental","sentience"],
   enforce:["State AG"],
   interval:"Every 3 hours plus hourly for minors",
-  note:"Oregon-derived. Adds humanised-system restrictions on top of the standard disclosure and crisis package.",
+  note:"Oregon-derived, adding humanised-system restrictions to the standard disclosure and crisis package, with a three-hour disclosure interval and hourly for minors. Reach is coded unclear pending the enrolled text.",
   link:"https://www.legis.ga.gov/"
 },
 {
@@ -399,7 +397,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","parental","engagement"],
   enforce:["State AG"],
   interval:"Every hour plus non-human notice",
-  note:"One of the shortest disclosure intervals among enacted state laws at one hour, against California's three. The spread across states is a sixfold range with no stated rationale anywhere — see the Gaps view.",
+  note:"Carries a one-hour disclosure interval, against the three hours in California SB 243. Intervals recorded across the corpus run from every 30 minutes to once a day. Reach is coded unclear pending the enrolled text.",
   link:"https://www.capitol.hawaii.gov/"
 },
 {
@@ -414,7 +412,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","parental","engagement"],
   enforce:["State AG"],
   interval:"Every 3 hours",
-  note:"Standard Oregon-derived package. Coding from tracker summaries only.",
+  note:"Standard Oregon-derived package: disclosure, crisis protocol, minor content limits, parental controls and engagement limits, on a three-hour interval. Coded from tracker summaries only, so narrowing is assumed and reach is unclear.",
   link:"https://www.legis.iowa.gov/"
 },
 {
@@ -429,7 +427,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting"],
   enforce:["State AG"],
   interval:"Every 3 hours",
-  note:"A light-touch instrument: disclosure, crisis protocol and transparency reporting, without the minor-specific content and design prohibitions that most of the 2026 cohort carry.",
+  note:"Carries disclosure, a crisis protocol and transparency reporting, without the minor-specific content and design prohibitions most of the 2026 cohort carry. Applies to all users with no minor-specific rules. Reach is coded unclear pending the enrolled text.",
   link:"https://webserver.rilegislature.gov/"
 },
 {
@@ -444,7 +442,7 @@ const DATA = [
   mechs:["disclosure"],
   enforce:["State enforcement"],
   interval:"Non-human disclosure",
-  note:"The minimum viable instrument: non-human disclosure and nothing else. Useful as the floor case for the range of what \"regulating companion chatbots\" can mean in practice.",
+  note:"Non-human disclosure and nothing else: one mechanism, the smallest set in the corpus. Reach is coded unclear and the narrowing device unverified.",
   link:"https://legislature.maine.gov/"
 },
 {
@@ -459,7 +457,7 @@ const DATA = [
   mechs:["crisis","minorContent"],
   enforce:["State enforcement"],
   interval:"—",
-  note:"Content and crisis provisions without a disclosure mandate — an unusual combination in this cohort.",
+  note:"Crisis and minor content provisions without a disclosure mandate, which is an unusual combination in this cohort. Reach is coded unclear and the narrowing device unverified.",
   link:"https://www.gencourt.state.nh.us/"
 },
 {
@@ -474,7 +472,7 @@ const DATA = [
   mechs:["ageAssurance","parental"],
   enforce:["State AG"],
   interval:"—",
-  note:"New York's second bite: age assurance and parental consent, layered on top of the Article 47 disclosure and crisis regime rather than replacing it.",
+  note:"New York’s second enacted chatbot instrument: age assurance and parental consent, layered on top of the Article 47 disclosure and crisis regime rather than replacing it. Reach is coded unclear pending the enrolled text.",
   link:"https://www.nysenate.gov/"
 },
 {
@@ -490,7 +488,7 @@ const DATA = [
   mechs:["disclosure","reporting","training"],
   enforce:["State consumer protection"],
   interval:"Non-human disclosure",
-  note:"Predates the companion cohort and comes at the problem from the mental-health-services angle rather than the companionship angle. Restricts advertising within the chatbot and limits the sale of user data. Worth citing as evidence that the therapist-like role can be regulated directly, without a companion category.",
+  note:"Predates the companion cohort and comes at the question from the mental-health-services side rather than the companionship side, applying to chatbots offering mental health services or support. Restricts advertising within the chatbot and limits the sale of user data. Reach is coded no: the definition is limited by purpose to mental-health provision, so a general assistant falls outside it however it is in fact used.",
   link:"https://le.utah.gov/"
 },
 {
@@ -506,7 +504,7 @@ const DATA = [
   mechs:["proImpersonation"],
   enforce:["State licensing / consumer protection"],
   interval:"—",
-  note:"A conduct rule rather than a product rule, and therefore reaches every system including general assistants. A useful model: it regulates a specific harmful representation without ever having to decide what kind of product is making it.",
+  note:"A conduct rule rather than a product rule: it bars an AI system from representing that it is a licensed mental health professional. Reach is coded yes and no narrowing device is recorded, because the prohibition attaches to a representation rather than to a class of product, so there is no definition of a covered system for a carve-out to narrow. Effective 1 July 2026, enforced through state licensing and consumer protection.",
   link:"https://www.capitol.tn.gov/"
 },
 
@@ -524,7 +522,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","engagement","dependence","sentience","audit"],
   enforce:["State AG ($5,000 negligent / $10,000 intentional)","Private right of action","Product-defect claims; Section 230 barred as a defence"],
   interval:"At least every 30 minutes for non-text interactions",
-  note:"The single most consequential instrument in the corpus for the definitional question, and still not enacted — it remains in committee as of 22 May 2026. It states the functional approach in statutory language ('irrespective of how the system is marketed or labeled') and makes persistent memory the rebuttable trigger for the whole regime. It also bars variable-reward engagement mechanics and 'simulated distress for retention' — unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account. Requires an independent third-party compliance audit every two years. Illinois is the only instrument refusing all three narrowing devices, and also the one that has not passed.",
+  note:"States the functional approach in statutory language: the definition applies ‘irrespective of how the system is marketed or labeled’, with a rebuttable presumption where the system retains memory of past conversations with a specific user to inform future responses. Bars variable-reward engagement mechanics and unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account. Requires an independent third-party compliance audit every two years. Enforcement runs through the attorney general ($5,000 negligent, $10,000 intentional) and a private right of action, and Section 230 is barred as a defence in product-defect claims. Reach is coded yes and narrowing as none: it is the only record in the corpus carrying none of the three narrowing devices. Still in committee as of 22 May 2026; would take effect 1 January 2027.",
   link:"https://ilga.gov/Legislation/BillStatus?DocNum=3262&GAID=18&DocTypeID=SB&SessionID=114"
 },
 {
@@ -540,7 +538,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent","engagement","proImpersonation"],
   enforce:["State AG"],
   interval:"Every 30 minutes",
-  note:"Continued to the next session on 9 February 2026, so it is dormant rather than live. It remains among the most instructive bills in the corpus even though it did not move, because SIIA is on record asking for a safe harbour covering 'customer-service chatbots, educational tutors, productivity assistants', arguing the definition is 'currently broad enough to capture beneficial conversational AI systems'. Industry lobbying to ADD a general-assistant exemption is direct evidence that one is currently absent — i.e. that the functional reading is the natural one.",
+  note:"Continued to the next session in Communications, Technology and Innovation on 9 February 2026, so it is dormant rather than live, and coded stalled rather than dropped. Reach is coded arguably and the narrowing device as absent so far: SIIA has asked on the record for a safe harbour covering ‘customer-service chatbots, educational tutors, productivity assistants’, arguing the definition is ‘currently broad enough to capture beneficial conversational AI systems’, and no such exclusion is in the text as introduced. Full statutory wording still not obtained; the test is coded behaviour-based, including unsolicited emotion-based questions.",
   link:"https://legiscan.com/VA/research/HB635/2026"
 },
 {
@@ -556,7 +554,7 @@ const DATA = [
   mechs:["accessBan","disclosure","dependence"],
   enforce:["Unverified"],
   interval:"—",
-  note:"Sometimes listed as enacted; that is not supported by the legislature record, which has it referred to House Emerging Issues on 15 May 2026 and no further. Substantively it is a word-for-word California clone in its definition with a far harsher operative rule bolted on — no minor access at all, and no humanlike avatars. The clearest single illustration that definitional text travels between states even when the policy does not.",
+  note:"Sometimes listed as enacted. The legislature record does not support that: prefiled 1 December 2025, first reading 7 January 2026, referred to House Emerging Issues 15 May 2026, and no action since. Its definition and use carve-out are word-for-word California SB 243, with a harsher operative rule attached — no minor access at all, and no humanlike avatars. Reach is coded arguably, following the California text it copies.",
   link:"https://legiscan.com/MO/text/HB1742/id/3287590"
 },
 {
@@ -572,7 +570,7 @@ const DATA = [
   mechs:["dependence","proImpersonation","sentience"],
   enforce:["State AG","Private action"],
   interval:"—",
-  note:"The most structurally unusual instrument in the corpus and an underused option. It triggers on the TRAINING OBJECTIVE rather than on deployed behaviour, which is easier to evidence and much harder to argue around than a capability test — a developer cannot rewrite marketing copy to escape what it optimised for. It is also one of only a handful of instruments covering all users rather than minors only. A third drafting route alongside capability and purpose tests.",
+  note:"Triggers on the training objective rather than on deployed behaviour: prohibits training AI systems designed to encourage suicide, encourage murder, act as a companion, provide emotional support, impersonate a mental health professional, impersonate a sentient being, or encourage isolation. Reach is coded yes and no narrowing device is recorded, because the prohibition attaches to what a system was trained for and the text carries no product term to carve out of. Applies to all users rather than minors only. Introduced 28 January 2026; enforced by the attorney general and by private action, with $150,000 liquidated damages.",
   link:"https://www.kslegislature.org/"
 },
 {
@@ -588,7 +586,7 @@ const DATA = [
   mechs:["dependence","sentience"],
   enforce:["Criminal penalties (Class A felony)"],
   interval:"—",
-  note:"The second instrument in the corpus to trigger on the TRAINING OBJECTIVE, and the first to put the criminal law behind one. Proposed § 39-17-2002(8) would make it a Class A felony to knowingly train AI to '[s]imulate a human being, including in appearance, voice, or other mannerisms', to 'act as a companion to an individual', or to 'provide emotional support'. It is near-textually identical to Kansas SB 405 on the companion and emotional-support limbs, which makes the pair the cleanest comparison in the corpus on enforcement design alone: near-identical operative text, Kansas civil — attorney general or aggrieved individual, $150,000 liquidated damages — and Tennessee criminal. Two states reaching the same drafting route within weeks of one another is evidence that the training-objective test is now travelling between legislatures the way California's capability definition already has. Introduced by Sen. Becky Massey in the 114th General Assembly; House companion HB 1455. Fiscal memorandum at https://capitol.tn.gov/Bills/114/Fiscal/FM3336.pdf",
+  note:"The second record in the corpus triggering on the training objective, and the first to attach criminal liability to one. Proposed § 39-17-2002(8) would make it a Class A felony to knowingly train AI to ‘[s]imulate a human being, including in appearance, voice, or other mannerisms’, to ‘act as a companion to an individual’, or to ‘provide emotional support’. Near-textually identical to Kansas SB 405 on the companion and emotional-support limbs, with different enforcement: Kansas civil — attorney general or aggrieved individual, $150,000 liquidated damages — and Tennessee criminal. Reach is coded yes on the same reasoning as Kansas. Introduced 18 December 2025 by Sen. Becky Massey in the 114th General Assembly; House companion HB 1455. Fiscal memorandum at https://capitol.tn.gov/Bills/114/Fiscal/FM3336.pdf",
   link:"https://wapp.capitol.tn.gov/apps/BillInfo/Default?BillNumber=SB1493&ga=114"
 },
 {
@@ -603,7 +601,7 @@ const DATA = [
   mechs:["disclosure","crisis"],
   enforce:["Private right of action"],
   interval:"Per Art. 47",
-  note:"Substantively duplicates the enacted Article 47 with one change that matters: harmed individuals may sue, rather than enforcement resting solely with the Attorney General. The distinction between an AG-only regime and one with a private right of action is the single most consequential variable in this whole corpus for whether the rules bite.",
+  note:"Substantively duplicates the enacted Article 47 with one change to enforcement: harmed individuals may sue, rather than enforcement resting with the attorney general alone. The test and carve-out track Art. 47, so reach is coded arguably for the same reasons.",
   link:"https://www.nysenate.gov/"
 },
 {
@@ -619,7 +617,7 @@ const DATA = [
   mechs:["proImpersonation"],
   enforce:["Private civil action"],
   interval:"—",
-  note:"Notable for the clause stating that offering a notice is NOT a defence. Every other instrument in the corpus treats disclosure as the primary remedy; this one expressly refuses to let disclosure discharge the underlying duty. That is a direct answer to the criticism that these regimes regulate awareness rather than design.",
+  note:"Bars a chatbot from saying or advising anything that would be a crime if said or done by a human, and from impersonating licensed lawyers or medical professionals. The text states expressly that offering a notice is not a defence, which is the only place in the corpus where disclosure is refused as a discharge of the underlying duty. Reach is coded yes and no narrowing device is recorded: it is a conduct rule and defines no covered product. Enforced by private civil action.",
   link:"https://www.nysenate.gov/"
 },
 {
@@ -634,7 +632,7 @@ const DATA = [
   mechs:["disclosure","crisis"],
   enforce:["State AG"],
   interval:"—",
-  note:"Illinois's second, weaker vehicle. Worth watching only as a fallback if SB 3262 does not move.",
+  note:"Illinois’s second companion vehicle, carrying disclosure and a crisis protocol only against the wider package in SB 3262. Reach is coded unclear and the narrowing device unverified.",
   link:"https://ilga.gov/"
 },
 {
@@ -649,7 +647,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent"],
   enforce:["Unverified"],
   interval:"Every 3 hours plus non-human notice",
-  note:"Further along than most pending bills. Confirm the definitional clause before citing.",
+  note:"Passed one chamber in 2026, carrying disclosure, a crisis protocol, transparency reporting and minor content limits on a three-hour interval. Reach is coded unclear; confirm the definitional clause against the passed text before citing it.",
   link:"https://www.legis.state.pa.us/"
 },
 {
@@ -664,7 +662,7 @@ const DATA = [
   mechs:["disclosure","crisis","proImpersonation","reporting"],
   enforce:["State AG (public nuisance)","Private action"],
   interval:"—",
-  note:"Standard package: crisis protocol, referral to help lines, bar on impersonating medical professionals, published protocol, and non-human notice.",
+  note:"Introduced November 2025. Standard package: crisis protocol, referral to help lines, a bar on impersonating medical professionals, a published protocol, and non-human notice. Enforced by the attorney general as a public nuisance and by private action. Reach is coded unclear pending the introduced text.",
   link:"https://www.legis.state.pa.us/"
 },
 {
@@ -679,7 +677,7 @@ const DATA = [
   mechs:["disclosure","crisis","minorContent","sentience"],
   enforce:["State AG"],
   interval:"Every 3 hours",
-  note:"California's follow-on to SB 243: safety protocols, no sexual content for minors, no impersonating humans.",
+  note:"California’s follow-on to SB 243: safety protocols, no sexual content for minors, and no impersonating humans, on a three-hour interval. The definition tracks SB 243, so reach is coded arguably for the same reasons and the use carve-out is assumed to follow.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -695,7 +693,7 @@ const DATA = [
   mechs:["accessBan"],
   enforce:["State AG"],
   interval:"—",
-  note:"Addresses the embodied-device sense of 'AI companion' that the definitional paper identifies as one of the four objects the term names. The only instrument in the corpus reaching physical products, and a reminder that the category problem is not confined to apps.",
+  note:"Bars companion chatbots embedded in children’s physical toys, addressing the embodied-device sense of ‘AI companion’. Reach is coded no because the regime is limited by product form: the same capability shipped in software falls outside it. One of two records in the corpus reaching physical products, alongside New York S 9408.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -710,7 +708,7 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent","ageAssurance","parental","audit","proImpersonation"],
   enforce:["State AG"],
   interval:"—",
-  note:"The most demanding accountability package in any US state vehicle: risk assessment plus INDEPENDENT AUDIT plus transparency reporting. If it passes it joins Illinois SB 3262 as one of only two instruments requiring third-party audit, which is the mechanism closest to a duty to investigate causation — though it still stops short of one.",
+  note:"Combines risk assessment, independent audit and transparency reporting with the standard disclosure, crisis, content, age assurance and parental duties. With Illinois SB 3262 it is one of two records in the corpus coded for independent audit. Reach is coded unclear pending the bill text.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -725,7 +723,7 @@ const DATA = [
   mechs:["crisis"],
   enforce:["State AG"],
   interval:"—",
-  note:"Requires the conversation to be INTERRUPTED on crisis detection rather than merely appending a hotline number. A meaningful escalation over the referral-and-report model that dominates enacted law.",
+  note:"Requires the conversation to be interrupted on crisis detection, rather than a hotline number being appended to the response — a different operative form from the referral-and-report clauses that most enacted law carries. Reach is coded unclear pending the bill text.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -740,7 +738,7 @@ const DATA = [
   mechs:["ageAssurance","minorContent","engagement","training","sentience","crisis"],
   enforce:["Unverified"],
   interval:"—",
-  note:"One of the few state vehicles combining engagement limits, training restrictions and data-collection limits in a single bill — closer in shape to the Youth AI Privacy Act than to the Oregon family.",
+  note:"Combines engagement limits, training restrictions and data-collection limits in one bill, a mechanism set closer to the Youth AI Privacy Act than to the Oregon-derived state laws. Reach is coded unclear pending the bill text; enforcement is unverified.",
   link:"https://www.legislature.mi.gov/"
 },
 {
@@ -755,7 +753,7 @@ const DATA = [
   mechs:["ageAssurance","minorContent","proImpersonation","engagement","sentience","training"],
   enforce:["State AG"],
   interval:"—",
-  note:"Passed the legislature and awaiting further action. Notable for combining humanised-system restrictions with engagement limits and data-collection limits.",
+  note:"Passed the legislature and awaiting further action. Combines humanised-system restrictions with age assurance, engagement limits and data-collection limits. Reach is coded unclear pending the passed text.",
   link:"https://www.nysenate.gov/"
 },
 {
@@ -771,7 +769,7 @@ const DATA = [
   mechs:["accessBan"],
   enforce:["State AG"],
   interval:"—",
-  note:"New York's parallel to California SB 867 on the embodied-device question.",
+  note:"New York’s parallel to California SB 867 on the embodied-device question: access bans for young users and for chatbots embedded in connected toys. Reach is coded no on the same product-form reasoning.",
   link:"https://www.nysenate.gov/"
 }
 ];
@@ -992,9 +990,9 @@ const GLOSSARY = {
   interval:{t:"Disclosure interval",
     d:"How often the system must repeat that it is not a human being. Intervals in force or proposed run from every 30 minutes to once a day — a sixfold spread with no stated rationale anywhere in the corpus."},
   enforce:{t:"Enforcement",
-    d:"Who can act on a breach: an attorney general, a federal regulator, a criminal prosecution, or the harmed individual. This is the single most consequential variable in the corpus — two statutes with identical operative text and different enforcement routes are, in practice, different laws."},
-  note:{t:"Why it matters",
-    d:"The tracker's own note on what is analytically interesting about this piece of legislation and how it bears on the argument. Not a summary of the text."},
+    d:"Who can act on a breach: an attorney general, a federal regulator, a criminal prosecution, or the harmed individual. Recorded as a list, in the terms the text uses, together with any stated penalty or damages figure. Two instruments with identical operative text can carry entirely different enforcement routes, so the field is coded separately from the mechanisms."},
+  note:{t:"Coding note",
+    d:"The tracker's own note on this record: dates, operative detail, quoted statutory language, enforcement provisions, and the reasoning behind a coding decision where one needs explaining. Not a summary of the text, and not an argument from it."},
 
   /* ---- mechanisms and clusters ---- */
   mechanism:{t:"Mechanism",
@@ -1086,7 +1084,7 @@ const GLOSSARY = {
   categorical:{t:"Categorical definition",
     d:"Defining the regulated object as a kind of product: a companion app, a companion chatbot. Survives in this corpus mainly in the vocabulary and in the exclusions rather than in the operative tests."},
   pra:{t:"Private right of action",
-    d:"A statutory route for the harmed individual to sue, rather than leaving enforcement to a regulator. The most consequential enforcement variable in the corpus: New York's enacted Article 47 is attorney-general only while its substantively identical Assembly twin lets individuals sue, and the Youth AI Privacy Act's private right of action was stripped in the 5 August 2026 markup."},
+    d:"A statutory route for the harmed individual to sue, rather than leaving enforcement to a regulator. Coded from the enforcement field on each record. New York's enacted Article 47 is attorney-general only while its substantively identical Assembly twin A6767 lets individuals sue, and the Youth AI Privacy Act's private right of action was removed in the 5 August 2026 markup."},
   retention:{t:"Retention ceiling",
     d:"A hard limit on how long a system may keep what a user told it. NOTHING IN THIS CORPUS HAS ONE — not in force, not moving, not proposed. The two nearest misses: Illinois SB 3262 makes persistent memory the rebuttable trigger for its regime, which constrains nothing about retention, and the Youth AI Privacy Act bars personalisation on data outside the current session and an FTC-set recency window, which governs what may be processed rather than how long it may be kept."}
 };
