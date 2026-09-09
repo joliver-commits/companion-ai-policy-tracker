@@ -274,6 +274,7 @@ td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
 .card.partial{border-left:3px solid var(--warn)}
 .card.ok{border-left:3px solid var(--good)}
 .cards2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:16px}
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
 code{background:var(--page);border:1px solid var(--ring);border-radius:4px;padding:1px 5px;font-size:12.5px}
 .callout{background:color-mix(in srgb,var(--warn) 10%,transparent);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);
   border-radius:10px;padding:13px 16px;margin:0 0 16px;font-size:14px}
@@ -294,13 +295,13 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
     <button class="themebtn" id="themebtn">Dark</button>
     <h1>Companion AI Policy Tracker</h1>
     <p class="sub">United States federal and state · European Union · China — legislation regulating AI companions and conversational systems.</p>
-    <p class="stamp">Berkman Klein Center for Internet &amp; Society, Harvard University · <b>last verified 13 August 2026</b> · <a href="https://github.com/joliver-commits/companion-ai-policy-tracker" style="color:var(--seq-400)">source &amp; contributions on GitHub</a></p>
+    <p class="stamp">Berkman Klein Center for Internet &amp; Society, Harvard University · <b>last verified 9 September 2026</b> · <a href="https://github.com/joliver-commits/companion-ai-policy-tracker" style="color:var(--seq-400)">source &amp; contributions on GitHub</a></p>
     <div class="tiles" id="tiles"></div>
     <nav class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-v="legislation">Legislation</button>
       <button role="tab" aria-selected="false" data-v="coverage">Mechanism coverage</button>
       <button role="tab" aria-selected="false" data-v="definitions">Definitional anatomy</button>
-      <button role="tab" aria-selected="false" data-v="gaps">Gaps &amp; analysis</button>
+      <button role="tab" aria-selected="false" data-v="howto">How to use this tracker</button>
     </nav>
   </div>
 </header>
@@ -363,9 +364,9 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
 </section>
 
 <section class="view" id="v-coverage">
-  <div class="prose"><p style="color:var(--ink-2)">Which regulatory mechanisms each piece of legislation actually carries. The counts below are how much legislation touches each mechanism at all — they say nothing about how well. Read them alongside the Gaps view, where the thin rows are the argument.</p>
-  <p style="color:var(--ink-2)">The sixteen mechanisms group into five <span class="gl" data-gl="cluster">clusters</span>. Comparing the clusters is usually the more informative read: honesty and harm-response obligations are near-universal, while the cluster that constrains the product's own design is nearly empty.</p>
-  <p style="color:var(--ink-2)"><b>Click a cluster</b> to filter the corpus to it, or <b>click any mechanism</b> for what it means as a legal rule and how every piece of legislation carrying it is worded.</p></div>
+  <div class="prose"><p style="color:var(--ink-2)">Which regulatory mechanisms each piece of legislation carries. Each bar counts the records coded for that mechanism; the coding records presence, not stringency, so a bar says how many instruments impose an obligation of that kind and nothing about how demanding any of them is. A mechanism can sit at zero: the key is kept in the list so that the absence is visible rather than missing.</p>
+  <p style="color:var(--ink-2)">The sixteen mechanisms are grouped into five <span class="gl" data-gl="cluster">clusters</span>, and every mechanism belongs to exactly one. The cluster figure counts the records carrying <i>at least one</i> mechanism in that family, so it is not the sum of the bars beneath it.</p>
+  <p style="color:var(--ink-2)"><b>Click a cluster</b> to filter the corpus to it, or <b>click any mechanism</b> for what it means as a legal rule, where this dataset draws the line around it, and how each instrument carrying it is worded — marked <i>verbatim text</i>, <i>close paraphrase</i> or <i>not yet transcribed</i>.</p></div>
   <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 9px">Legislation carrying at least one mechanism in the cluster</h3>
   <div class="clusters" id="clusters"></div>
   <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 9px">Mechanism by mechanism, within the cluster</h3>
@@ -379,12 +380,13 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
 
 <section class="view" id="v-definitions">
   <div class="prose">
-    <p style="color:var(--ink-2)">The distinction that matters most in this corpus. Asking “does this bill target companion apps or general chatbots?” conflates three separate questions: the <b>term</b> the legislation uses, the <b>test</b> that determines what the term covers, and the <b>narrowing device</b> that pulls things back out again. They do not line up.</p>
+    <p style="color:var(--ink-2)">One row per instrument, holding the three definitional fields side by side: the <b class="gl" data-gl="term">term</b> the text uses, the <b class="gl" data-gl="test">test</b> that decides what the term covers, and the <b class="gl" data-gl="narrowing">narrowing device</b> that pulls things back out of it. They are coded separately because they frequently do not line up — a categorical noun can sit on top of a functional test, and a broad test can be narrowed back to a product category by its carve-out.</p>
+    <p style="color:var(--ink-2)">The final column, <b class="gl" data-gl="reaches">reaches assistants</b>, is this tracker's judgement about the statutory language rather than a measurement, and it depends on all three of the columns before it. Where the definitional clause has not been read against the enrolled text it is coded <i>unclear</i>: a gap in the coding, not a finding about the instrument. Hover any coded value for its definition.</p>
   </div>
   <div style="overflow-x:auto"><table id="deftbl"></table></div>
 </section>
 
-<section class="view" id="v-gaps"><div class="prose" id="gaps"></div></section>
+<section class="view" id="v-howto"><div class="prose" id="howto"></div></section>
 
 <footer style="border-top:1px solid var(--grid);margin-top:48px;padding:20px 0;color:var(--muted);font-size:13px">
 An open research dataset covering proposed, active and enacted policy; legislation that dies, is vetoed or goes

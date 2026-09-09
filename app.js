@@ -605,80 +605,234 @@ el("themebtn").onclick=()=>{
 };
 render();
 
-el("gaps").innerHTML=`
-<p class="glhint" style="margin-bottom:18px">Hover — or tap, or tab to — any <b>dotted term</b> for its definition.</p>
-<h2>What the corpus agrees on</h2>
-<p>Read across all ${DATA.length} pieces of legislation, the convergence is striking and almost entirely unacknowledged by the drafters themselves. Nearly every piece of legislation defines its object by <b class="gl" data-gl="functional">what the system does</b> — simulating interaction, sustaining a relationship, recognising and responding to emotion, retaining memory — rather than by what kind of product it is. The <span class="gl" data-gl="categorical">categorical thinking</span> survives in the vocabulary, and decisively in the exclusions, but not in the tests.</p>
-<p>The operative provisions cluster just as tightly. Four moves recur almost everywhere: a non-human disclosure, a crisis and self-harm protocol with referral to a hotline, content restrictions for minors, and some form of periodic reminder. Beyond that quartet the legislation thins out fast.</p>
+/* ==================================================================
+   HOW TO USE THIS TRACKER
+   Everything numeric below is computed from DATA, PHRASING and MECHS
+   at render time. Nothing here is typed in by hand, so the copy
+   cannot drift away from the dataset it describes.
+   ================================================================== */
+(function(){
+  const n=DATA.length;
+  const nJuris=j=>DATA.filter(d=>d.juris===j).length;
+  const nReach=v=>DATA.filter(d=>d.reaches===v).length;
+  const nYouth=v=>DATA.filter(d=>d.youth===v).length;
+  const stLaw=DATA.filter(d=>d.juris==="US State"&&d.statusClass==="law");
+  const nStates=new Set(stLaw.map(d=>d.body)).size;
+  /* enacted law that does not bite yet — why status is not the same as bite */
+  const later=DATA.filter(d=>d.statusClass==="law"&&d.chron.effective&&
+    +String(d.chron.effective).slice(0,4)>=2027);
+  const laterYears=[...new Set(later.map(d=>String(d.chron.effective).slice(0,4)))].sort();
+  /* how far the reading behind each row goes */
+  const nUnver=DATA.filter(d=>/unverified|assumed/i.test(d.narrowing)).length;
+  const nUnclear=nReach("unclear");
+  let pairs=0, transcribed=0;
+  DATA.forEach(d=>d.mechs.forEach(k=>{pairs++; if((PHRASING[d.id]||{})[k])transcribed++;}));
+  const pctT=Math.round(transcribed/pairs*100);
+  const nPRA=DATA.filter(d=>d.enforce.some(e=>/private/i.test(e))).length;
+  const jurisLine=Object.keys(JCLASS).map(j=>`${nJuris(j)} ${j}`).join(" · ");
+  const statusLine=STATUSES.map(s=>`${nStatus(s)} ${SLABEL[s].toLowerCase()}`).join(" · ");
+  const REACHV=["yes","arguably","partial","no","unclear"];
+  /* the counts are computed, so the noun after one of them has to agree with whatever comes back */
+  const plural=(v,w)=>`${v} ${w}${v===1?"":"s"}`;
+  const ofAll=v=>`${v} of the ${n} records`;
+  const vb=(v,one,many)=>v===1?one:many;
 
+  /* the worked example is read out of its own record, so amending the
+     record amends the paragraph */
+  const ex=DATA.find(d=>d.id==="ny-art47");
+  const worked=ex?`
+<p><b>A worked example.</b> Take <b>${esc(ex.name)}</b> (${esc(ex.body)} · ${esc(ex.cite)}). Its term is
+“${esc(ex.term)}” — a categorical noun that reads like the name of a product class. Its test is
+<b>${esc(ex.test)}</b>: ${esc(ex.testNote)} — a description of things a system does, which a system never
+marketed as a companion can satisfy. Its narrowing device is <b>${esc(ex.narrowing)}</b>, which takes back
+out what the test caught. The tracker codes it
+<span class="reach r-${ex.reaches}" data-gl="r:${ex.reaches}">${esc(ex.reaches)}</span> on reach.</p>
+<p>Read the term on its own and you would answer that the statute covers companion apps. Read the test on its
+own and you would answer that it covers anything with memory that asks after you. Read the carve-out on its own
+and you would answer that ordinary software is exempt. The coding in the last column is the product of all
+three fields, and any one of them read alone gives a different answer from the row.</p>`:"";
+
+  /* six questions the tracker is built to answer, and the filter path to
+     each; the heading counts the list so the two cannot disagree */
+  const QS=[
+    ["What must I comply with now?",
+     `Filter <b>Status → Enacted / in force</b> in the Legislation view, or press the
+      <b>Enacted / in force</b> tile. That gives ${nStatus("law")} of ${n} records. Then read the
+      <i>eff.</i> line under each date: ${later.length} of them do not take effect until
+      ${laterYears.join(" or ")}.`],
+    ["Does any of this reach a general assistant?",
+     `Use the <b>Reaches assistants</b> filter, or sort by that column. ${nReach("yes")} records are coded
+      <span class="reach r-yes">yes</span> and ${nReach("arguably")}
+      <span class="reach r-arguably">arguably</span>; ${nUnclear} are
+      <span class="reach r-unclear">unclear</span> and have not been read against the enrolled text yet.
+      The Definitional anatomy view puts the coding next to the term, test and carve-out it came from.`],
+    ["Which laws cover adults, not just minors?",
+     `Filter <b>Youth focus → All users</b> for the ${nYouth("none")} records with no minor-specific rules, and
+      add <b>Minor-specific duties</b> for the further ${nYouth("duties")} that bind everyone but ask more where
+      the user is a minor. The remaining ${nYouth("only")} apply to minors only.`],
+    ["Who can enforce it, and can an individual sue?",
+     `Open any row and read the <b class="gl" data-gl="enforce">Enforcement</b> cell, which lists the routes the
+      text provides. ${ofAll(nPRA)} name${vb(nPRA,"s","")} a private action of some kind; the rest run through a
+      regulator, an attorney general, or the criminal law.`],
+    ["Is anyone regulating <i>X</i>?",
+     `Pick <i>X</i> from the <b>Mechanism</b> filter, which is grouped into the same
+      <span class="gl" data-gl="cluster">clusters</span> as the coverage view, and carries the count next to
+      each option. A mechanism may return nothing:
+      <b>${esc(MMAP.memory)}</b> is carried by ${plural(nMech("memory"),"record")} and stays in the list so the absence
+      is visible.`],
+    ["What does one particular bill say about disclosure?",
+     `Go to <b>Mechanism coverage</b>, click the mechanism, and read down the panel: every record carrying it
+      appears with its wording, tagged <i>verbatim text</i>, <i>close paraphrase</i>, or
+      <i>not yet transcribed</i> with a link to the source. The same panel opens from a mechanism tag inside an
+      expanded row, or from a column heading in the matrix.`]
+  ];
+  const NUMWORD=["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"];
+  const qCount=NUMWORD[QS.length]||String(QS.length);
+
+  el("howto").innerHTML=`
+<p class="glhint" style="margin-bottom:18px">Hover — or tap, or tab to — any <b>dotted term</b> for its definition.</p>
+
+<h2>What this tracker is</h2>
+<p>A coded dataset of ${n} pieces of legislation regulating AI companions and conversational systems:
+${jurisLine}. By status, that is ${statusLine}. Enacted law sits in ${nStates} US states
+(${stLaw.length} records), plus the EU and China.</p>
+<p>Other trackers answer two questions well: what stage a bill has reached, and what it obliges an operator to
+do. This one records a third thing. For every instrument it codes the <b class="gl" data-gl="term">term</b> the
+text uses for the thing it regulates, the <b class="gl" data-gl="test">test</b> that decides what falls inside
+that term, the <b class="gl" data-gl="narrowing">narrowing device</b> that pulls things back out, and a
+judgement about whether the resulting definition
+<b class="gl" data-gl="reaches">reaches general-purpose assistants</b> of the ChatGPT class rather than only
+purpose-built companion apps. If you need to know whether a bill has moved this week, use one of the status
+trackers listed at the foot of this page. If you need to know what its definition actually catches, use this.</p>
+<div class="callout"><b>The corpus is live, not cumulative.</b> Legislation that dies, is vetoed, goes inactive
+or is superseded is deleted from the dataset rather than kept with a “dead” status, so the ${n} records
+describe the landscape as it stands rather than everything that has ever been filed. Nine instruments were
+removed on that basis in August 2026, among them a Florida bill that is still widely reported as enacted. This
+is why the totals here will not match a tracker that archives failed bills — the removals, and the reason for
+each, are listed in the README.</div>
+
+<h2>Start here: term, test, narrowing</h2>
+<p>Asking whether a bill “covers companion apps or chatbots generally” collapses three separate questions that
+this dataset keeps apart. They are coded in three separate columns because they routinely disagree with one
+another.</p>
+<div class="cards3">
+  <div class="card"><h4><span class="gl" data-gl="term">Term</span></h4><p>The defined phrase the text actually
+    uses — “companion chatbot”, “AI companion”, “AI chatbot”, or in several instruments no product term at all.
+    It is the most visible part of a definition and the least load-bearing.</p></div>
+  <div class="card"><h4><span class="gl" data-gl="test">Test</span></h4><p>The kind of question the definition
+    asks to decide what the term covers: what the system can do, what it does in interaction, what it was built
+    for, what it said, what it was trained for, or what technique it deploys to what effect.</p></div>
+  <div class="card"><h4><span class="gl" data-gl="narrowing">Narrowing device</span></h4><p>What pulls things
+    back out again — a marketing carve-out, a use carve-out, a purpose-primacy gate, an age gate, a
+    product-form limit, or nothing. A broad test with a wide exclusion can end up back at a product
+    category.</p></div>
+</div>
+${worked}
+
+<h2>Reading a row</h2>
+<p>The Legislation view is one row per instrument; clicking a row expands it. What each field holds:</p>
+<ul>
+  <li><b>Status</b> — how far the instrument has travelled:
+    ${STATUSES.map(s=>`<span class="st ${s}" data-gl="st:${s}">${esc(SLABEL[s])}</span>`).join(" · ")}.
+    Status is not the same as bite. ${later.length} of the ${nStatus("law")} enacted records carry an effective
+    date in ${laterYears.join(" or ")}, so they are law today and impose nothing yet.</li>
+  <li><b>Latest action</b> and the <b>Sort</b> control — the date column shows the most recent thing that
+    happened, with the effective date beneath it where the text states one. Dates are recorded at whatever
+    precision the source supports and a
+    <span class="gl" data-gl="datePrecision">year-only date</span> is placed at the middle of its period, which
+    is marked with a dotted underline. The Sort control orders by first action, latest action or effective date
+    as well as by any coded column; the direction label changes with the key, so “newest first” only appears on
+    a date.</li>
+  <li><b class="gl" data-gl="youth">Youth focus</b> — who the instrument binds:
+    ${YOUTHS.map(y=>`<span class="yb ${y}" data-gl="youth:${y}">${esc(YLABEL[y])}</span>`).join(" · ")}.
+    It is derived from the Scope field in the expanded row and reads the same way.</li>
+  <li><b class="gl" data-gl="test">Test</b> and <b class="gl" data-gl="narrowing">Narrowing device</b> — the
+    two definitional columns. Both are free text that names a family and then qualifies it, so “capability +
+    purpose” and “Use carve-out gated on&nbsp;'only'” each hover to the family they lead with. The full
+    definitional clause, quoted or closely paraphrased, is in the expanded row under <i>Functional test</i>.</li>
+  <li><b class="gl" data-gl="reaches">Reaches assistants</b> — the coding this tracker exists for:
+    ${REACHV.map(v=>`<span class="reach r-${v}" data-gl="r:${v}">${v}</span>&nbsp;(${nReach(v)})`).join(" · ")}.
+    It is an interpretive reading of the text, not a measurement — see the next section.</li>
+  <li><b class="gl" data-gl="nmech">Mechs</b> — how many of the ${MECHS.length} coded mechanisms the instrument
+    imposes, grouped into ${MECHGROUPS.length} clusters. It counts breadth and not stringency: one demanding
+    obligation and six weak ones both read as a number. The tags in the expanded row open the mechanism panel,
+    where the wording of that obligation in every instrument carrying it sits side by side.</li>
+</ul>
+
+<h2>${qCount} questions, and how to get the answer</h2>
 <div class="cards2">
-  <div class="card ok"><h4>Disclosure is universal</h4><p>Almost every piece of legislation requires the system to say it is not human. It is the cheapest intervention available and the one on which everyone agrees.</p></div>
-  <div class="card ok"><h4>Crisis protocols are near-universal</h4><p>Detection of suicidal ideation plus referral to a crisis line appears in nearly every enacted law. China alone requires a human to take over the conversation.</p></div>
-  <div class="card partial"><h4>Engagement design is reached only at the edges</h4><p>Oregon names variable-reward affirmations, Illinois names simulated distress for retention, the Youth AI Privacy Act names push alerts and typing indicators. Everywhere else the design layer is untouched.</p></div>
-  <div class="card gap"><h4>Nobody regulates duration</h4><p>No legislation in any jurisdiction sets a session cap, a cooling-off period, or an overnight restriction for minors. China's two-hour break reminder is the closest thing that exists, and it is still a reminder.</p></div>
-  <div class="card gap"><h4>Nobody caps memory</h4><p>Persistent memory appears throughout the corpus as a <i>definitional signal</i> — evidence that a system is a companion — and nowhere as a design property to be limited. No instrument states how long a system may keep what a user told it.</p></div>
+  ${QS.map(([q,a])=>`<div class="card"><h4>${q}</h4><p>${a}</p></div>`).join("")}
 </div>
 
-<h2>The five recurring weaknesses</h2>
-
-<h3>1. Policies agree where the intervention is cheapest and fall silent where it bites</h3>
-<p>Disclosure regulates the user's <i>awareness</i> of a design property. It does not touch the property. A regime built on telling a fourteen-year-old every three hours that the thing she is confiding in is not a person leaves entirely intact the memory that makes it feel like a relationship, the availability that makes it feel like a friend, and the validation that makes it feel better than her friends. The legislation converges on the label and diverge — or say nothing — on the mechanism.</p>
-
-<h3>2. Three narrowing devices quietly reintroduce classification by self-presentation</h3>
-<p>A functional test that is then narrowed can end up back at a product category. Three devices do this work, and it is worth naming them separately because they are gameable to very different degrees:</p>
+<h2>How much weight each cell will bear</h2>
+<p>The rows are not read to the same depth, and the dataset says which is which rather than levelling them out.
+Some records are coded against the enrolled or introduced text; some are coded from legislative-tracker
+summaries and law-firm analyses; and for some the definitional clause has not been read at all. Three figures
+locate the boundary:</p>
 <ul>
-  <li><b class="gl" data-gl="narrow:marketing">The marketing carve-out</b> — New York alone. GBL § 1700(4)(c) excludes "any system that is primarily designed <i>and marketed</i> for providing efficiency improvements or, research or technical assistance." A developer exits the regime by rewriting copy. This is the most gameable device in circulation and it is enacted law. It is not, however, the only device New York uses: the same subsection carries two use-based exclusions alongside it, so Article 47 belongs on both of the first two lines of this list.</li>
-  <li><b class="gl" data-gl="narrow:use">The use carve-out</b> — California, Oregon, Missouri, New York and now China. Excludes systems used "only for" or "solely for the purpose of" customer service, productivity, education and the like; New York's limbs reach systems used "solely for customer service" and "solely for internal purposes or employee productivity." Harder to game, because it turns on what the product is actually used for rather than how it is described — and California's, gated on <i>only</i>, arguably fails to exclude ChatGPT at all.</li>
-  <li><b class="gl" data-gl="narrow:primacy">The purpose-primacy gate</b> — the CHAT Act. No exclusions are needed because the words "exists for the primary purpose of" do the exclusionary work inside the definition. On the usage evidence, companionship is a use a general assistant is <i>put to</i> rather than the purpose it was <i>built for</i>, so a primacy test exempts precisely the tools where most relational use occurs.</li>
+  <li><b>${ofAll(nUnver)}</b> ${vb(nUnver,"carries","carry")} a narrowing device marked <i>unverified</i> or <i>assumed</i> —
+    the carve-out has not been checked against the text of the instrument itself.</li>
+  <li><b>${ofAll(nUnclear)}</b> ${vb(nUnclear,"is","are")} coded
+    <span class="reach r-unclear" data-gl="r:unclear">unclear</span> on reach, which records that the
+    definitional clause has not been read against the enrolled text. It is a gap in the coding, not a finding
+    about the instrument.</li>
+  <li><b>${transcribed} of the ${pairs} mechanism–instrument pairs (${pctT}%)</b> ${vb(transcribed,"carries","carry")} sourced operative wording
+    in the mechanism panel. The remaining ${pairs-transcribed} render as <i>not yet transcribed</i> with a link
+    to the source; nothing is paraphrased from nothing to fill the space.</li>
 </ul>
-<p>Illinois SB 3262 is the only legislation that refuses all three, defining its object "irrespective of how the system is marketed or labeled." It is also still sitting in committee.</p>
-
-<h3>3. Every piece of legislation picks a different feature set</h3>
-<p>New York takes memory, unprompted emotional questioning and personal dialogue. California takes adaptive response, social needs, anthropomorphism and sustained relationship. Oregon takes design purpose. Illinois takes emotional resonance plus a memory presumption. China takes simulated personality plus continuous emotional interaction. Five pieces of legislation, five constructs — all circling the same underlying object, none acknowledging the others.</p>
-<p>The consequence is not academic. A developer operating in twelve states faces twelve overlapping definitions of the same thing, which is an argument for federal preemption that the industry will make and that a clearly stated functional definition would answer better.</p>
-
-<h3>4. The same design property is put to opposite work</h3>
-<p>New York's Article 47 uses "asking unprompted or unsolicited emotion-based questions" as a <i>test for identifying</i> a companion. The Youth AI Privacy Act would <i>prohibit</i> unprompted outputs as a design feature. One makes proactive emotional questioning the trigger for regulation; the other bans it. Both are functional. They simply cannot both be right about what the property is for.</p>
-
-<h3>5. Enforcement design varies more than substance</h3>
-<p>The single most consequential variable in this corpus is not what a statute requires but who can sue. Connecticut is attorney-general only with no <span class="gl" data-gl="pra">private right of action</span>. Oregon carries a private right of action at $1,000 per violation. New York's enacted Article 47 is AG-only; its Assembly twin A6767 is substantively identical but lets harmed individuals sue. And the Youth AI Privacy Act's private right of action was stripped in the 5 August 2026 markup. Two statutes with identical operative text and different enforcement routes are, in practice, different laws.</p>
-
-<h2>The gaps — what no legislation does</h2>
-
-<div class="card gap"><h4>No <span class="gl" data-gl="retention">cap on memory</span> anywhere in the corpus</h4><p>Persistent memory is the feature most heavily advertised by the products and the one most central to making an exchange feel like an accumulating relationship. <b>Not one piece of legislation in this corpus — enacted, moving or proposed — caps it.</b> Two come closest and neither arrives. Illinois SB 3262 makes persistent memory the rebuttable <i>trigger</i> for its regime, which constrains nothing about retention. The Youth AI Privacy Act limits the data a deployer may <i>process</i> to personalise outputs, session-scoped and within an FTC-set recency window — a limit on personalisation, not on how long the record of a conversation may be kept. A cap on memory would state a retention period. Nothing states one.</p></div>
-
-<div class="card gap"><h4>No limit on duration anywhere</h4><p>No session cap, no cooling-off period after extended use, no overnight restriction for minors, in any of the jurisdictions surveyed. Constant availability is one of the four functions and it is regulated exclusively by reminder.</p></div>
-
-<div class="card gap"><h4>Nothing addresses re-engagement using retained emotional disclosures</h4><p>Illinois bars <i>simulated distress</i> deployed when a user tries to leave. China requires intervention on detected dependency. But no legislation, enacted or proposed, prohibits a system from using a child's actual retained disclosures — the breakup, the diagnosis, the fight with a parent — to draw a lapsed user back. This is the sharpest unoccupied space in the corpus.</p></div>
-
-<div class="card gap"><h4>No duty to investigate causation</h4><p>Numerous pieces of legislation require reporting how many users were referred to crisis resources. Illinois and California SB 1119 would require a third-party compliance audit. <b>Not one requires a company to test whether its own design choices produce the crises it is counting.</b> That asymmetry lets a company demonstrate compliance while remaining structurally incurious about causation. It is the clearest gap in the entire landscape and the one where a research institution has the most to contribute.</p></div>
-
-<div class="card partial"><h4>Protection often stops at eighteen</h4><p>Most legislation covers minors only. On the current trajectory an adult using a product designed to simulate emotional dependence has no protection from a design property prohibited when the user is seventeen. Notably, the legislation that covers all users — New York, Illinois, Kansas, the People-First Chatbot Act, the EU AI Act, China — are disproportionately the ones that trigger functionally. Once the object is defined by what it does, restricting the remedy by user age becomes harder to justify.</p></div>
-
-<div class="card partial"><h4>The empathic / manipulative line remains undrawn</h4><p>Four state laws prohibit simulating emotional dependence without defining it. The People-First Chatbot Act defines it by the user's <i>state</i> — reliance as a primary source of support — which is measurable after the fact but offers a drafter no guidance on which features to constrain in advance. A functional definition does not dissolve this problem. It relocates it from "what kind of product is this" to "which behaviours count as manipulative", which is a better question but not an easy one.</p></div>
-
-<div class="card gap"><h4>The disclosure interval is a guess repeated</h4><p>Intervals in force or proposed run from every 30 minutes to every 3 hours to once per day — a sixfold spread with no stated rationale anywhere. Either the interval should be set from evidence about belief and attachment, or the mechanism should be recognised as expressive rather than protective and weighted accordingly.</p></div>
-
-<h2>What policymakers should know</h2>
-
-<div class="card"><h4>You are already regulating functionally — the problem is the qualifier, not the noun</h4><p>The most common misconception is that these laws target a special category of companion app while <span class="gl" data-gl="assistants">general assistants</span> go unregulated. As a matter of statutory text that is largely false. Most legislation defines its object by design features. California's may already reach ChatGPT on the face of its text. The gap is not between product-category drafting and functional drafting; it is between what has been <i>drafted</i> and what has been <i>passed</i>, and between a functional test and the carve-out that narrows it.</p></div>
-
-<div class="card"><h4>Industry lobbying tells you what the text actually reaches</h4><p>SIIA asked Virginia to add a safe harbour covering "customer-service chatbots, educational tutors, productivity assistants," arguing HB 635 is "currently broad enough to capture beneficial conversational AI systems." Lobbying to <i>add</i> a general-assistant exemption is direct evidence that one is currently absent. When in doubt about whether a definition reaches assistants, read the comment letters.</p></div>
-
-<div class="card"><h4>Reach sits in the verb phrase, not the vocabulary</h4><p>The CHAT Act and the federal discussion draft build their definitions from the same four limbs — interpersonal or emotional interaction, friendship, companionship, therapeutic communication. The CHAT Act gates them on "exists for the primary purpose of." The draft gates them on "is designed to encourage or facilitate the simulation of." One word-list, two verb phrases, opposite reach. Anyone assessing a bill should read the gating clause before the defined term.</p></div>
-
-<div class="card"><h4>Three drafting routes exist, and the third is underused</h4><p>A <b class="gl" data-gl="test:capability">capability</b> test asks what the system can do (California, Illinois). A <b class="gl" data-gl="test:purpose">purpose</b> test asks what it was built for (Oregon, CHAT Act). Kansas SB 405 and Tennessee SB 1493 show a third: trigger on the <b class="gl" data-gl="test:training">training objective</b> — prohibiting the training of systems designed to act as a companion, provide emotional support, or impersonate a sentient being. It is easier to evidence than deployed behaviour and much harder to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for. The two are near-textual twins that agree on the trigger and disagree completely on the consequence: Kansas civil liability, Tennessee a Class A felony.</p></div>
-
-<div class="card"><h4>China is now ahead of the United States on in-force scope</h4><p>The CAC measures took effect 15 July 2026. They are the only framework anywhere requiring a human to take over a conversation on explicit suicide risk and to contact a guardian, the only one requiring real-time dependency detection with dynamic reminders, and among the few reaching all users rather than minors alone. Whatever one thinks of the wider regulatory context, the design-level ambition is higher than anything enacted in the US — and it arrives at the same use-based carve-out California chose, by a different route.</p></div>
-
-<div class="card"><h4>The EU shows the object can be named without a product category</h4><p>AI Act Article 5 prohibits a technique joined to an effect and never mentions a chatbot. It is proof of concept that the regulatory object is specifiable without deciding what a companion is. The cost is that no companion-specific machinery follows from it — the Digital Fairness Act and the Parliament's minors report are where that detail is being worked out.</p></div>
-
-<h2>Five recommendations</h2>
+<p><b>“Reaches assistants” is an interpretive judgement about statutory language, not an observation about the
+world.</b> Nobody has litigated most of these definitions, and a court could read any of them differently. The
+five values mean:</p>
 <ul>
-  <li><b>Adopt Illinois's formula.</b> A definition that applies "irrespective of how the system is marketed or labeled," paired with the rebuttable memory presumption, forecloses the classification move companies already make.</li>
-  <li><b>Prefer the least gameable narrowing device.</b> Some narrowing is needed or the definition reaches every conversational interface. A use-based carve-out is the least gameable of the three in circulation. Replace marketing-based exemptions; drop the purpose-primacy gate.</li>
-  <li><b>Regulate memory as trigger <i>and</i> constraint — and note that the constraint has no model to copy.</b> Illinois's presumption supplies the trigger. For the constraint there is no precedent in this corpus to adapt: a drafter has to write the retention period, and the nearest analogue, the Youth AI Privacy Act's session-scoped personalisation limit, governs processing rather than retention. Add to it the prohibition nobody has written either, on using retained emotional disclosures for re-engagement.</li>
-  <li><b>Constrain availability, do not merely annotate it.</b> Pair the Youth AI Privacy Act's feature list, the most granular design regulation in the corpus, with a duration limit, which nothing yet attempts. The feature-level half is the better-supported half; a drafter should be honest that the evidence does not yet say where to put a numerical threshold.</li>
-  <li><b>Require research on design against harm.</b> Convert the reporting mechanism from an output count into a research obligation: a duty to test, and publish, the relationship between engagement-optimising features and harm outcomes. This is a gap in the whole landscape rather than a preference between existing options, and it is where an academic institution can be most useful.</li>
+  ${REACHV.map(v=>`<li><span class="reach r-${v}" data-gl="r:${v}">${v}</span> (${plural(nReach(v),"record")}) —
+    ${esc((GLOSSARY["r:"+v]||{}).d||"")}</li>`).join("")}
 </ul>
+<p>The mechanism coding is a different kind of claim and a firmer one: it records whether an instrument imposes
+an obligation of a given kind, not how demanding that obligation is. Two records carrying the same mechanism
+may be very far apart in what they require, and the panel for that mechanism is where the wording can be
+compared.</p>
+
+<h2>What this tracker will not do for you</h2>
+<div class="card"><h4>It is not compliance advice</h4><p>The coding is a research instrument for comparing how
+  instruments define their object. It is not legal advice, it is not a compliance checklist, and no cell here
+  should be relied on for an operational decision. Read the source text — every record links to it — and take
+  advice on it.</p></div>
+<div class="card"><h4>It is not a status feed</h4><p>Statuses are re-verified on a review cycle, not
+  continuously, and a bill can move between cycles. For currency, the Future of Privacy Forum's chatbot
+  legislation tracker, MultiState and White &amp; Case's AI Watch are all better sources, and where any of them
+  disagrees with a status here, they are more likely to be right. Tell us, on the
+  <a href="https://github.com/joliver-commits/companion-ai-policy-tracker/issues" target="_blank" rel="noopener">issues page</a>,
+  and the record gets corrected.</p></div>
+<div class="card"><h4>It does not carry every bill that mentions a chatbot</h4><p>Inclusion has two limbs: the
+  instrument must be live — proposed, active or enacted, with dead, vetoed and superseded legislation deleted
+  rather than archived — and it must say something about the relationship between a system and its user, rather
+  than about AI outputs or AI decisions in general. A statute that catches a companion chatbot the same way it
+  catches a hiring algorithm is out of scope. Instruments checked against that second limb and excluded are
+  listed by name, with the reason, in the README's <i>Reviewed and excluded</i> table, so a reader can see they
+  were considered rather than missed.</p></div>
+<div class="card"><h4>It does not rank or score</h4><p>There is no index, no grade and no league table. The
+  mechanism count is a count. Nothing in the dataset asserts that one instrument is stronger, better drafted or
+  more advisable than another, and the ordering of any view is a sort key rather than a verdict.</p></div>
+
+<h2>Method, sources and corrections</h2>
+<p>The full method sits in the
+  <a href="https://github.com/joliver-commits/companion-ai-policy-tracker#readme" target="_blank" rel="noopener">repository README</a>:
+  the controlled vocabularies for every coded field, the inclusion and removal rules, how partial dates are
+  resolved, what each mechanism means and where the coding draws its line, and the review cadence. The record
+  shape and the coding conventions for a new entry are in CONTRIBUTING.md. Primary bill and statutory text is
+  the first source for every record; where it was not obtainable, legislative trackers and law-firm analyses
+  are, and the link on each record points at the best available reference for it.</p>
+<p><b>The two most useful things anyone can send.</b> First, <b>transcribed enrolled or introduced text</b> for
+  the ${pairs-transcribed} mechanism–instrument pairs still lacking wording — the operative sentence, with its
+  section number, for a mechanism a record already carries. Second, <b>the definitional clause and its
+  carve-out</b> for the ${plural(nUnclear,"record")} coded
+  <span class="reach r-unclear" data-gl="r:unclear">unclear</span> on reach and the ${nUnver} whose narrowing
+  device is unverified; those two clauses are what the reach coding is read from, and quoting them is what
+  turns a gap into a coding. Both go in as a pull request against <code>data.js</code>, or as an
+  <a href="https://github.com/joliver-commits/companion-ai-policy-tracker/issues" target="_blank" rel="noopener">issue</a>
+  with the text pasted in.</p>
+<p>Corrections to a coding are welcome on the same terms, with the clause you read it from. What is not needed
+  here is argument about the framework: the analysis this dataset was built for lives in the accompanying
+  paper, and this tracker documents its coding rather than reasoning from it.</p>
 `;
+})();
