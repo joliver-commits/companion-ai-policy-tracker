@@ -1029,8 +1029,8 @@ const GLOSSARY = {
     d:"The obligations apply only where the user is a minor. An adult using the same product on the same design gets nothing from this legislation."},
   "youth:duties":{t:"Minor-specific duties",
     d:"The legislation applies to all users but carries additional duties where the user is, or is believed to be, a minor."},
-  "youth:none":{t:"All users",
-    d:"Applies to every user with no minor-specific rules. Disproportionately the legislation that defines its object functionally."},
+  "youth:none":{t:"No minor-specific rules",
+    d:"Applies to every user, and asks nothing extra where the user is a minor. Not the same as running no youth filter at all: this selects the records that draw no line at eighteen, which is disproportionately the legislation that defines its object functionally."},
 
   /* ---- families of functional test ---- */
   "test:capability":{t:"Capability test",

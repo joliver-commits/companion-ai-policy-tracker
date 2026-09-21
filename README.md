@@ -61,7 +61,9 @@ Every count on the site is computed from `DATA` at render time, so a removal pro
 |---|---|---|
 | `only` | Minors only | Applies to minors only |
 | `duties` | Minor duties | Applies to all users, and carries duties specific to minors |
-| `none` | — | Applies to all users, with no minor-specific rules |
+| `none` | None | Applies to all users, with no minor-specific rules |
+
+The filter for `none` is labelled **No minor-specific rules**, not "All users": it selects the records that draw no line at eighteen, which is a narrower set than running no youth filter at all.
 
 Youth focus is filterable in the Legislation view and available as a stat tile. It is coded from the `scope` field and must stay consistent with it: if you change one, change the other. The split matters to the analysis — the legislation that covers all users is disproportionately the legislation that triggers functionally.
 
@@ -199,7 +201,7 @@ A record looks like this:
 }
 ```
 
-`statusClass` must be one of `law`, `moving`, `pending`, `stalled` — it drives the status dot colour and the sort order. `youth` must be one of `only`, `duties`, `none`. `reaches` must be one of `yes`, `arguably`, `partial`, `no`, `unclear`. Mechanism keys must match the `MECHS` list at the top of `data.js` exactly, and must each belong to a cluster in `MECHGROUPS`, or the matrix will silently drop them. `chron.first` and `chron.latest` are required and must read `YYYY`, `YYYY-MM` or `YYYY-MM-DD`; `chron.effective` is optional and takes the same form. Keep `chron` consistent with the human-readable `dates` string: if you change one, change the other. Wording for each mechanism goes in the `PHRASING` map at the foot of the file, not in the record. Add `key:true` to pending legislation that the analysis relies on, so it appears in the instrument × mechanism matrix alongside enacted and moving law.
+`statusClass` must be one of `law`, `moving`, `pending`, `stalled` — it is the category the Status column leads with, and it drives the sort order. `youth` must be one of `only`, `duties`, `none`. `reaches` must be one of `yes`, `arguably`, `partial`, `no`, `unclear`. Mechanism keys must match the `MECHS` list at the top of `data.js` exactly, and must each belong to a cluster in `MECHGROUPS`, or the matrix will silently drop them. `chron.first` and `chron.latest` are required and must read `YYYY`, `YYYY-MM` or `YYYY-MM-DD`; `chron.effective` is optional and takes the same form. Keep `chron` consistent with the human-readable `dates` string: if you change one, change the other. Wording for each mechanism goes in the `PHRASING` map at the foot of the file, not in the record. Add `key:true` to pending legislation that the analysis relies on, so it appears in the instrument × mechanism matrix alongside enacted and moving law.
 
 When a piece of legislation dies, delete its record and add a row to the removal table above.
 

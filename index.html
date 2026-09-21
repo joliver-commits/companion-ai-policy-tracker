@@ -8,18 +8,28 @@
 :root{
   color-scheme: light;
   --surface-1:#fcfcfb; --page:#f9f9f7;
-  --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#747063;
   --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
   --j-fed:#2a78d6; --j-state:#eb6834; --j-eu:#1baf7a; --j-cn:#4a3aa7;
   --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --critical:#d03b3b; --youth:#9c3f96;
+  /* TEXT tokens. The tokens above colour fills, bars and rules, where WCAG
+     asks 3:1; these colour small text, where it asks 4.5:1, and every one
+     below clears it against the surface or tint it actually sits on. Use a
+     --t-* token wherever a colour lands on type. */
+  --t-good:#068506; --t-warn:#966600; --t-serious:#ca4511; --t-critical:#d63535;
+  --t-fed:#1d64ba; --t-state:#b53c0d; --t-eu:#0e7450; --t-cn:#4634ad; --t-youth:#9e3897;
+  --t-link:#1c5cab;
   --seq-100:#cde2fb; --seq-250:#86b6ef; --seq-400:#3987e5; --seq-550:#1c5cab; --seq-700:#0d366b;
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
   --surface-1:#1a1a19; --page:#0d0d0d;
-  --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+  --ink:#ffffff; --ink-2:#c3c2b7; --muted:#95948e;
   --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
   --j-fed:#3987e5; --j-state:#d95926; --j-eu:#199e70; --j-cn:#9085e9; --youth:#e08cd8;
+  --t-good:#0ca30c; --t-warn:#fab219; --t-serious:#ec835a; --t-critical:#d85c5c;
+  --t-fed:#5095e8; --t-state:#e58d6a; --t-eu:#1bab79; --t-cn:#9489ea; --t-youth:#e08cd8;
+  --t-link:#5598e7;
   --seq-100:#0d366b; --seq-250:#184f95; --seq-400:#2a78d6; --seq-550:#5598e7; --seq-700:#9ec5f4;
 }
 *{box-sizing:border-box}
@@ -75,9 +85,8 @@ input[type=search]{min-width:280px;flex:1}
   background:var(--page);color:var(--ink-2);cursor:pointer
 }
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--surface-1);border-color:var(--ink)}
-.chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
 .count{color:var(--muted);font-size:13px;margin:0 0 10px}
-.clear{background:none;border:none;color:var(--seq-400);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline}
+.clear{background:none;border:none;color:var(--t-link);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline}
 
 /* table */
 table{width:100%;border-collapse:collapse;background:var(--surface-1);border:1px solid var(--ring);border-radius:12px;overflow:hidden}
@@ -94,21 +103,18 @@ tr.row:hover td{background:rgba(0,0,0,.022)}
 .nm{font-weight:600}
 .cite{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
 .badge{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:5px;white-space:nowrap;font-weight:600}
-.j-fed{background:color-mix(in srgb,var(--j-fed) 15%,transparent);color:var(--j-fed)}
-.j-state{background:color-mix(in srgb,var(--j-state) 15%,transparent);color:var(--j-state)}
-.j-eu{background:color-mix(in srgb,var(--j-eu) 17%,transparent);color:var(--j-eu)}
-.j-cn{background:color-mix(in srgb,var(--j-cn) 15%,transparent);color:var(--j-cn)}
-.st{display:inline-flex;align-items:center;gap:5px;font-size:13px}
-.st::before{content:"";width:8px;height:8px;border-radius:50%;flex:none}
-.st.law::before{background:var(--good)} .st.moving::before{background:var(--seq-400)}
-.st.pending::before{background:var(--warn)} .st.stalled::before{background:var(--serious)}
-.st.dead::before{background:var(--critical)}
+.j-fed{background:color-mix(in srgb,var(--j-fed) 15%,transparent);color:var(--t-fed)}
+.j-state{background:color-mix(in srgb,var(--j-state) 15%,transparent);color:var(--t-state)}
+.j-eu{background:color-mix(in srgb,var(--j-eu) 17%,transparent);color:var(--t-eu)}
+.j-cn{background:color-mix(in srgb,var(--j-cn) 15%,transparent);color:var(--t-cn)}
+.st{font-size:13px}
+.st .sq{color:var(--ink-2);font-size:12.5px}
 .reach{font-size:12.5px;font-weight:600}
-.r-yes{color:var(--good)} .r-arguably{color:var(--warn)} .r-partial{color:var(--serious)}
-.r-no{color:var(--critical)} .r-unclear{color:var(--muted)}
+.r-yes{color:var(--t-good)} .r-arguably{color:var(--t-warn)} .r-partial{color:var(--t-serious)}
+.r-no{color:var(--t-critical)} .r-unclear{color:var(--muted)}
 .conf{font-size:11px;padding:1px 6px;border-radius:4px;border:1px solid var(--axis);color:var(--muted)}
-.conf.verified{border-color:var(--good);color:var(--good)}
-.conf.provisional{border-color:var(--serious);color:var(--serious)}
+.conf.verified{border-color:var(--good);color:var(--t-good)}
+.conf.provisional{border-color:var(--serious);color:var(--t-serious)}
 
 /* detail */
 tr.detail td{background:var(--page);padding:0}
@@ -124,7 +130,7 @@ tr.detail td{background:var(--page);padding:0}
 .mtag:hover{background:color-mix(in srgb,var(--seq-400) 22%,transparent)}
 .mtag:focus-visible{outline:2px solid var(--seq-400);outline-offset:1px}
 :root[data-theme="dark"] .mtag{color:var(--seq-700)}
-.dlink{font-size:13px;color:var(--seq-400)}
+.dlink{font-size:13px;color:var(--t-link)}
 
 /* matrix */
 .mx{width:100%;border-collapse:separate;border-spacing:2px;font-size:12.5px}
@@ -132,6 +138,9 @@ tr.detail td{background:var(--page);padding:0}
 .mx th.rot .badge{max-width:190px;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:-3px}
 .mx td{padding:0;border:none}
 .cellbox{height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.cellbox.on{background:var(--seq-550);color:#fff}
+:root[data-theme="dark"] .cellbox.on{color:#0d0d0d}
+.cellbox.off{background:var(--grid);color:transparent}
 .mx th.colh{writing-mode:vertical-rl;transform:rotate(180deg);height:150px;padding:6px 2px;font-size:10.5px;line-height:1.25;
   text-transform:none;letter-spacing:0;cursor:default;text-align:left;vertical-align:bottom}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin:14px 0 4px;align-items:center}
@@ -139,8 +148,8 @@ tr.detail td{background:var(--page);padding:0}
 
 /* youth focus */
 .yb{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:5px;white-space:nowrap;font-weight:600}
-.yb.only{background:color-mix(in srgb,var(--youth) 16%,transparent);color:var(--youth)}
-.yb.duties{background:color-mix(in srgb,var(--youth) 9%,transparent);color:var(--youth);font-weight:500}
+.yb.only{background:color-mix(in srgb,var(--youth) 16%,transparent);color:var(--t-youth)}
+.yb.duties{background:color-mix(in srgb,var(--youth) 9%,transparent);color:var(--t-youth);font-weight:500}
 .yb.none{color:var(--muted);font-weight:400;padding-left:0}
 
 /* bars */
@@ -157,7 +166,7 @@ tr.detail td{background:var(--page);padding:0}
 .bfill{height:100%;border-radius:0 4px 4px 0;background:var(--seq-400)}
 .bfill.zero{background:var(--critical)}
 .bar .bv{font-size:13px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-2)}
-.bar .bc{font-size:10px;color:var(--muted);transition:transform .12s ease}
+.bar .bc{font-size:10px;color:var(--ink-2);transition:transform .12s ease}
 .bar[aria-expanded="true"] .bc{transform:rotate(90deg)}
 
 /* mechanism drill-down */
@@ -180,8 +189,8 @@ tr.detail td{background:var(--page);padding:0}
 .mp-todo{font-size:13px;color:var(--muted);margin:0}
 .prov{font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:1px 6px;border-radius:4px;
   border:1px solid var(--axis);color:var(--muted);white-space:nowrap}
-.prov.quote{border-color:var(--good);color:var(--good)}
-.prov.summary{border-color:var(--warn);color:var(--serious)}
+.prov.quote{border-color:var(--good);color:var(--t-good)}
+.prov.summary{border-color:var(--warn);color:var(--t-serious)}
 .mp-key{font-size:12px;color:var(--muted);margin:14px 0 0;padding:10px 0 4px;border-top:1px solid var(--grid)}
 
 /* glossary tooltips */
@@ -242,7 +251,7 @@ td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
 .bghd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 9px;padding-left:6px}
 .bgt{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 .bgn{font-size:12px;color:var(--muted)}
-.bgf{background:none;border:none;font:inherit;font-size:12px;color:var(--seq-400);cursor:pointer;padding:0}
+.bgf{background:none;border:none;font:inherit;font-size:12px;color:var(--t-link);cursor:pointer;padding:0}
 .bgf:hover{text-decoration:underline}
 
 /* matrix cluster bands */
@@ -257,7 +266,7 @@ td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
 /* mechanism panel — cluster line */
 .mp-grp{margin:0 0 4px}
 .mp-gb{background:none;border:none;padding:0;font:inherit;font-size:11px;text-transform:uppercase;
-  letter-spacing:.05em;color:var(--seq-400);cursor:pointer}
+  letter-spacing:.05em;color:var(--t-link);cursor:pointer}
 .mp-gb:hover{text-decoration:underline}
 
 /* prose */
@@ -295,7 +304,7 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
     <button class="themebtn" id="themebtn">Dark</button>
     <h1>Companion AI Policy Tracker</h1>
     <p class="sub">United States federal and state · European Union · China — legislation regulating AI companions and conversational systems.</p>
-    <p class="stamp">Berkman Klein Center for Internet &amp; Society, Harvard University · <b>last verified 9 September 2026</b> · <a href="https://github.com/joliver-commits/companion-ai-policy-tracker" style="color:var(--seq-400)">source &amp; contributions on GitHub</a></p>
+    <p class="stamp">Berkman Klein Center for Internet &amp; Society, Harvard University · <b>last verified 9 September 2026</b> · <a href="https://github.com/joliver-commits/companion-ai-policy-tracker" style="color:var(--t-link)">source &amp; contributions on GitHub</a></p>
     <div class="tiles" id="tiles"></div>
     <nav class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-v="legislation">Legislation</button>
@@ -391,9 +400,9 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
 <footer style="border-top:1px solid var(--grid);margin-top:48px;padding:20px 0;color:var(--muted);font-size:13px">
 An open research dataset covering proposed, active and enacted policy; legislation that dies, is vetoed or goes
 inactive is removed. Method, coding definitions, sources and review cadence are documented in the
-<a href="https://github.com/joliver-commits/companion-ai-policy-tracker#readme" style="color:var(--seq-400)">repository README</a>.
+<a href="https://github.com/joliver-commits/companion-ai-policy-tracker#readme" style="color:var(--t-link)">repository README</a>.
 Corrections and additions welcome via
-<a href="https://github.com/joliver-commits/companion-ai-policy-tracker/issues" style="color:var(--seq-400)">GitHub issues</a>
+<a href="https://github.com/joliver-commits/companion-ai-policy-tracker/issues" style="color:var(--t-link)">GitHub issues</a>
 or pull request. Licensed CC BY 4.0 (data &amp; text) and MIT (code).
 </footer>
 </div>
