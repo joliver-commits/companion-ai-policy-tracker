@@ -1,4 +1,4 @@
-const JCLASS={"US Federal":"j-fed","US State":"j-state","EU":"j-eu","China":"j-cn"};
+const JCLASS={"US Federal":"j-fed","US State":"j-state"};
 const MMAP=Object.fromEntries(MECHS);
 const STATUSES=["law","moving","pending","stalled"];
 const SLABEL={law:"Enacted / in force",moving:"Moving",pending:"Pending",stalled:"Stalled"};
@@ -59,6 +59,7 @@ function stamp(v){
   return y*10000+m*100+d;
 }
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTHS_FULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
 function dateLabel(v){
   if(!v)return "—";
   const p=String(v).split("-");
@@ -90,7 +91,9 @@ const SOPT=Object.fromEntries(SORTOPTS.map(o=>[o.k,o]));
 /* a date sort opens newest-first, everything else opens ascending */
 const defaultDir=k=>SOPT[k]&&SOPT[k].date?-1:1;
 
-const state={q:"",j:new Set(),s:new Set(),y:new Set(),m:"",r:"",sort:"status",dir:1,open:new Set(),tile:null,mech:null};
+const state={q:"",j:new Set(),s:new Set(),y:new Set(),m:"",r:"",sort:"status",dir:1,open:new Set(),tile:null,mech:null,
+  /* timeline: reading direction, and which kinds of event are shown */
+  tldir:-1, tlk:new Set(["first","latest","effective"])};
 
 const el=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -193,8 +196,6 @@ const TILES=[
   {v:nStatus("moving"), l:"Moving", hint:"Filter", tip:"Filter to legislation that has advanced out of committee or passed a chamber", f:{s:["moving"]}},
   {v:DATA.filter(d=>d.youth==="only").length, l:"Youth-specific", hint:"Filter", youth:true,
    tip:"Filter to legislation that applies to minors only", f:{y:["only"]}},
-  {v:DATA.filter(d=>d.mechs.includes("memory")).length, l:"Cap memory", hint:"Filter", alert:true,
-   tip:"No legislation in the corpus caps memory — see Mechanism coverage for the two that come closest", f:{m:"memory"}},
   {v:DATA.filter(d=>d.mechs.includes("causation")).length, l:"Duty to test design", hint:"Filter", alert:true,
    tip:"Filter to legislation imposing a duty to test the provider's own design against harm", f:{m:"causation"}}
 ];
@@ -205,6 +206,7 @@ el("tiles").innerHTML=TILES.map((t,i)=>
      <div class="h">${esc(t.hint)} →</div>
    </button>`).join("");
 const nt=el("ntotal"); if(nt) nt.textContent=DATA.length;
+const nss=el("sum-states"); if(nss) nss.textContent=new Set(stateLaw.map(d=>d.body)).size;
 
 el("tiles").onclick=e=>{
   const b=e.target.closest("[data-t]"); if(!b)return;
@@ -354,6 +356,7 @@ function render(){
   const rows=DATA.filter(match).sort(compare);
   paintTiles();
   syncSort();
+  renderTimeline(rows);   /* same filtered set, read as dated actions */
   const o=SOPT[state.sort]||{l:state.sort};
   el("count").innerHTML=`${rows.length} of ${DATA.length} pieces of legislation · sorted by `+
     `${esc(o.l.toLowerCase())}, ${esc((state.dir===1?o.asc:o.desc)||"").toLowerCase()}`;
@@ -437,6 +440,120 @@ function detail(d){
     <a class="dlink" href="${d.link}" target="_blank" rel="noopener">Source ↗</a>
   </div></td></tr>`;
 }
+
+
+/* ---------- timeline ----------
+   One row per dated EVENT rather than per record, so a bill that was
+   introduced in January, passed in June and bites in 2027 appears three
+   times, where it belongs. Grouping is by year and then by month, and
+   year-only dates get their own bucket inside the year instead of being
+   placed in a month the source does not actually support. */
+const TLKINDS=[
+  ["first",     "First action"],
+  ["latest",    "Latest action"],
+  ["effective", "Takes effect"]
+];
+const NOWSTAMP=(()=>{const n=new Date();
+  return n.getFullYear()*10000+(n.getMonth()+1)*100+n.getDate();})();
+
+function tlEvents(rows){
+  const ev=[];
+  rows.forEach(d=>{
+    const c=d.chron||{};
+    const same=c.first&&c.latest&&c.first===c.latest;
+    if(c.first)
+      ev.push({d, date:c.first, kinds:same?["first","latest"]:["first"],
+               cls:same?"latest":"first", label:same?statusText(d):"First action"});
+    if(c.latest&&!same)
+      ev.push({d, date:c.latest, kinds:["latest"], cls:"latest", label:statusText(d)});
+    if(c.effective)
+      ev.push({d, date:c.effective, kinds:["effective"], cls:"effective",
+               label:d.statusClass==="law"?"Takes effect":"Would take effect"});
+  });
+  return ev;
+}
+function tlItem(e){
+  const d=e.d, st=stamp(e.date), up=st>NOWSTAMP, prec=datePrec(e.date);
+  return `<li class="tl-item k-${e.cls}${up?" upcoming":""}">
+    <div class="tl-top">
+      <span class="tl-date${prec<3?" approx":""}"${prec<3?' data-gl="datePrecision"':''}>${esc(dateLabel(e.date))}</span>
+      <span class="tl-kind k-${e.cls}">${esc(e.label)}</span>
+      ${up?'<span class="tl-up">upcoming</span>':""}
+    </div>
+    <button type="button" class="tl-title" data-open="${esc(d.id)}">${esc(d.name)}</button>
+    <div class="tl-meta">
+      <span class="badge ${JCLASS[d.juris]}" data-gl="juris">${esc(d.body)}</span>
+      <span class="cite">${esc(d.cite)}</span>
+      ${e.cls==="latest"?"":statusHTML(d)}
+      ${d.youth==="none"?"":`<span class="yb ${d.youth}" data-gl="youth:${d.youth}">${esc(YSHORT[d.youth])}</span>`}
+    </div>
+  </li>`;
+}
+function renderTimeline(rows){
+  const dir=state.tldir;
+  const ev=tlEvents(rows).filter(e=>e.kinds.some(k=>state.tlk.has(k)))
+    .sort((a,b)=>(stamp(a.date)-stamp(b.date))*dir);
+  const nUp=ev.filter(e=>stamp(e.date)>NOWSTAMP).length;
+  el("tlsum").textContent=ev.length
+    ? `${ev.length} dated ${ev.length===1?"action":"actions"} across ${rows.length} of ${DATA.length} pieces of legislation`+
+      (nUp?` · ${nUp} still to come`:"")
+    : "";
+  if(!ev.length){
+    el("tl").innerHTML=`<p class="tl-empty">No dated actions match these filters.</p>`;
+    return;
+  }
+  /* year -> month key -> events; "" is the bucket for year-only dates */
+  const years=new Map();
+  ev.forEach(e=>{
+    const p=String(e.date).split("-"), y=p[0], mo=p.length>1?p[1]:"";
+    if(!years.has(y))years.set(y,new Map());
+    const ms=years.get(y);
+    if(!ms.has(mo))ms.set(mo,[]);
+    ms.get(mo).push(e);
+  });
+  el("tl").innerHTML=[...years.keys()].map(y=>{
+    const ms=years.get(y);
+    /* months in reading order; the undated bucket always sits last */
+    const keys=[...ms.keys()].filter(k=>k).sort((a,b)=>(+a-+b)*dir);
+    if(ms.has(""))keys.push("");
+    const n=[...ms.values()].reduce((t,l)=>t+l.length,0);
+    return `<section class="tl-year">
+      <h2 class="tl-year-h">${esc(y)}<span class="n">${n} ${n===1?"action":"actions"}</span></h2>
+      ${keys.map(mo=>`<div class="tl-month">
+        <h3>${mo?esc(MONTHS_FULL[+mo-1]):"Month not recorded"}</h3>
+        <ol class="tl-list">${ms.get(mo).map(tlItem).join("")}</ol>
+      </div>`).join("")}
+    </section>`;
+  }).join("");
+}
+
+/* controls */
+el("tldir").innerHTML=[[-1,"Newest first"],[1,"Oldest first"]].map(([v,l])=>
+  `<button class="chip" data-dir="${v}" aria-pressed="${v===-1}">${l}</button>`).join("");
+el("tlk").innerHTML=TLKINDS.map(([k,l])=>
+  `<button class="chip" data-k="${k}" aria-pressed="true">${esc(l)}</button>`).join("");
+el("tldir").onclick=e=>{const b=e.target.closest("[data-dir]"); if(!b)return;
+  state.tldir=+b.dataset.dir;
+  document.querySelectorAll("#tldir [data-dir]").forEach(x=>x.setAttribute("aria-pressed",String(+x.dataset.dir===state.tldir)));
+  render();};
+el("tlk").onclick=e=>{const b=e.target.closest("[data-k]"); if(!b)return;
+  const k=b.dataset.k;
+  /* never leave every kind off — the last one on stays on */
+  if(state.tlk.has(k)&&state.tlk.size>1)state.tlk.delete(k); else state.tlk.add(k);
+  b.setAttribute("aria-pressed",String(state.tlk.has(k)));
+  render();};
+el("tlclear").onclick=()=>{resetFilters();syncControls();render();};
+
+/* a title in the timeline opens that record on the Legislation tab */
+el("tl").addEventListener("click",e=>{
+  const b=e.target.closest("[data-open]"); if(!b)return;
+  const id=b.dataset.open;
+  state.open.add(id);
+  showView("legislation");
+  render();
+  const row=document.querySelector(`#tb tr.row[data-id="${id}"]`);
+  if(row)row.scrollIntoView({behavior:"smooth",block:"center"});
+});
 
 /* ---------- coverage: clusters, then the mechanisms inside them ---------- */
 (function(){
@@ -711,7 +828,7 @@ three fields, and any one of them read alone gives a different answer from the r
 <h2>What this tracker is</h2>
 <p>A coded dataset of ${n} pieces of legislation regulating AI companions and conversational systems:
 ${jurisLine}. By status, that is ${statusLine}. Enacted law sits in ${nStates} US states
-(${stLaw.length} records), plus the EU and China.</p>
+(${stLaw.length} records) alongside the federal bills still in motion.</p>
 <p>Other trackers answer two questions well: what stage a bill has reached, and what it obliges an operator to
 do. This one records a third thing. For every instrument it codes the <b class="gl" data-gl="term">term</b> the
 text uses for the thing it regulates, the <b class="gl" data-gl="test">test</b> that decides what falls inside

@@ -10,14 +10,14 @@
   --surface-1:#fcfcfb; --page:#f9f9f7;
   --ink:#0b0b0b; --ink-2:#52514e; --muted:#747063;
   --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
-  --j-fed:#2a78d6; --j-state:#eb6834; --j-eu:#1baf7a; --j-cn:#4a3aa7;
+  --j-fed:#2a78d6; --j-state:#eb6834;
   --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --critical:#d03b3b; --youth:#9c3f96;
   /* TEXT tokens. The tokens above colour fills, bars and rules, where WCAG
      asks 3:1; these colour small text, where it asks 4.5:1, and every one
      below clears it against the surface or tint it actually sits on. Use a
      --t-* token wherever a colour lands on type. */
   --t-good:#068506; --t-serious:#ca4511; --t-critical:#d63535;
-  --t-fed:#1d64ba; --t-state:#b53c0d; --t-eu:#0e7450; --t-cn:#4634ad; --t-youth:#9e3897;
+  --t-fed:#1d64ba; --t-state:#b53c0d; --t-youth:#9e3897;
   --t-link:#1c5cab;
   --seq-100:#cde2fb; --seq-250:#86b6ef; --seq-400:#3987e5; --seq-550:#1c5cab; --seq-700:#0d366b;
 }
@@ -26,9 +26,9 @@
   --surface-1:#1a1a19; --page:#0d0d0d;
   --ink:#ffffff; --ink-2:#c3c2b7; --muted:#95948e;
   --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
-  --j-fed:#3987e5; --j-state:#d95926; --j-eu:#199e70; --j-cn:#9085e9; --youth:#e08cd8;
+  --j-fed:#3987e5; --j-state:#d95926; --youth:#e08cd8;
   --t-good:#0ca30c; --t-serious:#ec835a; --t-critical:#d85c5c;
-  --t-fed:#5095e8; --t-state:#e58d6a; --t-eu:#1bab79; --t-cn:#9489ea; --t-youth:#e08cd8;
+  --t-fed:#5095e8; --t-state:#e58d6a; --t-youth:#e08cd8;
   --t-link:#5598e7;
   --seq-100:#0d366b; --seq-250:#184f95; --seq-400:#2a78d6; --seq-550:#5598e7; --seq-700:#9ec5f4;
 }
@@ -44,6 +44,10 @@ header.top{background:var(--surface-1);border-bottom:1px solid var(--grid);paddi
 h1{font-size:26px;margin:0 0 4px;letter-spacing:-0.01em}
 .sub{color:var(--ink-2);font-size:14px;margin:0 0 2px}
 .stamp{color:var(--muted);font-size:12.5px;margin:6px 0 20px}
+.standfirst{max-width:78ch;margin:12px 0 4px}
+.standfirst p{margin:0 0 8px;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.standfirst p b{color:var(--ink)}
+.standfirst .byline{font-size:13px;color:var(--muted)}
 .tiles{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
 .tile{
   background:var(--page);border:1px solid var(--ring);border-radius:10px;padding:10px 14px;min-width:112px;
@@ -105,8 +109,6 @@ tr.row:hover td{background:rgba(0,0,0,.022)}
 .badge{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:5px;white-space:nowrap;font-weight:600}
 .j-fed{background:color-mix(in srgb,var(--j-fed) 15%,transparent);color:var(--t-fed)}
 .j-state{background:color-mix(in srgb,var(--j-state) 15%,transparent);color:var(--t-state)}
-.j-eu{background:color-mix(in srgb,var(--j-eu) 17%,transparent);color:var(--t-eu)}
-.j-cn{background:color-mix(in srgb,var(--j-cn) 15%,transparent);color:var(--t-cn)}
 .st{font-size:13px}
 .st .sq{color:var(--ink-2);font-size:12.5px}
 .reach{font-size:12.5px;font-weight:600}
@@ -272,6 +274,40 @@ td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
   letter-spacing:.05em;color:var(--t-link);cursor:pointer}
 .mp-gb:hover{text-decoration:underline}
 
+/* timeline */
+.tl-sum{color:var(--muted);font-size:13px;margin:0 0 4px}
+.tl-year{margin:0}
+.tl-year-h{font-size:21px;margin:26px 0 2px;letter-spacing:-0.01em;border-bottom:1px solid var(--grid);padding-bottom:7px}
+.tl-year-h .n{font-size:12.5px;color:var(--muted);font-weight:400;letter-spacing:0;margin-left:8px}
+.tl-month{margin:16px 0 0}
+.tl-month h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 4px;font-weight:600}
+.tl-list{list-style:none;margin:0;padding:0 0 0 20px;border-left:2px solid var(--grid)}
+.tl-item{position:relative;padding:9px 0 11px 14px}
+.tl-item + .tl-item{border-top:1px solid var(--grid)}
+.tl-item::before{content:"";position:absolute;left:-27px;top:15px;width:9px;height:9px;border-radius:50%;
+  background:var(--axis);box-shadow:0 0 0 3px var(--page)}
+.tl-item.k-effective::before{background:var(--seq-400)}
+.tl-item.upcoming::before{background:var(--page);border:2px solid var(--seq-400);left:-28px;top:14px}
+.tl-top{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap}
+.tl-date{font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:600}
+.tl-date.approx{font-weight:400;color:var(--muted)}
+.tl-kind{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:5px;
+  border:1px solid var(--axis);color:var(--ink-2);white-space:nowrap}
+.tl-kind.k-effective{border-color:var(--seq-400);color:var(--seq-550)}
+:root[data-theme="dark"] .tl-kind.k-effective{color:var(--seq-700)}
+.tl-up{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--t-link);white-space:nowrap}
+.tl-title{display:block;font:inherit;font-size:14.5px;font-weight:600;background:none;border:none;
+  padding:3px 0 3px;color:var(--ink);text-align:left;cursor:pointer;max-width:80ch}
+.tl-title:hover{color:var(--t-link);text-decoration:underline}
+.tl-title:focus-visible{outline:2px solid var(--seq-400);outline-offset:2px}
+.tl-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2)}
+.tl-empty{color:var(--muted);font-size:14px;padding:18px 0}
+@media(max-width:620px){
+  .tl-list{padding-left:14px}
+  .tl-item::before{left:-21px}
+  .tl-item.upcoming::before{left:-22px}
+}
+
 /* prose */
 .prose{max-width:82ch}
 .prose h2{font-size:20px;margin:30px 0 10px;letter-spacing:-0.01em}
@@ -306,11 +342,17 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
   <div class="wrap">
     <button class="themebtn" id="themebtn">Dark</button>
     <h1>Companion AI Policy Tracker</h1>
-    <p class="sub">United States federal and state · European Union · China — legislation regulating AI companions and conversational systems.</p>
+    <p class="sub">United States federal and state legislation regulating AI companions and conversational systems.</p>
+    <div class="standfirst">
+      <p>Companion AI regulation went from a handful of introduced bills to a working body of law in about seventeen months: <span id="sum-states">—</span> US states now have an enacted chatbot or companion statute, and roughly half of those do not take effect until 2027, so the statute book today and the compliance picture in eighteen months are different documents.</p>
+      <p>Other trackers record what stage a bill has reached. This one codes the <b>definitional anatomy</b> of each policy: what it actually treats as a companion, what kind of test its definition asks, what device narrows it, and whether the result reaches the tools young people are already using.</p>
+      <p class="byline">Built by Jane Oliver during her summer internship at the Berkman Klein Center, alongside a paper on the definitional problem in companion AI, and released openly because the coding is more useful shared than held.</p>
+    </div>
     <p class="stamp">Berkman Klein Center for Internet &amp; Society, Harvard University · <b>last verified 9 September 2026</b> · <a href="https://github.com/joliver-commits/companion-ai-policy-tracker" style="color:var(--t-link)">source &amp; contributions on GitHub</a></p>
     <div class="tiles" id="tiles"></div>
     <nav class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-v="legislation">Legislation</button>
+      <button role="tab" aria-selected="false" data-v="timeline">Timeline</button>
       <button role="tab" aria-selected="false" data-v="coverage">Mechanism coverage</button>
       <button role="tab" aria-selected="false" data-v="definitions">Definitional anatomy</button>
       <button role="tab" aria-selected="false" data-v="howto">How to use this tracker</button>
@@ -373,6 +415,23 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
     </tr></thead>
     <tbody id="tb"></tbody>
   </table>
+</section>
+
+<section class="view" id="v-timeline">
+  <div class="prose">
+    <p style="color:var(--ink-2)">Every dated action in the corpus, newest first: when a bill was first introduced, the last thing that actually happened to it, and when its obligations start to bind. The jurisdiction, status, youth and mechanism filters on the Legislation tab apply here too.</p>
+  </div>
+  <div class="filters">
+    <div class="frow">
+      <span class="flab">Order</span>
+      <div id="tldir" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      <span class="flab" style="min-width:auto">Show</span>
+      <div id="tlk" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      <button class="clear" id="tlclear">Reset all filters</button>
+    </div>
+  </div>
+  <p class="tl-sum" id="tlsum"></p>
+  <div id="tl"></div>
 </section>
 
 <section class="view" id="v-coverage">
