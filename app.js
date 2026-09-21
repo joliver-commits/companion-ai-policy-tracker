@@ -318,7 +318,7 @@ function match(d){
   return true;
 }
 const SORDER={law:0,moving:1,pending:2,stalled:3,dead:4};
-const RORDER={yes:0,arguably:1,partial:2,no:3,unclear:4};
+const RORDER={yes:0,possibly:1,partial:2,no:3,unclear:4};
 function sortKey(d){
   switch(state.sort){
     case "juris":return d.juris+d.body;
@@ -647,7 +647,7 @@ render();
   const nPRA=DATA.filter(d=>d.enforce.some(e=>/private/i.test(e))).length;
   const jurisLine=Object.keys(JCLASS).map(j=>`${nJuris(j)} ${j}`).join(" · ");
   const statusLine=STATUSES.map(s=>`${nStatus(s)} ${SLABEL[s].toLowerCase()}`).join(" · ");
-  const REACHV=["yes","arguably","partial","no","unclear"];
+  const REACHV=["yes","possibly","partial","no","unclear"];
   /* the counts are computed, so the noun after one of them has to agree with whatever comes back */
   const plural=(v,w)=>`${v} ${w}${v===1?"":"s"}`;
   const ofAll=v=>`${v} of the ${n} records`;
@@ -678,8 +678,8 @@ three fields, and any one of them read alone gives a different answer from the r
       ${laterYears.join(" or ")}.`],
     ["Does any of this reach a general assistant?",
      `Use the <b>Reaches assistants</b> filter, or sort by that column. ${nReach("yes")} records are coded
-      <span class="reach r-yes">yes</span> and ${nReach("arguably")}
-      <span class="reach r-arguably">arguably</span>; ${nUnclear} are
+      <span class="reach r-yes">yes</span> and ${nReach("possibly")}
+      <span class="reach r-possibly">possibly</span>; ${nUnclear} are
       <span class="reach r-unclear">unclear</span> and have not been read against the enrolled text yet.
       The Definitional anatomy view puts the coding next to the term, test and carve-out it came from.`],
     ["Which laws cover adults, not just minors?",

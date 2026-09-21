@@ -255,11 +255,11 @@ const DATA = [
   youth:"duties",
   term:"Companion chatbot", test:"capability",
   testNote:"Natural-language interface providing adaptive, human-like responses and capable of meeting a user's social needs, including exhibiting anthropomorphic features and sustaining a relationship across multiple interactions",
-  narrowing:"Use carve-out gated on 'only'", reaches:"arguably",
+  narrowing:"Use carve-out gated on 'only'", reaches:"possibly",
   mechs:["disclosure","crisis","reporting","minorContent"],
   enforce:["State AG","District attorneys","Up to $2,500 per violation"],
   interval:"Every 3 hours for minors, with a break prompt",
-  note:"The carve-out excludes bots ‘used only for’ customer service, business operations, productivity, internal research or technical assistance. Reach is coded arguably on the strength of that word: a general assistant is not used only for those things, gives adaptive human-like responses, and sustains a relationship across sessions through memory, so one reading of the text puts it inside the definition and another puts it outside. Effective 1 January 2026. Enforced by the attorney general and district attorneys at up to $2,500 per violation, with a three-hour disclosure interval and break prompt for minors.",
+  note:"The carve-out excludes bots ‘used only for’ customer service, business operations, productivity, internal research or technical assistance. Reach is coded possibly on the strength of that word: a general assistant is not used only for those things, gives adaptive human-like responses, and sustains a relationship across sessions through memory, so one reading of the text puts it inside the definition and another puts it outside. Effective 1 January 2026. Enforced by the attorney general and district attorneys at up to $2,500 per violation, with a three-hour disclosure interval and break prompt for minors.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -271,11 +271,11 @@ const DATA = [
   youth:"none",
   term:"AI companion", test:"behaviour (three conjunctive prongs)",
   testNote:"Retains prior-interaction information and preferences to personalise and facilitate ongoing engagement; asks unprompted or unsolicited emotion-based questions beyond a direct response; sustains ongoing dialogue on matters personal to the user",
-  narrowing:"MARKETING carve-out + use carve-out", reaches:"arguably",
+  narrowing:"MARKETING carve-out + use carve-out", reaches:"possibly",
   mechs:["disclosure","crisis"],
   enforce:["State AG (public nuisance)"],
   interval:"At the start of interaction and no more than once per day thereafter",
-  note:"The only record in the corpus whose exemption turns expressly on marketing, and it pairs that with use-based exclusions. GBL § 1700(4)(c) carries three: ‘(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.’ Limb (2) is the only marketing-based exclusion in the dataset; limbs (1) and (3) are the same use-based device California, Oregon and China rely on. Reach is coded arguably rather than yes for a second reason as well: the test has three conjunctive prongs, and a general assistant most likely fails prong (ii), since it does not ask unprompted or unsolicited emotion-based questions. Effective 5 November 2025; attorney-general enforcement as a public nuisance.",
+  note:"The only record in the corpus whose exemption turns expressly on marketing, and it pairs that with use-based exclusions. GBL § 1700(4)(c) carries three: ‘(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.’ Limb (2) is the only marketing-based exclusion in the dataset; limbs (1) and (3) are the same use-based device California, Oregon and China rely on. Reach is coded possibly rather than yes for a second reason as well: the test has three conjunctive prongs, and a general assistant most likely fails prong (ii), since it does not ask unprompted or unsolicited emotion-based questions. Effective 5 November 2025; attorney-general enforcement as a public nuisance.",
   link:"https://www.nysenate.gov/legislation/bills/2025/S3008"
 },
 {
@@ -303,11 +303,11 @@ const DATA = [
   youth:"duties",
   term:"AI companion (within a broader AI act)", test:"capability",
   testNote:"Adaptive, human-like responses that can sustain a relationship over time; excludes narrow, task-specific tools EXCEPT where the primary function involves discussing mental health",
-  narrowing:"Use carve-out with a mental-health claw-back", reaches:"arguably",
+  narrowing:"Use carve-out with a mental-health claw-back", reaches:"possibly",
   mechs:["disclosure","crisis","minorContent","engagement","dependence","parental","proImpersonation"],
   enforce:["State AG (unfair or deceptive trade practice)","No private right of action"],
   interval:"Every hour for minors; every 3 hours for adults",
-  note:"Excludes narrow task-specific tools, then claws the exclusion back where the primary function involves discussing mental health, so a tool cannot rely on the task-specific exclusion for its wellness features. For minors it bars romantic interaction and, expressly, manipulative techniques used to extend engagement or foster emotional dependence, naming dependence-building as a design practice rather than as a user state; ‘inappropriate emotional dependence’ is not further defined in the Act. Reach is coded arguably: the capability limb is broad and the exclusion is use-based. Effective 1 January 2027. Attorney-general enforcement as an unfair or deceptive trade practice, with no private right of action. Disclosure hourly for minors and every three hours for adults.",
+  note:"Excludes narrow task-specific tools, then claws the exclusion back where the primary function involves discussing mental health, so a tool cannot rely on the task-specific exclusion for its wellness features. For minors it bars romantic interaction and, expressly, manipulative techniques used to extend engagement or foster emotional dependence, naming dependence-building as a design practice rather than as a user state; ‘inappropriate emotional dependence’ is not further defined in the Act. Reach is coded possibly: the capability limb is broad and the exclusion is use-based. Effective 1 January 2027. Attorney-general enforcement as an unfair or deceptive trade practice, with no private right of action. Disclosure hourly for minors and every three hours for adults.",
   link:"https://www.cga.ct.gov/"
 },
 {
@@ -534,11 +534,11 @@ const DATA = [
   youth:"only",
   term:"Companion chatbot, in an Act titled 'Artificial Intelligence Chatbots Act'", test:"behaviour",
   testNote:"Behaviour-based including unsolicited emotion-based questions; full statutory wording still not obtained",
-  narrowing:"None yet — industry lobbying to add one", reaches:"arguably",
+  narrowing:"None yet — industry lobbying to add one", reaches:"possibly",
   mechs:["disclosure","crisis","reporting","minorContent","engagement","proImpersonation"],
   enforce:["State AG"],
   interval:"Every 30 minutes",
-  note:"Continued to the next session in Communications, Technology and Innovation on 9 February 2026, so it is dormant rather than live, and coded stalled rather than dropped. Reach is coded arguably and the narrowing device as absent so far: SIIA has asked on the record for a safe harbour covering ‘customer-service chatbots, educational tutors, productivity assistants’, arguing the definition is ‘currently broad enough to capture beneficial conversational AI systems’, and no such exclusion is in the text as introduced. Full statutory wording still not obtained; the test is coded behaviour-based, including unsolicited emotion-based questions.",
+  note:"Continued to the next session in Communications, Technology and Innovation on 9 February 2026, so it is dormant rather than live, and coded stalled rather than dropped. Reach is coded possibly and the narrowing device as absent so far: SIIA has asked on the record for a safe harbour covering ‘customer-service chatbots, educational tutors, productivity assistants’, arguing the definition is ‘currently broad enough to capture beneficial conversational AI systems’, and no such exclusion is in the text as introduced. Full statutory wording still not obtained; the test is coded behaviour-based, including unsolicited emotion-based questions.",
   link:"https://legiscan.com/VA/research/HB635/2026"
 },
 {
@@ -550,11 +550,11 @@ const DATA = [
   youth:"only",
   term:"Companion chatbot", test:"capability",
   testNote:"Verbatim California: adaptive human-like responses; capable of meeting a user's social needs; anthropomorphic features; sustains a relationship across multiple interactions",
-  narrowing:"Use carve-out, verbatim California", reaches:"arguably",
+  narrowing:"Use carve-out, verbatim California", reaches:"possibly",
   mechs:["accessBan","disclosure","dependence"],
   enforce:["Unverified"],
   interval:"—",
-  note:"Sometimes listed as enacted. The legislature record does not support that: prefiled 1 December 2025, first reading 7 January 2026, referred to House Emerging Issues 15 May 2026, and no action since. Its definition and use carve-out are word-for-word California SB 243, with a harsher operative rule attached — no minor access at all, and no humanlike avatars. Reach is coded arguably, following the California text it copies.",
+  note:"Sometimes listed as enacted. The legislature record does not support that: prefiled 1 December 2025, first reading 7 January 2026, referred to House Emerging Issues 15 May 2026, and no action since. Its definition and use carve-out are word-for-word California SB 243, with a harsher operative rule attached — no minor access at all, and no humanlike avatars. Reach is coded possibly, following the California text it copies.",
   link:"https://legiscan.com/MO/text/HB1742/id/3287590"
 },
 {
@@ -597,11 +597,11 @@ const DATA = [
   scope:"All users",
   youth:"none",
   term:"AI companion", test:"behaviour", testNote:"Substantially tracks the enacted Article 47 three-prong test",
-  narrowing:"Tracks Art. 47", reaches:"arguably",
+  narrowing:"Tracks Art. 47", reaches:"possibly",
   mechs:["disclosure","crisis"],
   enforce:["Private right of action"],
   interval:"Per Art. 47",
-  note:"Substantively duplicates the enacted Article 47 with one change to enforcement: harmed individuals may sue, rather than enforcement resting with the attorney general alone. The test and carve-out track Art. 47, so reach is coded arguably for the same reasons.",
+  note:"Substantively duplicates the enacted Article 47 with one change to enforcement: harmed individuals may sue, rather than enforcement resting with the attorney general alone. The test and carve-out track Art. 47, so reach is coded possibly for the same reasons.",
   link:"https://www.nysenate.gov/"
 },
 {
@@ -673,11 +673,11 @@ const DATA = [
   scope:"Minors",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Tracks SB 243",
-  narrowing:"Use carve-out (assumed)", reaches:"arguably",
+  narrowing:"Use carve-out (assumed)", reaches:"possibly",
   mechs:["disclosure","crisis","minorContent","sentience"],
   enforce:["State AG"],
   interval:"Every 3 hours",
-  note:"California’s follow-on to SB 243: safety protocols, no sexual content for minors, and no impersonating humans, on a three-hour interval. The definition tracks SB 243, so reach is coded arguably for the same reasons and the use carve-out is assumed to follow.",
+  note:"California’s follow-on to SB 243: safety protocols, no sexual content for minors, and no impersonating humans, on a three-hour interval. The definition tracks SB 243, so reach is coded possibly for the same reasons and the use carve-out is assumed to follow.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
@@ -1015,7 +1015,7 @@ const GLOSSARY = {
   /* ---- reaches values ---- */
   "r:yes":{t:"Reaches assistants: yes",
     d:"The text plainly covers ChatGPT-class general-purpose systems."},
-  "r:arguably":{t:"Reaches assistants: arguably",
+  "r:possibly":{t:"Reaches assistants: possibly",
     d:"A plausible reading of the definition covers general assistants and a plausible reading does not. Usually the carve-out, rather than the test, is doing the work."},
   "r:partial":{t:"Reaches assistants: partial",
     d:"Some obligations reach general assistants and others do not — most often because a categorical ban is age-gated to labelled companion products while a disclosure duty applies across the board."},

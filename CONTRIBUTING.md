@@ -25,7 +25,7 @@ A record looks like this:
   youth:"only",
   term:"Companion chatbot", test:"capability",
   testNote:"Quote or close paraphrase of the operative definition",
-  narrowing:"Use carve-out", reaches:"arguably",
+  narrowing:"Use carve-out", reaches:"possibly",
   mechs:["disclosure","crisis"],
   enforce:["State AG"],
   interval:"Every 3 hours",
@@ -57,7 +57,7 @@ There is no `dead` value. The tracker covers proposed, active and enacted policy
 | Value | Meaning |
 |---|---|
 | `yes` | The text plainly covers ChatGPT-class systems |
-| `arguably` | A plausible reading covers them and a plausible reading does not |
+| `possibly` | A plausible reading covers them and a plausible reading does not |
 | `partial` | Some obligations reach them, others do not |
 | `no` | The gating language excludes them by construction |
 | `unclear` | The definitional clause has not been read against the enrolled text |
@@ -115,9 +115,9 @@ const PHRASING = {
 Two families of colour token, and the difference matters:
 
 - `--good`, `--warn`, `--critical`, `--j-*`, `--youth`, `--seq-*` colour **fills, bars, rules and swatches**, where WCAG asks 3:1.
-- `--t-good`, `--t-warn`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-eu`, `--t-cn`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
+- `--t-good`, `--t-possibly`, `--t-partial`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-eu`, `--t-cn`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
 
-Put a `--t-*` token on anything that lands on type. `color:var(--warn)` on 12px text is the mistake this split exists to prevent — the old `arguably` label sat at 1.79:1.
+Put a `--t-*` token on anything that lands on type. `color:var(--warn)` on 12px text is the mistake this split exists to prevent — the reach labels sat as low as 1.79:1.
 
 **Never let colour be the only carrier of a category.** The status column says `Pending (in committee)`, not a yellow dot; the matrix cells carry an `aria-label` alongside the fill. A reader who cannot distinguish the colours, or who is using a screen reader, must get the same categories as everyone else.
 
@@ -144,7 +144,7 @@ Two families resolve programmatically and must not be duplicated into `GLOSSARY`
 
 - `t` is the term as a reader would name it; `d` is one or two sentences. These are the tracker's own definitions, not quotations — where a term is a term of art in this corpus rather than in general usage, say so in `d`.
 - Add the `gl` class alongside `data-gl` on anything that should carry the dotted underline. Chips and badges take `data-gl` alone, since an underline inside a coloured pill reads as damage.
-- Value-level keys are namespaced by field: `st:law`, `r:arguably`, `youth:only`, `test:capability`, `narrow:use`, `prov:quote`. The free-text `test` and `narrowing` values are matched to a family by first mention in `app.js`, so a new phrasing that no pattern recognises gets no tooltip rather than a wrong one — extend the pattern list there if you add one.
+- Value-level keys are namespaced by field: `st:law`, `r:possibly`, `youth:only`, `test:capability`, `narrow:use`, `prov:quote`. The free-text `test` and `narrowing` values are matched to a family by first mention in `app.js`, so a new phrasing that no pattern recognises gets no tooltip rather than a wrong one — extend the pattern list there if you add one.
 
 ## Verifying a change
 
