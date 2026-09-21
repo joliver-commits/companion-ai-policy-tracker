@@ -78,7 +78,7 @@ Youth focus is filterable in the Legislation view and available as a stat tile. 
 | `chron.latest` | The most recent thing that actually happened to it: a committee vote, passage, enactment, entry into force |
 | `chron.effective` | When the obligations start to bind, where the text states a date. Optional — most bills state none |
 
-See [Dates and chronological sorting](#dates-and-chronological-sorting) below for how precision is recorded and how it affects the ordering.
+See [Dates and chronological sorting](#dates-and-chronological-sorting) below for how precision is recorded and how it affects the ordering. [DATE-GAPS.md](DATE-GAPS.md) is the generated worklist of dates not yet recorded to the day.
 
 ## Mechanism clusters
 
