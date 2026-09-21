@@ -54,7 +54,7 @@ Every count on the site is computed from `DATA` at render time, so a removal pro
 
 - **Test** — the kind of question the definition asks. `capability` (what can it do), `behaviour` (what does it do in interaction), `purpose` (what was it built for), `conduct` (what did it say), `training objective` (what was it optimised for), `technique + effect` (the EU route).
 - **Narrowing device** — what pulls things back out of the definition: a marketing carve-out, a use carve-out, a purpose-primacy gate, an age gate, or none.
-- **Reaches general assistants** — a judgement, not a measurement. `yes` means the text plainly covers ChatGPT-class systems; `arguably` means a plausible reading covers them and a plausible reading does not; `partial` means some obligations reach them and others do not; `no` means the gating language excludes them by construction; `unclear` means the definitional clause has not been read against the enrolled text.
+- **Reaches general assistants** — a judgement, not a measurement. `yes` means the text plainly covers ChatGPT-class systems; `possibly` means a plausible reading covers them and a plausible reading does not; `partial` means some obligations reach them and others do not; `no` means the gating language excludes them by construction; `unclear` means the definitional clause has not been read against the enrolled text.
 - **Youth focus** (`youth`) — who the legislation actually binds:
 
 | Value | Column reads | Meaning |
@@ -192,7 +192,7 @@ A record looks like this:
   youth:"only",                         // only | duties | none
   term:"Companion chatbot", test:"capability",
   testNote:"Quote or close paraphrase of the operative definition",
-  narrowing:"Use carve-out", reaches:"arguably",
+  narrowing:"Use carve-out", reaches:"possibly",
   mechs:["disclosure","crisis"],        // keys from the MECHS list
   enforce:["State AG"],
   interval:"Every 3 hours",
@@ -201,7 +201,7 @@ A record looks like this:
 }
 ```
 
-`statusClass` must be one of `law`, `moving`, `pending`, `stalled` — it is the category the Status column leads with, and it drives the sort order. `youth` must be one of `only`, `duties`, `none`. `reaches` must be one of `yes`, `arguably`, `partial`, `no`, `unclear`. Mechanism keys must match the `MECHS` list at the top of `data.js` exactly, and must each belong to a cluster in `MECHGROUPS`, or the matrix will silently drop them. `chron.first` and `chron.latest` are required and must read `YYYY`, `YYYY-MM` or `YYYY-MM-DD`; `chron.effective` is optional and takes the same form. Keep `chron` consistent with the human-readable `dates` string: if you change one, change the other. Wording for each mechanism goes in the `PHRASING` map at the foot of the file, not in the record. Add `key:true` to pending legislation that the analysis relies on, so it appears in the instrument × mechanism matrix alongside enacted and moving law.
+`statusClass` must be one of `law`, `moving`, `pending`, `stalled` — it is the category the Status column leads with, and it drives the sort order. `youth` must be one of `only`, `duties`, `none`. `reaches` must be one of `yes`, `possibly`, `partial`, `no`, `unclear`. Mechanism keys must match the `MECHS` list at the top of `data.js` exactly, and must each belong to a cluster in `MECHGROUPS`, or the matrix will silently drop them. `chron.first` and `chron.latest` are required and must read `YYYY`, `YYYY-MM` or `YYYY-MM-DD`; `chron.effective` is optional and takes the same form. Keep `chron` consistent with the human-readable `dates` string: if you change one, change the other. Wording for each mechanism goes in the `PHRASING` map at the foot of the file, not in the record. Add `key:true` to pending legislation that the analysis relies on, so it appears in the instrument × mechanism matrix alongside enacted and moving law.
 
 When a piece of legislation dies, delete its record and add a row to the removal table above.
 
