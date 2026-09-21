@@ -39,9 +39,9 @@ A record looks like this:
 These must match exactly or the row will render wrong or drop out of the matrix.
 
 **`juris`** — `US Federal` · `US State` · `EU` · `China`
-(adding a new jurisdiction also requires a colour slot in `index.html` and an entry in `JCLASS`/`JVAR` in `app.js`)
+(adding a new jurisdiction also requires a badge colour and a matching `--t-*` text colour in `index.html`, and an entry in `JCLASS` in `app.js`)
 
-**`statusClass`** — drives the status dot and sort order:
+**`statusClass`** — the category the Status column leads with, and the sort order:
 
 | Value | Meaning |
 |---|---|
@@ -109,6 +109,17 @@ const PHRASING = {
 - Quote the operative clause, not the whole section. Keep `t` to a sentence or two and put the qualifications in `n`.
 - The mechanism key must be one the record already carries in `mechs`, or the entry will never render.
 - If a single clause supplies several mechanisms — as Kansas SB 405's training prohibition does — give each mechanism its own entry rather than repeating the whole clause.
+
+### Colour and contrast
+
+Two families of colour token, and the difference matters:
+
+- `--good`, `--warn`, `--critical`, `--j-*`, `--youth`, `--seq-*` colour **fills, bars, rules and swatches**, where WCAG asks 3:1.
+- `--t-good`, `--t-warn`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-eu`, `--t-cn`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
+
+Put a `--t-*` token on anything that lands on type. `color:var(--warn)` on 12px text is the mistake this split exists to prevent — the old `arguably` label sat at 1.79:1.
+
+**Never let colour be the only carrier of a category.** The status column says `Pending (in committee)`, not a yellow dot; the matrix cells carry an `aria-label` alongside the fill. A reader who cannot distinguish the colours, or who is using a screen reader, must get the same categories as everyone else.
 
 ### Coding conventions
 

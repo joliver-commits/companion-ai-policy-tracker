@@ -1,12 +1,27 @@
 const JCLASS={"US Federal":"j-fed","US State":"j-state","EU":"j-eu","China":"j-cn"};
-const JVAR={"US Federal":"var(--j-fed)","US State":"var(--j-state)","EU":"var(--j-eu)","China":"var(--j-cn)"};
 const MMAP=Object.fromEntries(MECHS);
 const STATUSES=["law","moving","pending","stalled"];
 const SLABEL={law:"Enacted / in force",moving:"Moving",pending:"Pending",stalled:"Stalled"};
+/* The column shows the CATEGORY in words, with the specific circumstance in
+   parentheses after it — "Pending (in committee)", "Pending (proposed)". The
+   category used to be carried by a colour dot alone, which told a reader
+   using a screen reader, or not distinguishing the colours, nothing at all.
+   The parenthetical is dropped where the specific status is the category. */
+const SCAT={law:"Enacted",moving:"Moving",pending:"Pending",stalled:"Stalled"};
+function statusText(d){
+  const cat=SCAT[d.statusClass]||d.statusClass, sp=String(d.status||"");
+  return sp.toLowerCase()===cat.toLowerCase()?cat:`${cat} (${sp.charAt(0).toLowerCase()+sp.slice(1)})`;
+}
+function statusHTML(d,extra){
+  const cat=SCAT[d.statusClass]||d.statusClass, sp=String(d.status||"");
+  const same=sp.toLowerCase()===cat.toLowerCase();
+  return `<span class="st ${d.statusClass}"${extra||""} data-gl="st:${d.statusClass}">${esc(cat)}${
+    same?"":` <span class="sq">(${esc(sp.charAt(0).toLowerCase()+sp.slice(1))})</span>`}</span>`;
+}
 /* youth focus — whether the legislation is aimed at minors */
 const YOUTHS=["only","duties","none"];
-const YLABEL={only:"Minors only",duties:"Minor-specific duties",none:"All users"};
-const YSHORT={only:"Minors only",duties:"Minor duties",none:"—"};
+const YLABEL={only:"Minors only",duties:"Minor-specific duties",none:"No minor-specific rules"};
+const YSHORT={only:"Minors only",duties:"Minor duties",none:"None"};
 /* the longer gloss on each youth value lives in GLOSSARY as "youth:<v>",
    so the tooltip and the coding table cannot drift apart */
 const YORDER={only:0,duties:1,none:2};
@@ -225,7 +240,7 @@ function paintTiles(){
 
 /* ---------- filter controls ---------- */
 el("fj").innerHTML=Object.keys(JCLASS).map(j=>
-  `<button class="chip" data-j="${j}" aria-pressed="false"><span class="dot" style="background:${JVAR[j]}"></span>${j}</button>`).join("");
+  `<button class="chip" data-j="${j}" aria-pressed="false" data-gl="juris">${j}</button>`).join("");
 el("fs").innerHTML=STATUSES.map(s=>
   `<button class="chip" data-s="${s}" aria-pressed="false">${SLABEL[s]}</button>`).join("");
 el("fy").innerHTML=YOUTHS.map(y=>
@@ -293,7 +308,7 @@ function match(d){
   if(state.r&&d.reaches!==state.r)return false;
   if(state.q){
     const ph=PHRASING[d.id]||{};
-    const hay=[d.name,d.cite,d.body,d.juris,d.status,d.term,d.test,d.testNote,d.narrowing,
+    const hay=[d.name,d.cite,d.body,d.juris,d.status,statusText(d),d.term,d.test,d.testNote,d.narrowing,
       d.note,d.dates,d.scope,YLABEL[d.youth],d.interval,d.enforce.join(" "),d.mechs.map(m=>MMAP[m]).join(" "),
       d.mechs.map(m=>GMAP[MGROUP[m]].label).join(" "),d.chron.first,d.chron.latest,d.chron.effective||"",
       Object.values(ph).map(p=>p.t+" "+(p.n||"")).join(" ")]
@@ -347,7 +362,7 @@ function render(){
     return `<tr class="row" data-id="${d.id}">
       <td><div class="nm">${esc(d.name)}</div><div class="cite">${esc(d.body)} · ${esc(d.cite)}</div></td>
       <td><span class="badge ${JCLASS[d.juris]}" data-gl="juris">${esc(d.juris)}</span></td>
-      <td><span class="st ${d.statusClass}" data-gl="st:${d.statusClass}">${esc(d.status)}</span></td>
+      <td>${statusHTML(d)}</td>
       <td class="dt">${dateCell(d)}</td>
       <td><span class="yb ${d.youth}" data-gl="youth:${d.youth}">${esc(YSHORT[d.youth])}</span></td>
       <td style="font-size:13px"><span${glAttr(testFamily(d.test))}>${esc(d.test)}</span></td>
@@ -495,7 +510,7 @@ function openMech(k,scroll){
       <div class="mp-hd">
         <span class="badge ${JCLASS[d.juris]}">${esc(d.body)}</span>
         <span class="nm">${esc(d.cite)}</span>
-        <span class="st ${d.statusClass}">${esc(d.status)}</span>
+        ${statusHTML(d)}
         ${d.youth==="none"?"":`<span class="yb ${d.youth}" data-gl="youth:${d.youth}">${esc(YSHORT[d.youth])}</span>`}
         <span class="prov ${p?p.k:"none"}" data-gl="prov:${p?p.k:"none"}">${p?esc(PROVLAB[p.k]):"not yet transcribed"}</span>
       </div>
@@ -559,7 +574,8 @@ el("tb").addEventListener("click",e=>{
     `<tr><th class="rot"><span class="badge ${JCLASS[d.juris]}" style="font-size:10px">${esc(d.body)}</span> ${esc(d.cite)}</th>`+
     MECH_ORDER.map(k=>{
       const on=d.mechs.includes(k);
-      return `<td class="${GSTART.has(k)?"gstart":""}"><div class="cellbox" title="${esc(d.name)} — ${esc(MMAP[k])}: ${on?'yes':'no'}" style="background:${on?'var(--seq-400)':'var(--grid)'};color:${on?'#fff':'transparent'}">${on?'●':'·'}</div></td>`;
+      const lab=`${esc(d.cite)} — ${esc(MMAP[k])}: ${on?'yes':'no'}`;
+      return `<td class="${GSTART.has(k)?"gstart":""}"><div class="cellbox ${on?'on':'off'}" role="img" aria-label="${lab}" title="${esc(d.name)} — ${esc(MMAP[k])}: ${on?'yes':'no'}"><span aria-hidden="true">${on?'●':'·'}</span></div></td>`;
     }).join("")+`</tr>`).join("")+`</tbody>`;
   el("mx").innerHTML=head+body;
   el("mx").onclick=e=>{
@@ -581,7 +597,7 @@ el("tb").addEventListener("click",e=>{
       <th style="cursor:default"><span class="gl" data-gl="scope">Scope</span></th>
     </tr></thead><tbody>`+rows.map(d=>
     `<tr><td><div class="nm" style="font-size:13.5px">${esc(d.cite)}</div>
-       <div class="cite">${esc(d.body)} · <span class="st ${d.statusClass}" style="font-size:12px" data-gl="st:${d.statusClass}">${esc(d.status)}</span></div></td>
+       <div class="cite">${esc(d.body)} · ${statusHTML(d,' style="font-size:12px"')}</div></td>
      <td style="font-size:13px">${esc(d.term)}</td>
      <td style="font-size:13px"><span${glAttr(testFamily(d.test))}>${esc(d.test)}</span></td>
      <td style="font-size:13px"><span${glAttr(narrowFamily(d.narrowing))}>${esc(d.narrowing)}</span></td>
@@ -667,7 +683,7 @@ three fields, and any one of them read alone gives a different answer from the r
       <span class="reach r-unclear">unclear</span> and have not been read against the enrolled text yet.
       The Definitional anatomy view puts the coding next to the term, test and carve-out it came from.`],
     ["Which laws cover adults, not just minors?",
-     `Filter <b>Youth focus → All users</b> for the ${nYouth("none")} records with no minor-specific rules, and
+     `Filter <b>Youth focus → No minor-specific rules</b> for the ${nYouth("none")} records that draw no line at eighteen, and
       add <b>Minor-specific duties</b> for the further ${nYouth("duties")} that bind everyone but ask more where
       the user is a minor. The remaining ${nYouth("only")} apply to minors only.`],
     ["Who can enforce it, and can an individual sue?",
