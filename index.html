@@ -16,7 +16,7 @@
      asks 3:1; these colour small text, where it asks 4.5:1, and every one
      below clears it against the surface or tint it actually sits on. Use a
      --t-* token wherever a colour lands on type. */
-  --t-good:#068506; --t-possibly:#c74400; --t-partial:#966600; --t-serious:#ca4511; --t-critical:#d63535;
+  --t-good:#068506; --t-serious:#ca4511; --t-critical:#d63535;
   --t-fed:#1d64ba; --t-state:#b53c0d; --t-eu:#0e7450; --t-cn:#4634ad; --t-youth:#9e3897;
   --t-link:#1c5cab;
   --seq-100:#cde2fb; --seq-250:#86b6ef; --seq-400:#3987e5; --seq-550:#1c5cab; --seq-700:#0d366b;
@@ -27,7 +27,7 @@
   --ink:#ffffff; --ink-2:#c3c2b7; --muted:#95948e;
   --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
   --j-fed:#3987e5; --j-state:#d95926; --j-eu:#199e70; --j-cn:#9085e9; --youth:#e08cd8;
-  --t-good:#0ca30c; --t-possibly:#ff8c42; --t-partial:#fab219; --t-serious:#ec835a; --t-critical:#d85c5c;
+  --t-good:#0ca30c; --t-serious:#ec835a; --t-critical:#d85c5c;
   --t-fed:#5095e8; --t-state:#e58d6a; --t-eu:#1bab79; --t-cn:#9489ea; --t-youth:#e08cd8;
   --t-link:#5598e7;
   --seq-100:#0d366b; --seq-250:#184f95; --seq-400:#2a78d6; --seq-550:#5598e7; --seq-700:#9ec5f4;
@@ -110,8 +110,11 @@ tr.row:hover td{background:rgba(0,0,0,.022)}
 .st{font-size:13px}
 .st .sq{color:var(--ink-2);font-size:12.5px}
 .reach{font-size:12.5px;font-weight:600}
-.r-yes{color:var(--t-good)} .r-possibly{color:var(--t-possibly)} .r-partial{color:var(--t-partial)}
-.r-no{color:var(--t-critical)} .r-unclear{color:var(--ink)}
+.r-yes{color:var(--t-good)} .r-no{color:var(--t-critical)}
+/* possibly, partial and unclear read as plain text: the word carries the
+   coding, and three shades of orange between green and red did not survive
+   contact with a light background. */
+.r-possibly,.r-partial,.r-unclear{color:var(--ink)}
 .conf{font-size:11px;padding:1px 6px;border-radius:4px;border:1px solid var(--axis);color:var(--muted)}
 .conf.verified{border-color:var(--good);color:var(--t-good)}
 .conf.provisional{border-color:var(--serious);color:var(--t-serious)}
