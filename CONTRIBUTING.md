@@ -115,9 +115,11 @@ const PHRASING = {
 Two families of colour token, and the difference matters:
 
 - `--good`, `--warn`, `--critical`, `--j-*`, `--youth`, `--seq-*` colour **fills, bars, rules and swatches**, where WCAG asks 3:1.
-- `--t-good`, `--t-possibly`, `--t-partial`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-eu`, `--t-cn`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
+- `--t-good`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-eu`, `--t-cn`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
 
 Put a `--t-*` token on anything that lands on type. `color:var(--warn)` on 12px text is the mistake this split exists to prevent — the reach labels sat as low as 1.79:1.
+
+In the reach column only `yes` and `no` are coloured. `possibly`, `partial` and `unclear` are plain `--ink`: the word already carries the coding, and three intermediate shades between green and red could not be told apart on a light background at 12.5px without failing contrast.
 
 **Never let colour be the only carrier of a category.** The status column says `Pending (in committee)`, not a yellow dot; the matrix cells carry an `aria-label` alongside the fill. A reader who cannot distinguish the colours, or who is using a screen reader, must get the same categories as everyone else.
 
