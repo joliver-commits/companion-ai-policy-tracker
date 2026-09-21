@@ -179,72 +179,6 @@ const DATA = [
   link:"https://www.congress.gov/"
 },
 
-/* ============================ EU + CHINA ============================ */
-{
-  id:"eu-ai-act", juris:"EU", body:"European Union", cite:"Reg. 2024/1689, Art. 5(1)(a)–(b)",
-  name:"EU AI Act — prohibited practices", status:"In force", statusClass:"law",
-  dates:"Published OJ 12 Jul 2024 · in force 1 Aug 2024 · Art. 5 applicable 2 Feb 2025",
-  chron:{first:"2024-07-12", latest:"2024-08-01", effective:"2025-02-02"},
-  scope:"All users; age and vulnerability as an explicit axis",
-  youth:"duties",
-  term:"No product term at all", test:"technique + effect",
-  testNote:"Subliminal, purposefully manipulative or deceptive techniques with the object or effect of materially distorting behaviour and causing significant harm; exploitation of vulnerabilities due to age, disability or social/economic situation",
-  narrowing:"Not applicable", reaches:"yes",
-  mechs:["engagement","dependence"],
-  enforce:["National market surveillance authorities","Fines to €35m or 7% of global turnover"],
-  interval:"—",
-  note:"Article 5 names no chatbot, no companion and no app class: it prohibits a technique joined to an effect — subliminal, purposefully manipulative or deceptive techniques materially distorting behaviour and causing significant harm, and exploitation of vulnerabilities due to age, disability or social or economic situation. Reach is coded yes and the narrowing device is not applicable, because there is no product definition for a carve-out to narrow. None of the companion-specific machinery follows from it either: no crisis protocol, no disclosure interval, no retention rule. In force 1 August 2024, with Article 5 applicable from 2 February 2025; enforced by national market surveillance authorities with fines to €35m or 7% of global turnover.",
-  link:"https://artificialintelligenceact.eu/article/5/"
-},
-{
-  id:"eu-imco", key:true, juris:"EU", body:"European Parliament (IMCO)", cite:"2025/2060(INI)",
-  name:"Protection of Minors Online — Parliament report", status:"Non-binding resolution", statusClass:"pending",
-  dates:"Committee vote Oct 2025 (32–5–9)",
-  chron:{first:"2025-10", latest:"2025-10"},
-  scope:"Minors",
-  youth:"only",
-  term:"AI companions (named alongside social media)", test:"n/a — recommendation",
-  testNote:"Recommends an EU digital minimum age of 16 for social media and AI companions absent parental consent",
-  narrowing:"n/a", reaches:"yes",
-  mechs:["ageAssurance","parental","engagement"],
-  enforce:["Recommendation only"],
-  interval:"—",
-  note:"A committee report adopted 32–5–9 in October 2025, non-binding on its face. Calls for an EU digital minimum age of 16 for AI companions without parental consent, a ban on engagement-based recommender algorithms for minors with the most addictive design features off by default, personal liability for senior management in cases of serious and persistent breaches of minor-protection provisions, and enforcement of existing AI Act rules against manipulative and deceptive chatbots. The personal-liability proposal has no analogue in any US record in this corpus.",
-  link:"https://www.europarl.europa.eu/news/en/press-room/20251013IPR30892/new-eu-measures-needed-to-make-online-services-safer-for-minors"
-},
-{
-  id:"eu-dfa", key:true, juris:"EU", body:"European Commission", cite:"Digital Fairness Act",
-  name:"Digital Fairness Act (proposal)", status:"Proposed", statusClass:"pending",
-  dates:"Commission proposal 2026 · in the ordinary legislative procedure",
-  chron:{first:"2026", latest:"2026"},
-  scope:"All users; minor-specific provisions",
-  youth:"duties",
-  term:"No companion term; addictive design and dark patterns", test:"technique + effect",
-  testNote:"Targets dark patterns, addictive design and personalisation practices in consumer-facing digital services",
-  narrowing:"n/a", reaches:"yes",
-  mechs:["engagement"],
-  enforce:["Consumer protection authorities"],
-  interval:"—",
-  note:"Not a companion instrument: it addresses dark patterns, addictive design and personalisation practices across consumer-facing digital services generally, which is why it carries the engagement mechanism without defining a companion and why reach is coded yes. In the ordinary legislative procedure as of 2026; re-check the status before relying on it.",
-  link:"https://www.europarl.europa.eu/legislative-train/theme-protecting-our-democracy-upholding-our-values/file-digital-fairness-act"
-},
-{
-  id:"cn-cac", juris:"China", body:"China (CAC and four others)", cite:"Interim Measures",
-  name:"Measures on Human-like Interactive AI Services", status:"Final — in force", statusClass:"law",
-  dates:"Draft for comment Dec 2025 · issued 10 Apr 2026 · effective 15 Jul 2026",
-  chron:{first:"2025-12", latest:"2026-04-10", effective:"2026-07-15"},
-  scope:"All users; extensive minor and elder duties",
-  youth:"duties",
-  term:"Human-like / anthropomorphic interactive AI service", test:"capability + effect",
-  testNote:"Simulates the personality traits, thinking patterns and communication styles of natural persons to provide continuous emotional interaction",
-  narrowing:"Use carve-out — excludes customer service, Q&A, work assistants, education and research lacking emotional engagement", reaches:"yes",
-  mechs:["disclosure","crisis","engagement","dependence","parental","ageAssurance","training","humanTakeover","reporting","audit"],
-  enforce:["CAC administrative supervision","Mandatory security assessments"],
-  interval:"Break reminder after roughly 2 hours of use",
-  note:"No longer a draft: issued 10 April 2026, effective 15 July 2026, jointly by five bodies — the Cyberspace Administration of China, the National Development and Reform Commission, the Ministry of Industry and Information Technology, the Ministry of Public Security, and the State Administration for Market Regulation. Requires a human to take over the conversation where a user explicitly raises suicide, self-harm or other extreme action, and the provider to contact the user’s guardian or emergency contact; it is the only human-takeover duty in force in the corpus. Also requires real-time identification of dependency risk with prominent dynamic reminders; a Minor Mode carrying usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent below 14; a break reminder after roughly two hours of use; and security assessments at launch, at 1m registered users and at 100k monthly actives. Reach is coded yes: the definition turns on simulating personality traits, thinking patterns and communication styles to provide continuous emotional interaction, and its use carve-out excludes customer service, Q&A, work assistants, and education and research lacking emotional engagement — the same narrowing device California, Oregon and New York use.",
-  link:"https://www.chinalawtranslate.com/en/human-like-ai/"
-},
-
 /* ======================= US STATES — ENACTED ======================= */
 {
   id:"ca-sb243", juris:"US State", body:"California", cite:"SB 243",
@@ -275,7 +209,7 @@ const DATA = [
   mechs:["disclosure","crisis"],
   enforce:["State AG (public nuisance)"],
   interval:"At the start of interaction and no more than once per day thereafter",
-  note:"The only record in the corpus whose exemption turns expressly on marketing, and it pairs that with use-based exclusions. GBL § 1700(4)(c) carries three: ‘(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.’ Limb (2) is the only marketing-based exclusion in the dataset; limbs (1) and (3) are the same use-based device California, Oregon and China rely on. Reach is coded possibly rather than yes for a second reason as well: the test has three conjunctive prongs, and a general assistant most likely fails prong (ii), since it does not ask unprompted or unsolicited emotion-based questions. Effective 5 November 2025; attorney-general enforcement as a public nuisance.",
+  note:"The only record in the corpus whose exemption turns expressly on marketing, and it pairs that with use-based exclusions. GBL § 1700(4)(c) carries three: ‘(1) any system used by a business entity solely for customer service or to strictly provide users with information about available commercial services; (2) any system that is primarily designed and marketed for providing efficiency improvements or, research or technical assistance; (3) any system used by a business entity solely for internal purposes or employee productivity.’ Limb (2) is the only marketing-based exclusion in the dataset; limbs (1) and (3) are the same use-based device California and Oregon rely on. Reach is coded possibly rather than yes for a second reason as well: the test has three conjunctive prongs, and a general assistant most likely fails prong (ii), since it does not ask unprompted or unsolicited emotion-based questions. Effective 5 November 2025; attorney-general enforcement as a public nuisance.",
   link:"https://www.nysenate.gov/legislation/bills/2025/S3008"
 },
 {
@@ -803,7 +737,7 @@ const MECHDEF = {
   },
   parental:{
     def:"A duty to give a parent or guardian a role in a minor's use: consent before access, controls over how the system behaves, or reports on what happened.",
-    line:"Coded for any of the three. China's guardian-contact duty on detected crisis is coded here and under Crisis protocol."
+    line:"Coded for any of the three. A duty to alert a guardian on a detected crisis is coded here and under Crisis protocol."
   },
   engagement:{
     def:"A limit on design features whose function is to extend use — variable-reward affirmations, streaks, usage badges, push notifications, unprompted outputs and typing indicators. This regulates the product's design rather than the user's awareness of it.",
@@ -838,8 +772,8 @@ const MECHDEF = {
     line:"Coded for prohibitions on access. Age-gated content rules are Content limits (minors)."
   },
   humanTakeover:{
-    def:"A duty to hand the conversation to a human being at a defined trigger — in the only instance in force, explicit expression of suicide or self-harm risk.",
-    line:"Referral to an external hotline is not takeover; it is a Crisis protocol. China's measures are the only framework requiring the handover itself."
+    def:"A duty to hand the conversation to a live human being at a defined trigger — typically an explicit expression of suicide or self-harm risk. NOTHING IN THIS CORPUS CARRIES IT — the mechanism is listed to mark the gap.",
+    line:"Referral to an external hotline is not takeover; it is a Crisis protocol. Twenty-five records require the referral; none requires a person to join the conversation. Frameworks outside this tracker\'s scope do — but no US federal bill or state statute, enacted or proposed, does."
   },
   causation:{
     def:"A duty on the operator to test whether its own design choices produce harm, and to act on or publish what it finds — the research obligation rather than the counting obligation.",
@@ -913,23 +847,11 @@ const PHRASING = {
     audit:{k:"summary", t:"independent third-party compliance audit every two years"},
     disclosure:{k:"summary", t:"disclosure at least every 30 minutes for non-text interactions"}
   },
-  "cn-cac":{
-    humanTakeover:{k:"summary", t:"a human must take over the conversation where a user explicitly raises suicide, self-harm or other extreme action, and the provider must contact the user's guardian or emergency contact",
-      n:"The only handover requirement in force anywhere."},
-    engagement:{k:"summary", t:"real-time identification of dependency risk, with prominent dynamic reminders"},
-    parental:{k:"summary", t:"a Minor Mode carrying usage limits, reality reminders, guardian alerts, character blocking and spending restrictions; guardian consent required below 14"}
-  },
   "ks-sb405":{
     dependence:{k:"summary", t:"prohibits TRAINING artificial intelligence systems designed to act as a companion, provide emotional support, or encourage isolation",
       n:"One clause supplies three of this dataset's mechanisms. It triggers on the training objective rather than on deployed behaviour — the third drafting route, and the hardest to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for."},
     proImpersonation:{k:"summary", t:"prohibits training systems designed to impersonate a mental health professional"},
     sentience:{k:"summary", t:"prohibits training systems designed to impersonate a sentient being"}
-  },
-  "eu-ai-act":{
-    engagement:{k:"quote", t:"the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person's consciousness or purposefully manipulative or deceptive techniques, with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision, thereby causing them to take a decision that they would not have otherwise taken in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm",
-      n:"Article 5(1)(a). Prohibits a technique joined to an effect, and never mentions a chatbot."},
-    dependence:{k:"quote", t:"the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation, with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group in a manner that causes or is reasonably likely to cause that person or another person significant harm",
-      n:"Article 5(1)(b). Age is an express axis of vulnerability, which is how the AI Act reaches minors without a minors regime."}
   },
   "ut-hb452":{
     disclosure:{k:"summary", t:"a mental health chatbot must disclose that it is not human, before use and on request"},
@@ -958,7 +880,7 @@ const GLOSSARY = {
   legislation:{t:"Legislation",
     d:"One bill, statute, regulation or formal proposal. The tracker carries proposed, active and enacted policy only: anything that dies, is vetoed, goes inactive or is superseded is removed from the dataset rather than kept with a “dead” status, so the counts describe the live landscape."},
   juris:{t:"Jurisdiction",
-    d:"The body whose law this is: the United States at federal level, an individual US state, the European Union, or China. Coverage outside those four is currently thin."},
+    d:"The body whose law this is: the United States at federal level, or an individual US state. The tracker covers US legislation only."},
   status:{t:"Status",
     d:"How far the legislation has travelled — enacted and in force, moving (out of committee or through one chamber), pending (introduced or a discussion draft), or stalled (carried over or held, dormant but still a live vehicle in the next session)."},
   latest:{t:"Latest action",
@@ -1044,7 +966,7 @@ const GLOSSARY = {
   "test:training":{t:"Training-objective test",
     d:"Asks what the system was optimised for — training a model to act as a companion, provide emotional support, or impersonate a sentient being. Two instruments take this route: Kansas SB 405 and Tennessee SB 1493, near-textual twins that diverge entirely on enforcement — Kansas civil, Tennessee a Class A felony. Easier to evidence than deployed behaviour and much harder to argue around, since a developer cannot rewrite marketing copy to escape what it optimised for."},
   "test:technique":{t:"Technique-plus-effect test",
-    d:"Prohibits a named technique joined to a named effect, without defining a product at all — the EU AI Act Article 5 route. Proof that the regulatory object is specifiable without deciding what a companion is; the cost is that no companion-specific machinery follows from it."},
+    d:"Prohibits a named technique joined to a named effect, without defining a product at all. Proof that the regulatory object is specifiable without deciding what a companion is; the cost is that no companion-specific machinery follows from it."},
   "test:form":{t:"Product-form test",
     d:"Turns on what kind of thing the product is rather than on what it does. The categorical route, and the one most easily escaped by shipping the same capability inside a differently-labelled product."},
 

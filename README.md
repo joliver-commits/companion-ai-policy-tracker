@@ -1,18 +1,19 @@
 # companion-ai-policy-tracker
 
-A working tracker of legislation regulating AI companions and conversational AI systems, covering the United States at federal and state level, the European Union, and China. It was built to support the companion AI policy paper and is intended to stay useful afterwards as a standing reference for BKC staff.
+A working tracker of US legislation regulating AI companions and conversational AI systems, at both federal and state level. It was built to support the companion AI policy paper and is intended to stay useful afterwards as a standing reference for BKC staff.
 
 The site is a static page: `index.html` (layout and styling), `data.js` (the dataset), `app.js` (rendering and filters). There is no build step — open `index.html` in a browser.
 
 **The analysis has moved to the accompanying paper.** The tracker previously carried a fourth tab, *Gaps & analysis*, arguing from the dataset; that argument now lives in the paper, and the tracker documents its own coding instead. The dataset itself is written to describe rather than to evaluate: a record's `note` carries dates, operative detail, quoted statutory language, enforcement provisions and the reasoning behind a coding decision, and does not tell the reader what to conclude from it.
 
-### The four views
+### The five views
 
 | Tab | What it holds |
 |---|---|
 | **Legislation** | One row per instrument, filterable by jurisdiction, status, youth focus, mechanism and reach, and sortable on any coded column or date. Clicking a row expands it: timeline, scope, term, disclosure interval, enforcement, the quoted definitional clause, the coding note, and the mechanisms it carries. |
 | **Mechanism coverage** | How many instruments carry each of the sixteen coded mechanisms, grouped into five clusters, with an instrument × mechanism matrix beneath. Clicking a mechanism opens the drill-down: what the mechanism is as a legal rule, where this dataset draws the line around it, and how each instrument carrying it is worded. |
 | **Definitional anatomy** | Every instrument's term, test, narrowing device, reach coding and scope side by side — the three definitional fields held apart, because they routinely disagree with one another. |
+| **Timeline** | Every dated action in the corpus as its own entry — first action, latest action, and the date obligations start to bind — grouped by year and month, newest first. The Legislation filters apply to it, and a year-only date sits in a "Month not recorded" bucket rather than being placed in a month the source does not support. |
 | **How to use this tracker** | What the corpus is and what it is not, how to read a row, the filter path for the questions the tracker is built to answer, how far the reading behind each coding goes, and where to send corrections. Every figure on it is computed from `data.js` at render time. |
 
 ---
@@ -23,7 +24,9 @@ It is deliberately not just a bill list. Several good bill lists already exist �
 
 ## What is and is not tracked
 
-The tracker monitors **proposed, active and enacted policy only**. Concretely, every record carries one of four `statusClass` values:
+The tracker covers **US legislation only** — federal bills and individual state statutes and bills. It previously carried the EU AI Act's Article 5 prohibitions, the European Parliament's minors report, the Digital Fairness Act and China's CAC measures; those four records were removed in September 2026 when the scope narrowed to the United States. The git history holds their coding, and the definitional question they illustrated — that an instrument can name a technique and an effect without naming a product — is made in the accompanying paper instead.
+
+It monitors **proposed, active and enacted policy only**. Concretely, every record carries one of four `statusClass` values:
 
 | Value | Meaning |
 |---|---|
@@ -52,7 +55,7 @@ Every count on the site is computed from `DATA` at render time, so a removal pro
 
 ## How to read the coding
 
-- **Test** — the kind of question the definition asks. `capability` (what can it do), `behaviour` (what does it do in interaction), `purpose` (what was it built for), `conduct` (what did it say), `training objective` (what was it optimised for), `technique + effect` (the EU route).
+- **Test** — the kind of question the definition asks. `capability` (what can it do), `behaviour` (what does it do in interaction), `purpose` (what was it built for), `conduct` (what did it say), `training objective` (what was it optimised for).
 - **Narrowing device** — what pulls things back out of the definition: a marketing carve-out, a use carve-out, a purpose-primacy gate, an age gate, or none.
 - **Reaches general assistants** — a judgement, not a measurement. `yes` means the text plainly covers ChatGPT-class systems; `possibly` means a plausible reading covers them and a plausible reading does not; `partial` means some obligations reach them and others do not; `no` means the gating language excludes them by construction; `unclear` means the definitional clause has not been read against the enrolled text.
 - **Youth focus** (`youth`) — who the legislation actually binds:
@@ -146,7 +149,6 @@ Several bills circulate in secondary summaries with the wrong status.
 - **Florida CS/SB 482** did not become law — it cleared the Senate 35–2 on 4 March 2026 and died in Messages on 13 March. It is no longer carried in the dataset.
 - **Missouri HB 1742** is not enacted. It was prefiled 1 December 2025, had its first reading on 7 January 2026 and was referred to House Emerging Issues on 15 May 2026, where it remains — coded `pending`, status "In committee".
 - The **Youth AI Privacy Act**'s private right of action was removed in the 5 August 2026 markup, so `enforce` carries the FTC and state attorneys general only.
-- **China's measures are no longer a draft** — issued 10 April 2026 by five bodies jointly (the CAC, the NDRC, the MIIT, the Ministry of Public Security and the SAMR) and in force since 15 July 2026.
 - **Tennessee has two separate instruments**, and they are routinely merged. SB 1580 is the enacted clinical-licensure conduct rule; SB 1493 / HB 1455 is a distinct pending bill criminalising the training of AI for companionship. Both are carried, separately.
 - **New York GBL Art. 47 has a use carve-out as well as its marketing carve-out.** § 1700(4)(c) contains three exclusions, and summaries that mention only the marketing limb understate how much the section pulls back out.
 - **Virginia HB 635** was continued to the next session on 9 February 2026, so it is coded `stalled` rather than dropped.
@@ -237,7 +239,7 @@ Corrections and additions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Sources
 
-Primary bill and statutory text via Congress.gov, state legislature records and China Law Translate. Status verification and gap-filling via the Future of Privacy Forum 2026 Chatbot Legislation Tracker, MultiState, Orrick, Troutman Pepper, the Transparency Coalition legislative updates, FPF's analysis of Connecticut SB 5, Hunton and Bird & Bird on the CAC measures, EPIC on the Youth AI Privacy Act, LegiScan and the Florida Senate bill history. Codings are drawn from statutory and bill text where obtainable and from legislative trackers and law-firm analyses otherwise; the source link on each record points to the best available reference for that record.
+Primary bill and statutory text via Congress.gov and state legislature records. Status verification and gap-filling via the Future of Privacy Forum 2026 Chatbot Legislation Tracker, MultiState, Orrick, Troutman Pepper, the Transparency Coalition legislative updates, FPF's analysis of Connecticut SB 5, Hunton and Bird & Bird on the CAC measures, EPIC on the Youth AI Privacy Act, LegiScan and the Florida Senate bill history. Codings are drawn from statutory and bill text where obtainable and from legislative trackers and law-firm analyses otherwise; the source link on each record points to the best available reference for that record.
 
 ## Licence
 

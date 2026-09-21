@@ -6,7 +6,7 @@ Corrections, additions and status updates are welcome. This is a research datase
 
 1. **Enrolled statutory text** for legislation currently coded from a tracker or law-firm summary. The definitional clause and its carve-out drive the `reaches` judgement, which is the column the analysis rests on.
 2. **Status changes.** Bills move, die, get vetoed, and take effect on dates well after enactment. Effective dates matter as much as enactment dates here — roughly half the enacted US state laws do not bite until 2027. A bill that has died should be removed, not recoded — see the `statusClass` table below.
-3. **New legislation**, especially outside the United States. Coverage of jurisdictions beyond the US, EU and China is currently thin.
+3. **New legislation.** The tracker covers US federal and state law only. Coverage of the states is uneven — a state with no record here may simply not have been searched yet.
 4. **Disagreement with a coding.** The `reaches`, `test` and `narrowing` fields are interpretive judgements. If you read a definition differently, open an issue with the text and your reasoning.
 
 ## How to edit
@@ -38,8 +38,8 @@ A record looks like this:
 
 These must match exactly or the row will render wrong or drop out of the matrix.
 
-**`juris`** — `US Federal` · `US State` · `EU` · `China`
-(adding a new jurisdiction also requires a badge colour and a matching `--t-*` text colour in `index.html`, and an entry in `JCLASS` in `app.js`)
+**`juris`** — `US Federal` · `US State`
+(the tracker is US-only; adding a jurisdiction would need a badge colour and a matching `--t-*` text colour in `index.html`, and an entry in `JCLASS` in `app.js`)
 
 **`statusClass`** — the category the Status column leads with, and the sort order:
 
@@ -115,7 +115,7 @@ const PHRASING = {
 Two families of colour token, and the difference matters:
 
 - `--good`, `--warn`, `--critical`, `--j-*`, `--youth`, `--seq-*` colour **fills, bars, rules and swatches**, where WCAG asks 3:1.
-- `--t-good`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-eu`, `--t-cn`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
+- `--t-good`, `--t-serious`, `--t-critical`, `--t-fed`, `--t-state`, `--t-youth`, `--t-link` colour **small text**, where it asks 4.5:1. Each clears it against the surface or tint that text actually sits on, in both themes.
 
 Put a `--t-*` token on anything that lands on type. `color:var(--warn)` on 12px text is the mistake this split exists to prevent — the reach labels sat as low as 1.79:1.
 
