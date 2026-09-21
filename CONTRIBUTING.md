@@ -5,9 +5,10 @@ Corrections, additions and status updates are welcome. This is a research datase
 ## What helps most
 
 1. **Enrolled statutory text** for legislation currently coded from a tracker or law-firm summary. The definitional clause and its carve-out drive the `reaches` judgement, which is the column the analysis rests on.
-2. **Status changes.** Bills move, die, get vetoed, and take effect on dates well after enactment. Effective dates matter as much as enactment dates here — roughly half the enacted US state laws do not bite until 2027. A bill that has died should be removed, not recoded — see the `statusClass` table below.
-3. **New legislation.** The tracker covers US federal and state law only. Coverage of the states is uneven — a state with no record here may simply not have been searched yet.
-4. **Disagreement with a coding.** The `reaches`, `test` and `narrowing` fields are interpretive judgements. If you read a definition differently, open an issue with the text and your reasoning.
+2. **Exact dates.** 71 of the 91 dates in the dataset are recorded only to the month or the year — see [DATE-GAPS.md](DATE-GAPS.md), which ranks them and links each record's source. A year-only date is placed at 30 June for sorting, so it can be six months out on the Timeline.
+3. **Status changes.** Bills move, die, get vetoed, and take effect on dates well after enactment. Effective dates matter as much as enactment dates here — roughly half the enacted US state laws do not bite until 2027. A bill that has died should be removed, not recoded — see the `statusClass` table below.
+4. **New legislation.** The tracker covers US federal and state law only. Coverage of the states is uneven — a state with no record here may simply not have been searched yet.
+5. **Disagreement with a coding.** The `reaches`, `test` and `narrowing` fields are interpretive judgements. If you read a definition differently, open an issue with the text and your reasoning.
 
 ## How to edit
 
@@ -89,6 +90,8 @@ A new mechanism needs three things, not one: a `MECHS` entry (key, full label, s
 | `chron.first` | When the legislation first entered the record: introduced, filed, proposed, published as a draft |
 | `chron.latest` | The most recent thing that actually **happened** — a committee vote, passage, enactment, entry into force. Not the effective date |
 | `chron.effective` | When the obligations start to bind. Optional. For a bill not yet enacted, the date the text proposes |
+
+**[DATE-GAPS.md](DATE-GAPS.md) lists every date not yet recorded to the day**, worst first, with each record's source link — it is the standing worklist for this field. Regenerate it with `node tools/date-gaps.mjs` after editing `data.js`.
 
 Write each as `YYYY-MM-DD`, `YYYY-MM` or `YYYY`, at whatever precision the source actually supports — do not invent a month or a day to make a row look precise. A partial date is placed at the midpoint of its period for sorting (a year sorts as 30 June, a month as the 15th) and is marked on the site as an estimate, so a real month is worth finding where one exists. Keep `chron` consistent with the human-readable `dates` string: if you change one, change the other.
 
