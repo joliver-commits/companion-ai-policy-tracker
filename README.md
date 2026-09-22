@@ -51,6 +51,15 @@ The following nine pieces of legislation were removed under this policy in Augus
 | HB 1728 / HB 1782 | Hawaii | Inactive; superseded by SB 3001, which was enacted and is tracked. |
 | LB 1185 | Nebraska | Inactive; superseded by LB 525, which is tracked. |
 
+Four more were removed in September 2026, on confirmation of their fates:
+
+| Legislation | Body | Fate |
+|---|---|---|
+| SB 3262 (Companion AI Protection Act) | Illinois | Re-referred to Assignments 22 May 2026 and **died in committee**. The most consequential record in the corpus for the definitional question — it defined its object "irrespective of how the system is marketed or labeled" and made persistent memory a rebuttable trigger — and it is the reason the memory coding line still names it. |
+| SB 3384 | Illinois | **Died in chamber** 25 May 2026. Illinois's narrower second vehicle: disclosure and a crisis protocol only. |
+| A6767 | New York | **Died in the Senate** 7 Jan 2026. Substantively identical to the enacted Article 47 but with a private right of action, which is why it mattered. |
+| SB 300 | California | **Ordered to the inactive file** 30 Aug 2026 at the author's request. |
+
 Every count on the site is computed from `DATA` at render time, so a removal propagates to the tiles, the coverage bars, the matrix and the How to use this tracker view without any copy needing to be edited.
 
 ## How to read the coding
@@ -138,7 +147,7 @@ A mechanism can legitimately sit at zero. **`memory` — an explicit cap on rete
 - `k:"summary"` — close paraphrase drawn from secondary analysis or from this tracker's own coding notes. Tagged **close paraphrase**; verify against the enrolled text before quoting it in published work.
 - `n` — optional context on the clause.
 
-**This layer is deliberately incomplete.** 34 of the 179 mechanism/legislation pairs currently carry wording; the rest render as *not yet transcribed* with a link to the source, and the panel header states the transcribed count for that mechanism. Nothing is invented to fill a gap: a pair with no sourced wording shows no wording. Every mechanism that any legislation carries has at least one worked example, and the analytically load-bearing ones — dependence, engagement, human takeover, duty to test design — are covered in full.
+**This layer is deliberately incomplete.** 25 of the 143 mechanism/legislation pairs currently carry wording; the rest render as *not yet transcribed* with a link to the source, and the panel header states the transcribed count for that mechanism. Nothing is invented to fill a gap: a pair with no sourced wording shows no wording. Every mechanism that any legislation carries has at least one worked example, and the analytically load-bearing ones — dependence, engagement, duty to test design — are covered in full.
 
 Transcribing the remaining pairs from enrolled text is now the highest-value contribution to this repository.
 

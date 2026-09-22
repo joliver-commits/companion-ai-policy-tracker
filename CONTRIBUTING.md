@@ -5,7 +5,7 @@ Corrections, additions and status updates are welcome. This is a research datase
 ## What helps most
 
 1. **Enrolled statutory text** for legislation currently coded from a tracker or law-firm summary. The definitional clause and its carve-out drive the `reaches` judgement, which is the column the analysis rests on.
-2. **Exact dates.** 71 of the 91 dates in the dataset are recorded only to the month or the year — see [DATE-GAPS.md](DATE-GAPS.md), which ranks them and links each record's source. A year-only date is placed at 30 June for sorting, so it can be six months out on the Timeline.
+2. **Exact dates.** Some dates are still recorded only to the month or the year — [DATE-GAPS.md](DATE-GAPS.md) is the live worklist, ranked, with each record's source link. A year-only date is placed at 30 June for sorting, so it can be six months out on the Timeline.
 3. **Status changes.** Bills move, die, get vetoed, and take effect on dates well after enactment. Effective dates matter as much as enactment dates here — roughly half the enacted US state laws do not bite until 2027. A bill that has died should be removed, not recoded — see the `statusClass` table below.
 4. **New legislation.** The tracker covers US federal and state law only. Coverage of the states is uneven — a state with no record here may simply not have been searched yet.
 5. **Disagreement with a coding.** The `reaches`, `test` and `narrowing` fields are interpretive judgements. If you read a definition differently, open an issue with the text and your reasoning.
@@ -97,7 +97,7 @@ Write each as `YYYY-MM-DD`, `YYYY-MM` or `YYYY`, at whatever precision the sourc
 
 ### Adding operative wording
 
-The most useful thing you can add. `PHRASING` at the foot of `data.js` records how each piece of legislation words each mechanism it carries; it is currently about 20% complete, and everything missing renders as *not yet transcribed* on the site.
+The most useful thing you can add. `PHRASING` at the foot of `data.js` records how each piece of legislation words each mechanism it carries; it is roughly a fifth complete, and everything missing renders as *not yet transcribed* on the site.
 
 ```js
 const PHRASING = {
@@ -128,7 +128,7 @@ In the reach column only `yes` and `no` are coloured. `possibly`, `partial` and 
 
 ### Coding conventions
 
-- **`memory`** means a clear and explicit cap on retention — a rule stating how long a system may keep what a user told it. **No record currently carries it, and the mechanism is kept in the list to mark the gap.** Do not code it for legislation that merely uses persistent memory as a definitional trigger (Illinois SB 3262) or that limits the data processed to personalise outputs (the Youth AI Privacy Act). Both were coded `memory` until September 2026 and both were wrong.
+- **`memory`** means a clear and explicit cap on retention — a rule stating how long a system may keep what a user told it. **No record currently carries it, and the mechanism is kept in the list to mark the gap.** Do not code it for legislation that merely uses persistent memory as a definitional trigger, or that limits the data processed to personalise outputs (the Youth AI Privacy Act). Both were coded `memory` until September 2026 and both were wrong.
 - **`engagement`** means a limit on features designed to extend use (variable rewards, streaks, push alerts, retention prompts). A periodic break reminder is `disclosure`, not `engagement`.
 - **`causation`** means a duty to test whether the provider's *own design* produces harm. Counting crisis referrals is `reporting`. Only one piece of legislation in the corpus meets the `causation` bar.
 - **`testNote`** should quote the operative definition where the text is available. Quote rather than paraphrase wherever you can.
