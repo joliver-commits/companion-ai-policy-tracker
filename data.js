@@ -73,8 +73,8 @@ const DATA = [
 {
   id:"us-guard", juris:"US Federal", body:"US Congress", cite:"S. 3062 / H.R. 8623",
   name:"GUARD Act", status:"Advanced from committee", statusClass:"moving",
-  dates:"Introduced Oct 2025 · advanced Senate Judiciary 30 Apr 2026 · House companion pending",
-  chron:{first:"2025-10", latest:"2026-04-30"},
+  dates:"Introduced Oct 2025 · advanced Senate Judiciary 30 Apr 2026 · placed on the Senate Legislative Calendar under General Orders, Cal. No. 406, 11 May 2026",
+  chron:{first:"2025-10", latest:"2026-05-11"},
   scope:"Minors (ban); all users (disclosure)",
   youth:"duties",
   term:"AI companion", test:"purpose", testNote:"Simulates a sustained interpersonal relationship or emotional interaction",
@@ -103,8 +103,8 @@ const DATA = [
 {
   id:"us-people-first", key:true, juris:"US Federal", body:"US House", cite:"People-First Chatbot Act",
   name:"People-First Chatbot Act", status:"Introduced", statusClass:"pending",
-  dates:"Introduced July 2026 (Foushee, Casar) · from EPIC / Consumer Federation / Fairplay model bill (Jan 2026)",
-  chron:{first:"2026-07", latest:"2026-07"},
+  dates:"Introduced July 2026 (Foushee, Casar) · referred to House Energy and Commerce 9 July 2026 · from the EPIC / Consumer Federation / Fairplay model bill (Jan 2026)",
+  chron:{first:"2026-07-09", latest:"2026-07-09"},
   scope:"All users, regardless of age",
   youth:"none",
   term:"Artificial intelligence chatbot — no companion category", test:"capability + purpose",
@@ -119,8 +119,8 @@ const DATA = [
 {
   id:"us-chat", key:true, juris:"US Federal", body:"US Senate", cite:"S. 2714",
   name:"CHAT Act", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Sept 2025",
-  chron:{first:"2025-09", latest:"2025-09"},
+  dates:"Introduced Sept 2025 · read twice and referred to Senate Commerce, Science and Transportation 4 Sept 2025",
+  chron:{first:"2025-09-04", latest:"2025-09-04"},
   scope:"Minors",
   youth:"only",
   term:"Companion AI chatbot", test:"purpose (primary)",
@@ -133,26 +133,10 @@ const DATA = [
   link:"https://www.congress.gov/"
 },
 {
-  id:"us-trump-ai", key:true, juris:"US Federal", body:"US Congress", cite:"Discussion draft",
-  name:"TRUMP AMERICA AI Act", status:"Discussion draft", statusClass:"pending",
-  dates:"Discussion draft Mar 2026 · incorporates the GUARD Act",
-  chron:{first:"2026-03", latest:"2026-03"},
-  scope:"All users; minor-specific duties",
-  youth:"duties",
-  term:"AI chatbot, with AI companion as a subset", test:"capability + purpose",
-  testNote:"Chatbot: produces content not fully predetermined, accepts open-ended input. Companion: adaptive human-like responses + designed to encourage or facilitate simulated interpersonal or emotional interaction, friendship, companionship, or therapeutic communication",
-  narrowing:"None (chatbot limb excludes only narrow, single-purpose services)", reaches:"yes",
-  mechs:["disclosure","minorContent","ageAssurance","sentience","accessBan"],
-  enforce:["Criminal penalties","State AG"],
-  interval:"Per incorporated GUARD Act provisions",
-  note:"Nests two categories. ‘AI chatbot’ is defined broadly — produces content not fully predetermined, accepts open-ended input — and excludes only narrow, single-purpose services; ‘AI companion’ is a narrower designation inside it, turning on adaptive human-like responses plus a design to encourage or facilitate simulated interpersonal or emotional interaction, friendship, companionship or therapeutic communication. Reach is coded yes on the chatbot limb, which is the limb carrying the disclosure duties. Incorporates the GUARD Act’s provisions, including its criminal penalties.",
-  link:"https://www.congress.gov/"
-},
-{
   id:"us-chatbot-act", juris:"US Federal", body:"US Senate", cite:"S. 4407",
-  name:"CHATBOT Act", status:"Introduced", statusClass:"pending",
-  dates:"Filed 2026",
-  chron:{first:"2026", latest:"2026"},
+  name:"CHATBOT Act", status:"Advanced from committee", statusClass:"moving",
+  dates:"Filed 2026 · ordered to be reported favorably by Senate Commerce, Science and Transportation, with an amendment in the nature of a substitute, 5 Aug 2026",
+  chron:{first:"2026", latest:"2026-08-05"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Not re-verified against introduced text",
@@ -166,8 +150,8 @@ const DATA = [
 {
   id:"us-kids-act", juris:"US Federal", body:"US House", cite:"H.R. 7757",
   name:"KIDS Act", status:"Passed one chamber", statusClass:"moving",
-  dates:"Passed House 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Passed the House 29 June 2026 · introduction date not yet recorded",
+  chron:{first:"2026-06-29", latest:"2026-06-29"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Not re-verified against passed text",
@@ -183,8 +167,8 @@ const DATA = [
 {
   id:"ca-sb243", juris:"US State", body:"California", cite:"SB 243",
   name:"Companion Chatbots Act", status:"Enacted", statusClass:"law",
-  dates:"Enacted Oct 2025 · effective 1 Jan 2026",
-  chron:{first:"2025-10", latest:"2025-10", effective:"2026-01-01"},
+  dates:"Passed 13 Oct 2025 · effective 1 Jan 2026",
+  chron:{first:"2025-10-13", latest:"2025-10-13", effective:"2026-01-01"},
   scope:"All users; additional minor duties",
   youth:"duties",
   term:"Companion chatbot", test:"capability",
@@ -199,8 +183,8 @@ const DATA = [
 {
   id:"ny-art47", juris:"US State", body:"New York", cite:"GBL Art. 47 (S3008)",
   name:"AI Companion Models", status:"Enacted", statusClass:"law",
-  dates:"Enacted May 2025 · effective 5 Nov 2025",
-  chron:{first:"2025-05", latest:"2025-05", effective:"2025-11-05"},
+  dates:"Introduced May 2025 · enacted 7 Nov 2025 · effective 5 Nov 2025 as recorded — the effective date now precedes the enactment date and one of the two needs re-checking",
+  chron:{first:"2025-05", latest:"2025-11-07", effective:"2025-11-05"},
   scope:"All users",
   youth:"none",
   term:"AI companion", test:"behaviour (three conjunctive prongs)",
@@ -215,8 +199,8 @@ const DATA = [
 {
   id:"or-sb1546", juris:"US State", body:"Oregon", cite:"SB 1546",
   name:"Relating to artificial intelligence companions", status:"Enacted", statusClass:"law",
-  dates:"Passed Mar 2026 · effective 1 Jan 2027",
-  chron:{first:"2026-03", latest:"2026-03", effective:"2027-01-01"},
+  dates:"Introduced Mar 2026 · passed 6 Apr 2026 · effective 1 Jan 2027",
+  chron:{first:"2026-03", latest:"2026-04-06", effective:"2027-01-01"},
   scope:"All users; extensive minor prohibitions",
   youth:"duties",
   term:"Artificial intelligence companion", test:"design purpose",
@@ -231,8 +215,8 @@ const DATA = [
 {
   id:"ct-sb5", juris:"US State", body:"Connecticut", cite:"SB 5",
   name:"AI companion provisions of the omnibus AI Act", status:"Enacted", statusClass:"law",
-  dates:"Enacted June 2026 · effective 1 Jan 2027",
-  chron:{first:"2026-06", latest:"2026-06", effective:"2027-01-01"},
+  dates:"Signed by the Governor 27 May 2026 · effective 1 Jan 2027",
+  chron:{first:"2026-05-27", latest:"2026-05-27", effective:"2027-01-01"},
   scope:"All users; heightened minor duties",
   youth:"duties",
   term:"AI companion (within a broader AI act)", test:"capability",
@@ -247,8 +231,8 @@ const DATA = [
 {
   id:"wa-hb2225", juris:"US State", body:"Washington", cite:"HB 2225",
   name:"Chatbot Disclosure Act", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026 · effective 1 Jan 2027",
-  chron:{first:"2026", latest:"2026", effective:"2027-01-01"},
+  dates:"Passed 24 Mar 2026 · effective 1 Jan 2027 · introduction date not yet recorded",
+  chron:{first:"2026-03-24", latest:"2026-03-24", effective:"2027-01-01"},
   scope:"All users",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Adaptive human-like responses sustaining a relationship; verify exact wording against enrolled text",
@@ -262,8 +246,8 @@ const DATA = [
 {
   id:"ne-lb525", juris:"US State", body:"Nebraska", cite:"LB 525",
   name:"Conversational AI safety act", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026 · effective 1 Jul 2027",
-  chron:{first:"2026", latest:"2026", effective:"2027-07-01"},
+  dates:"Passed 17 Apr 2026 · effective 1 Jul 2027 · introduction date not yet recorded",
+  chron:{first:"2026-04-17", latest:"2026-04-17", effective:"2027-07-01"},
   scope:"All users; minor-specific rules",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -277,8 +261,8 @@ const DATA = [
 {
   id:"id-sb1297", juris:"US State", body:"Idaho", cite:"SB 1297",
   name:"Conversational AI safety act", status:"Enacted", statusClass:"law",
-  dates:"Introduced Feb 2026 · enacted · effective 1 Jul 2027",
-  chron:{first:"2026-02", latest:"2026", effective:"2027-07-01"},
+  dates:"Introduced Feb 2026 · passed 1 Apr 2026 · effective 1 Jul 2027",
+  chron:{first:"2026-02", latest:"2026-04-01", effective:"2027-07-01"},
   scope:"All users; minor-specific rules",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -292,8 +276,8 @@ const DATA = [
 {
   id:"co-hb1263", juris:"US State", body:"Colorado", cite:"HB 1263",
   name:"Companion chatbot protections", status:"Enacted", statusClass:"law",
-  dates:"Introduced Feb 2026 · enacted 2026",
-  chron:{first:"2026-02", latest:"2026"},
+  dates:"Introduced Feb 2026 · passed 1 June 2026",
+  chron:{first:"2026-02", latest:"2026-06-01"},
   scope:"Minors-focused",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -307,8 +291,8 @@ const DATA = [
 {
   id:"ga-sb540", juris:"US State", body:"Georgia", cite:"SB 540",
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
-  dates:"Introduced Feb 2026 · enacted 2026",
-  chron:{first:"2026-02", latest:"2026"},
+  dates:"Introduced Feb 2026 · passed 11 May 2026",
+  chron:{first:"2026-02", latest:"2026-05-11"},
   scope:"Minors-focused",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -322,8 +306,8 @@ const DATA = [
 {
   id:"hi-sb3001", juris:"US State", body:"Hawaii", cite:"SB 3001",
   name:"Companion chatbot act", status:"Enacted", statusClass:"law",
-  dates:"Introduced Jan 2026 · sent to Governor · enacted 2026",
-  chron:{first:"2026-01", latest:"2026"},
+  dates:"Introduced Jan 2026 · passed 14 July 2026",
+  chron:{first:"2026-01", latest:"2026-07-14"},
   scope:"All users; minor duties",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -337,8 +321,8 @@ const DATA = [
 {
   id:"ia-sf2417", juris:"US State", body:"Iowa", cite:"SF 2417",
   name:"Companion chatbot provisions", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Passed 2 May 2026 · introduction date not yet recorded",
+  chron:{first:"2026-05-02", latest:"2026-05-02"},
   scope:"Minors-focused",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -352,8 +336,8 @@ const DATA = [
 {
   id:"ri-sb2195", juris:"US State", body:"Rhode Island", cite:"SB 2195",
   name:"Companion chatbot provisions", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Passed 22 June 2026 · introduction date not yet recorded",
+  chron:{first:"2026-06-22", latest:"2026-06-22"},
   scope:"All users",
   youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -367,8 +351,8 @@ const DATA = [
 {
   id:"me-ld1727", juris:"US State", body:"Maine", cite:"LD 1727",
   name:"Chatbot disclosure", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Passed 12 June 2025 · introduction date not yet recorded",
+  chron:{first:"2025-06-12", latest:"2025-06-12"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"capability", testNote:"Disclosure-only instrument",
@@ -382,8 +366,8 @@ const DATA = [
 {
   id:"nh-hb143", juris:"US State", body:"New Hampshire", cite:"HB 143",
   name:"Chatbot minor protections", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Passed 1 Aug 2025 · effective 1 Jan 2026 · introduction date not yet recorded",
+  chron:{first:"2025-08-01", latest:"2025-08-01", effective:"2026-01-01"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -397,8 +381,8 @@ const DATA = [
 {
   id:"ny-s9008", juris:"US State", body:"New York", cite:"S 9008C",
   name:"Minor age assurance for chatbots", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Signed by the Governor 26 May 2026 · introduction date not yet recorded",
+  chron:{first:"2026-05-26", latest:"2026-05-26"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against enrolled text",
@@ -412,8 +396,8 @@ const DATA = [
 {
   id:"ut-hb452", juris:"US State", body:"Utah", cite:"HB 452",
   name:"Mental health chatbot regulation", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2025",
-  chron:{first:"2025", latest:"2025"},
+  dates:"Passed 25 Mar 2025 · introduction date not yet recorded",
+  chron:{first:"2025-03-25", latest:"2025-03-25"},
   scope:"All users",
   youth:"none",
   term:"Mental health chatbot", test:"purpose",
@@ -428,8 +412,8 @@ const DATA = [
 {
   id:"tn-sb1580", juris:"US State", body:"Tennessee", cite:"SB 1580",
   name:"Prohibition on AI claiming clinical licensure", status:"Enacted", statusClass:"law",
-  dates:"Enacted 2026 · effective 1 Jul 2026",
-  chron:{first:"2026", latest:"2026", effective:"2026-07-01"},
+  dates:"Passed 6 Apr 2026 · effective 1 Jul 2026 · introduction date not yet recorded",
+  chron:{first:"2026-04-06", latest:"2026-04-06", effective:"2026-07-01"},
   scope:"All users",
   youth:"none",
   term:"AI system (no companion term)", test:"conduct",
@@ -444,25 +428,9 @@ const DATA = [
 
 /* ================ US STATES — PROPOSED / IN PROGRESS ============== */
 {
-  id:"il-sb3262", key:true, juris:"US State", body:"Illinois", cite:"SB 3262",
-  name:"Companion AI Protection Act", status:"In committee", statusClass:"pending",
-  dates:"Introduced Feb 2026 (Sen. Edly-Allen) · last action 22 May 2026 · would take effect 1 Jan 2027",
-  chron:{first:"2026-02", latest:"2026-05-22", effective:"2027-01-01"},
-  scope:"All users; extra minor protection",
-  youth:"duties",
-  term:"Companion artificial intelligence product", test:"capability",
-  testNote:"Software application capable of generating adaptive, personalised and emotionally resonant responses to sustain a coherent, long-term, one-on-one conversational relationship with a user, IRRESPECTIVE OF HOW THE SYSTEM IS MARKETED OR LABELED. Rebuttable presumption where it retains memory of past conversations with a specific user to inform future responses.",
-  narrowing:"None — expressly disregards marketing", reaches:"yes",
-  mechs:["disclosure","crisis","reporting","engagement","dependence","sentience","audit"],
-  enforce:["State AG ($5,000 negligent / $10,000 intentional)","Private right of action","Product-defect claims; Section 230 barred as a defence"],
-  interval:"At least every 30 minutes for non-text interactions",
-  note:"States the functional approach in statutory language: the definition applies ‘irrespective of how the system is marketed or labeled’, with a rebuttable presumption where the system retains memory of past conversations with a specific user to inform future responses. Bars variable-reward engagement mechanics and unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account. Requires an independent third-party compliance audit every two years. Enforcement runs through the attorney general ($5,000 negligent, $10,000 intentional) and a private right of action, and Section 230 is barred as a defence in product-defect claims. Reach is coded yes and narrowing as none: it is the only record in the corpus carrying none of the three narrowing devices. Still in committee as of 22 May 2026; would take effect 1 January 2027.",
-  link:"https://ilga.gov/Legislation/BillStatus?DocNum=3262&GAID=18&DocTypeID=SB&SessionID=114"
-},
-{
   id:"va-hb635", key:true, juris:"US State", body:"Virginia", cite:"HB 635",
   name:"Artificial Intelligence Chatbots Act", status:"Continued to next session", statusClass:"stalled",
-  dates:"Introduced Jan 2026 · continued in Communications, Technology and Innovation 9 Feb 2026",
+  dates:"Introduced Jan 2026 · continued to 2027 in House Communications, Technology and Innovation 9 Feb 2026",
   chron:{first:"2026-01", latest:"2026-02-09"},
   scope:"Minors",
   youth:"only",
@@ -524,25 +492,10 @@ const DATA = [
   link:"https://wapp.capitol.tn.gov/apps/BillInfo/Default?BillNumber=SB1493&ga=114"
 },
 {
-  id:"ny-a6767", juris:"US State", body:"New York", cite:"A6767",
-  name:"AI companion models — Assembly version", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Jan 2026",
-  chron:{first:"2026-01", latest:"2026-01"},
-  scope:"All users",
-  youth:"none",
-  term:"AI companion", test:"behaviour", testNote:"Substantially tracks the enacted Article 47 three-prong test",
-  narrowing:"Tracks Art. 47", reaches:"possibly",
-  mechs:["disclosure","crisis"],
-  enforce:["Private right of action"],
-  interval:"Per Art. 47",
-  note:"Substantively duplicates the enacted Article 47 with one change to enforcement: harmed individuals may sue, rather than enforcement resting with the attorney general alone. The test and carve-out track Art. 47, so reach is coded possibly for the same reasons.",
-  link:"https://www.nysenate.gov/"
-},
-{
   id:"ny-s7263", juris:"US State", body:"New York", cite:"S7263",
   name:"Chatbot conduct rules", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Apr 2025",
-  chron:{first:"2025-04", latest:"2025-04"},
+  dates:"Introduced Apr 2025 · committed to Rules 5 June 2026",
+  chron:{first:"2025-04", latest:"2026-06-05"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"conduct",
@@ -555,25 +508,10 @@ const DATA = [
   link:"https://www.nysenate.gov/"
 },
 {
-  id:"il-sb3384", juris:"US State", body:"Illinois", cite:"SB 3384",
-  name:"Companion chatbot provisions", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Feb 2026",
-  chron:{first:"2026-02", latest:"2026-02"},
-  scope:"All users",
-  youth:"none",
-  term:"Companion chatbot", test:"capability", testNote:"Less comprehensive than SB 3262",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["disclosure","crisis"],
-  enforce:["State AG"],
-  interval:"—",
-  note:"Illinois’s second companion vehicle, carrying disclosure and a crisis protocol only against the wider package in SB 3262. Reach is coded unclear and the narrowing device unverified.",
-  link:"https://ilga.gov/"
-},
-{
   id:"pa-sb1090", juris:"US State", body:"Pennsylvania", cite:"SB 1090",
   name:"Chatbot safety act", status:"Passed one chamber", statusClass:"moving",
-  dates:"Passed chamber 2026",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Referred to Communications and Technology 18 Mar 2026 · introduction date not yet recorded",
+  chron:{first:"2026-03-18", latest:"2026-03-18"},
   scope:"All users",
   youth:"none",
   term:"Companion chatbot", test:"capability", testNote:"Verify against passed text",
@@ -587,8 +525,8 @@ const DATA = [
 {
   id:"pa-hb2006", juris:"US State", body:"Pennsylvania", cite:"HB 2006",
   name:"Chatbot crisis and disclosure", status:"Introduced", statusClass:"pending",
-  dates:"Introduced Nov 2025",
-  chron:{first:"2025-11", latest:"2025-11"},
+  dates:"Introduced Nov 2025 · re-committed to Appropriations 1 July 2026",
+  chron:{first:"2025-11", latest:"2026-07-01"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"capability", testNote:"Verify against introduced text",
@@ -600,25 +538,10 @@ const DATA = [
   link:"https://www.legis.state.pa.us/"
 },
 {
-  id:"ca-sb300", juris:"US State", body:"California", cite:"SB 300",
-  name:"Companion chatbot safety protocols", status:"Passed one chamber", statusClass:"moving",
-  dates:"Introduced Jan 2026",
-  chron:{first:"2026-01", latest:"2026-01"},
-  scope:"Minors",
-  youth:"only",
-  term:"Companion chatbot", test:"capability", testNote:"Tracks SB 243",
-  narrowing:"Use carve-out (assumed)", reaches:"possibly",
-  mechs:["disclosure","crisis","minorContent","sentience"],
-  enforce:["State AG"],
-  interval:"Every 3 hours",
-  note:"California’s follow-on to SB 243: safety protocols, no sexual content for minors, and no impersonating humans, on a three-hour interval. The definition tracks SB 243, so reach is coded possibly for the same reasons and the use carve-out is assumed to follow.",
-  link:"https://leginfo.legislature.ca.gov/"
-},
-{
   id:"ca-sb867", juris:"US State", body:"California", cite:"SB 867",
   name:"Ban on chatbot companions in toys", status:"Passed one chamber", statusClass:"moving",
-  dates:"Introduced Mar 2026",
-  chron:{first:"2026-03", latest:"2026-03"},
+  dates:"Introduced Mar 2026 · passed 10 Sept 2026",
+  chron:{first:"2026-03", latest:"2026-09-10"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot companion in a connected toy", test:"product form",
@@ -633,8 +556,8 @@ const DATA = [
 {
   id:"ca-sb1119", juris:"US State", body:"California", cite:"SB 1119 / AB 2023",
   name:"Chatbot risk assessment and audit", status:"Passed one chamber", statusClass:"moving",
-  dates:"2026 session",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Passed 10 Sept 2026 · introduction date not yet recorded",
+  chron:{first:"2026", latest:"2026-09-10"},
   scope:"All users; minor duties",
   youth:"duties",
   term:"Companion chatbot", test:"capability", testNote:"Verify against text",
@@ -642,14 +565,14 @@ const DATA = [
   mechs:["disclosure","crisis","reporting","minorContent","ageAssurance","parental","audit","proImpersonation"],
   enforce:["State AG"],
   interval:"—",
-  note:"Combines risk assessment, independent audit and transparency reporting with the standard disclosure, crisis, content, age assurance and parental duties. With Illinois SB 3262 it is one of two records in the corpus coded for independent audit. Reach is coded unclear pending the bill text.",
+  note:"Combines risk assessment, independent audit and transparency reporting with the standard disclosure, crisis, content, age assurance and parental duties. It is now the only record in the corpus coded for independent audit — Illinois SB 3262, the other, died in committee in May 2026. Reach is coded unclear pending the bill text.",
   link:"https://leginfo.legislature.ca.gov/"
 },
 {
   id:"ca-ab1988", juris:"US State", body:"California", cite:"AB 1988",
   name:"Crisis interruption requirement", status:"Passed one chamber", statusClass:"moving",
-  dates:"2026 session",
-  chron:{first:"2026", latest:"2026"},
+  dates:"In committee 26 June 2026 · introduction date not yet recorded",
+  chron:{first:"2026-06-26", latest:"2026-06-26"},
   scope:"All users",
   youth:"none",
   term:"Chatbot", test:"conduct", testNote:"Harm detection with a mandatory conversational pause",
@@ -663,8 +586,8 @@ const DATA = [
 {
   id:"mi-sb760", juris:"US State", body:"Michigan", cite:"SB 760",
   name:"Companion chatbot act", status:"Passed one chamber", statusClass:"moving",
-  dates:"2026 session",
-  chron:{first:"2026", latest:"2026"},
+  dates:"Referred to the Committee on Communications and Technology 29 Apr 2026 · introduction date not yet recorded",
+  chron:{first:"2026-04-29", latest:"2026-04-29"},
   scope:"Minors",
   youth:"only",
   term:"Companion chatbot", test:"capability", testNote:"Verify against text",
@@ -677,9 +600,9 @@ const DATA = [
 },
 {
   id:"ny-s9051", juris:"US State", body:"New York", cite:"S 9051",
-  name:"Chatbot design and data act", status:"Passed legislature", statusClass:"moving",
-  dates:"2026 session",
-  chron:{first:"2026", latest:"2026"},
+  name:"Chatbot design and data act", status:"Passed one chamber", statusClass:"moving",
+  dates:"Passed the Assembly and returned to the Senate 5 June 2026 · introduction date not yet recorded",
+  chron:{first:"2026-06-05", latest:"2026-06-05"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot", test:"capability", testNote:"Verify against passed text",
@@ -692,9 +615,9 @@ const DATA = [
 },
 {
   id:"ny-s9408", juris:"US State", body:"New York", cite:"S 9408",
-  name:"Minor access ban — toys and young users", status:"Passed legislature", statusClass:"moving",
-  dates:"2026 session",
-  chron:{first:"2026", latest:"2026"},
+  name:"Minor access ban — toys and young users", status:"Passed one chamber", statusClass:"moving",
+  dates:"Passed the Assembly and returned to the Senate, substituted for A11144B, 2 June 2026 · introduction date not yet recorded",
+  chron:{first:"2026-06-02", latest:"2026-06-02"},
   scope:"Minors",
   youth:"only",
   term:"Chatbot in connected toys", test:"product form",
@@ -749,7 +672,7 @@ const MECHDEF = {
   },
   memory:{
     def:"A clear and explicit cap on retention itself: a rule limiting how long a system may keep what a user has told it. NOTHING IN THIS CORPUS CARRIES IT — the mechanism is listed to mark the gap.",
-    line:"Two pieces of legislation come closest and neither reaches the bar. Illinois SB 3262 makes persistent memory the rebuttable TRIGGER for its regime, which constrains nothing about retention. The Youth AI Privacy Act limits the data a deployer may PROCESS to personalise outputs — session-scoped, within an FTC-set recency window — which governs personalisation rather than retention. A cap on memory would say how long the record of a conversation may be kept, and no instrument says it."
+    line:"The Youth AI Privacy Act comes closest and does not reach the bar: it limits the data a deployer may PROCESS to personalise outputs — session-scoped, within an FTC-set recency window — which governs personalisation rather than retention. A cap on memory would say how long the record of a conversation may be kept, and nothing in the corpus says it. Using persistent memory as a definitional TRIGGER, as Illinois SB 3262 did before it died in committee in May 2026, is not a constraint either."
   },
   proImpersonation:{
     def:"A prohibition on the system holding itself out as a licensed professional — therapist, psychologist, physician, lawyer — or on providing services reserved to one.",
@@ -840,12 +763,6 @@ const PHRASING = {
       n:"The only provision in the corpus that turns the reporting duty into a duty to examine the operator's own design."},
     disclosure:{k:"summary", t:"non-human notice before the first output, hourly thereafter, and whenever the user asks whether they are talking to a person",
       n:"The ask-triggered notice responds to the moment of actual uncertainty rather than to a clock, and appears in no other instrument."}
-  },
-  "il-sb3262":{
-    dependence:{k:"summary", t:"bars simulated distress for retention — unsolicited messages of simulated distress, loneliness, guilt or abandonment triggered when a user tries to leave, reduce usage or delete an account"},
-    engagement:{k:"summary", t:"bars variable-reward engagement mechanics"},
-    audit:{k:"summary", t:"independent third-party compliance audit every two years"},
-    disclosure:{k:"summary", t:"disclosure at least every 30 minutes for non-text interactions"}
   },
   "ks-sb405":{
     dependence:{k:"summary", t:"prohibits TRAINING artificial intelligence systems designed to act as a companion, provide emotional support, or encourage isolation",
@@ -988,7 +905,7 @@ const GLOSSARY = {
   "narrow:unverified":{t:"Narrowing device unverified",
     d:"The text has not been read closely enough to code the narrowing device. A coding gap rather than a finding — enrolled or bill text for these rows is the most useful contribution to the dataset."},
   "narrow:none":{t:"No narrowing device",
-    d:"Nothing pulls anything back out of the definition. Rare, and analytically important: Illinois SB 3262 goes further and defines its object “irrespective of how the system is marketed or labeled”, foreclosing the classification move companies already make."},
+    d:"Nothing pulls anything back out of the definition. Rare, and analytically important: a definition with no carve-out at all is the exception in this corpus, not the rule."},
 
   /* ---- provenance of quoted wording ---- */
   "prov:quote":{t:"Verbatim text",
@@ -1006,7 +923,7 @@ const GLOSSARY = {
   categorical:{t:"Categorical definition",
     d:"Defining the regulated object as a kind of product: a companion app, a companion chatbot. Survives in this corpus mainly in the vocabulary and in the exclusions rather than in the operative tests."},
   pra:{t:"Private right of action",
-    d:"A statutory route for the harmed individual to sue, rather than leaving enforcement to a regulator. Coded from the enforcement field on each record. New York's enacted Article 47 is attorney-general only while its substantively identical Assembly twin A6767 lets individuals sue, and the Youth AI Privacy Act's private right of action was removed in the 5 August 2026 markup."},
+    d:"A statutory route for the harmed individual to sue, rather than leaving enforcement to a regulator. Coded from the enforcement field on each record. New York's enacted Article 47 is attorney-general only; its substantively identical Assembly twin A6767, which let individuals sue, died in the Senate in January 2026. The Youth AI Privacy Act's private right of action was removed in the 5 August 2026 markup."},
   retention:{t:"Retention ceiling",
-    d:"A hard limit on how long a system may keep what a user told it. NOTHING IN THIS CORPUS HAS ONE — not in force, not moving, not proposed. The two nearest misses: Illinois SB 3262 makes persistent memory the rebuttable trigger for its regime, which constrains nothing about retention, and the Youth AI Privacy Act bars personalisation on data outside the current session and an FTC-set recency window, which governs what may be processed rather than how long it may be kept."}
+    d:"A hard limit on how long a system may keep what a user told it. NOTHING IN THIS CORPUS HAS ONE — not in force, not moving, not proposed. The nearest miss is the Youth AI Privacy Act, which bars personalisation on data outside the current session and an FTC-set recency window: that governs what may be processed rather than how long it may be kept."}
 };
