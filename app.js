@@ -450,55 +450,50 @@ function detail(d){
 
 
 /* ---------- map ----------
-   A grid cartogram rather than a geographic map: one equal square per state,
-   laid out so the country is still recognisable. Four of the sixteen states
-   with an enacted statute — Rhode Island, New Hampshire, Delaware-sized
-   neighbours — would be a few pixels wide on a real map, and they are the
-   point of a coverage view, so area is traded for legibility. */
-const STATE_GRID=[
-  ["AK","Alaska",0,0],      ["ME","Maine",0,11],
-  ["VT","Vermont",1,10],    ["NH","New Hampshire",1,11],
-  ["WA","Washington",2,0],  ["ID","Idaho",2,1],      ["MT","Montana",2,2],   ["ND","North Dakota",2,3],
-  ["MN","Minnesota",2,4],   ["IL","Illinois",2,5],   ["WI","Wisconsin",2,6], ["MI","Michigan",2,8],
-  ["NY","New York",2,9],    ["RI","Rhode Island",2,10], ["MA","Massachusetts",2,11],
-  ["OR","Oregon",3,0],      ["NV","Nevada",3,1],     ["WY","Wyoming",3,2],   ["SD","South Dakota",3,3],
-  ["IA","Iowa",3,4],        ["IN","Indiana",3,5],    ["OH","Ohio",3,6],      ["PA","Pennsylvania",3,8],
-  ["NJ","New Jersey",3,9],  ["CT","Connecticut",3,10],
-  ["CA","California",4,0],  ["UT","Utah",4,1],       ["CO","Colorado",4,2],  ["NE","Nebraska",4,3],
-  ["MO","Missouri",4,4],    ["KY","Kentucky",4,5],   ["WV","West Virginia",4,6], ["VA","Virginia",4,7],
-  ["MD","Maryland",4,8],    ["DC","District of Columbia",4,9], ["DE","Delaware",4,10],
-  ["AZ","Arizona",5,1],     ["NM","New Mexico",5,2], ["KS","Kansas",5,3],    ["AR","Arkansas",5,4],
-  ["TN","Tennessee",5,5],   ["NC","North Carolina",5,6], ["SC","South Carolina",5,7],
-  ["OK","Oklahoma",6,3],    ["LA","Louisiana",6,4],  ["MS","Mississippi",6,5], ["AL","Alabama",6,6],
-  ["GA","Georgia",6,7],
-  ["HI","Hawaii",7,0],      ["TX","Texas",7,3],      ["FL","Florida",7,8]
-];
+   A geographic map, drawn from the state outlines in states.js. Nine
+   north-eastern states are too small to carry a label inside at this scale —
+   DC renders at about seven square pixels — so they are labelled down the
+   right-hand side with a leader line and a swatch in their own status colour,
+   which is how a printed atlas handles the same problem. */
 const MAPORDER=["law","moving","pending","stalled"];
+/* label stack for the states that cannot hold one: y position on the canvas */
+const SMALLLBL={VT:96,NH:124,MA:152,RI:180,CT:208,NJ:236,DE:264,MD:292,DC:320};
+const LBLX=1012, LEADX=1000;
 
 function renderMap(rows){
   const byState={};
   rows.filter(d=>d.juris==="US State").forEach(d=>{(byState[d.body]=byState[d.body]||[]).push(d)});
   const strongest=list=>MAPORDER.find(s=>list.some(d=>d.statusClass===s))||"none";
-
   const nStates=Object.keys(byState).length;
   const nLaw=Object.values(byState).filter(l=>strongest(l)==="law").length;
+  const nFed=rows.filter(d=>d.juris==="US Federal").length;
   el("mapsum").textContent=
-    `${nStates} ${nStates===1?"state has":"states have"} legislation in the current filter · ${nLaw} with an enacted statute · `+
-    `${rows.filter(d=>d.juris==="US Federal").length} federal ${rows.filter(d=>d.juris==="US Federal").length===1?"record":"records"}`;
+    `${nStates} ${nStates===1?"state has":"states have"} legislation in the current filter · `+
+    `${nLaw} with an enacted statute · ${nFed} federal ${nFed===1?"record":"records"}`;
 
-  el("usmap").innerHTML=STATE_GRID.map(([ab,name,r,c])=>{
-    const list=byState[name]||[], s=strongest(list);
+  const shapes=STATE_SHAPES.map(s=>{
+    const list=byState[s.name]||[], cls=strongest(list), small=SMALLLBL[s.ab]!==undefined;
     const label=list.length
-      ? `${name} — ${list.length} ${list.length===1?"record":"records"}, furthest ${SLABEL[s].toLowerCase()}. Click to filter.`
-      : `${name} — no legislation in the current filter`;
-    return `<button type="button" class="ms ${s}" style="grid-row:${r+1};grid-column:${c+1}"
-      ${list.length?`data-state="${esc(name)}" aria-pressed="${state.b===name}"`:"disabled"}
-      title="${esc(label)}" aria-label="${esc(label)}">
-      <span>${ab}</span>${list.length?`<span class="n">${list.length}</span>`:""}</button>`;
+      ? `${s.name} — ${list.length} ${list.length===1?"record":"records"}, furthest ${SLABEL[cls].toLowerCase()}. Activate to filter.`
+      : `${s.name} — no legislation in the current filter`;
+    const open=list.length
+      ? ` data-state="${esc(s.name)}" role="button" tabindex="0" aria-pressed="${state.b===s.name}"`
+      : ' aria-hidden="true"';
+    const ly=small?SMALLLBL[s.ab]:s.cy;
+    const lx=small?LBLX:s.cx;
+    const lead=small?`<line class="lead" x1="${s.cx}" y1="${s.cy}" x2="${LEADX-4}" y2="${ly}"/>`:"";
+    const chip=small?`<rect class="chipbox ${cls}" x="${LBLX-16}" y="${ly-8}" width="32" height="16" rx="3"/>`:"";
+    return `<g class="stg ${state.b===s.name?"on":""}"${open} aria-label="${esc(label)}">
+      <title>${esc(label)}</title>
+      <path class="sh ${cls}" d="${s.d}"/>${lead}${chip}
+      <text class="lbl ${cls}" x="${lx}" y="${ly}">${s.ab}</text>
+    </g>`;
   }).join("");
 
-  /* federal records sit beside the grid: they are not a state, and dropping
-     them would lose a fifth of the corpus */
+  el("usmap").innerHTML=
+    `<svg class="usvg" viewBox="${STATE_VIEWBOX}" role="group"
+       aria-label="Map of US states, each shaded by the furthest its companion AI legislation has travelled">${shapes}</svg>`;
+
   const fed=rows.filter(d=>d.juris==="US Federal");
   el("mapfed").innerHTML=`<h3>Federal (${fed.length})</h3>`+
     (fed.length?fed.sort((a,b)=>SORDER[a.statusClass]-SORDER[b.statusClass]).map(d=>
@@ -506,10 +501,10 @@ function renderMap(rows){
      :`<div class="fedrow" style="color:var(--muted)">None in the current filter</div>`);
 
   el("maplegend").innerHTML=`<h3>Furthest status</h3>`+
-    MAPORDER.map(s=>`<div class="lgrow"><span class="lgsw ms ${s}" style="aspect-ratio:auto"></span>${esc(SLABEL[s])}</div>`).join("")+
-    `<div class="lgrow"><span class="lgsw" style="border-style:dashed"></span>No legislation tracked</div>`;
+    MAPORDER.map(s=>`<div class="lgrow"><span class="lgsw ${s}"></span>${esc(SLABEL[s])}</div>`).join("")+
+    `<div class="lgrow"><span class="lgsw"></span>No legislation tracked</div>`;
 
-  /* the same information in words, because a shaded square alone is not a
+  /* the same information in words, because a shaded shape alone is not a
      readable encoding */
   el("mapbreak").innerHTML=`<div class="mapbk">`+MAPORDER.map(s=>{
     const names=Object.keys(byState).filter(n=>strongest(byState[n])===s).sort();
@@ -517,12 +512,18 @@ function renderMap(rows){
       `<p${names.length?"":' class="none"'}>${names.length?esc(names.join(" · ")):"None"}</p>`;
   }).join("")+`</div>`;
 }
-el("usmap").onclick=e=>{
-  const b=e.target.closest("[data-state]"); if(!b)return;
-  state.b = state.b===b.dataset.state ? "" : b.dataset.state;
+function pickState(node){
+  const g=node.closest("[data-state]"); if(!g)return;
+  state.b = state.b===g.dataset.state ? "" : g.dataset.state;
   state.tile=null;
-  if(state.b){ showView("legislation"); }
+  if(state.b)showView("legislation");
   render();
+}
+el("usmap").onclick=e=>pickState(e.target);
+el("usmap").onkeydown=e=>{
+  if(e.key!=="Enter"&&e.key!==" ")return;
+  const g=e.target.closest&&e.target.closest("[data-state]"); if(!g)return;
+  e.preventDefault(); pickState(e.target);
 };
 
 /* ---------- timeline ----------

@@ -113,6 +113,12 @@ const PHRASING = {
 - The mechanism key must be one the record already carries in `mechs`, or the entry will never render.
 - If a single clause supplies several mechanisms — as Kansas SB 405's training prohibition does — give each mechanism its own entry rather than repeating the whole clause.
 
+### The map
+
+`states.js` holds the state outlines: SVG paths on a 975 × 610 Albers USA canvas, converted once offline from the US Census Bureau boundary files packaged by [us-atlas](https://github.com/topojson/us-atlas) (ISC; the Census data itself is public domain). The file header records how it was made. It should not need regenerating — state borders do not move — and nothing in it is keyed to the dataset, so adding a record never requires touching it.
+
+Nine north-eastern states are too small to hold a label at this scale; their label positions are the `SMALLLBL` table in `app.js`, in canvas coordinates. Shading alone is not a readable encoding, so the Map view also writes the same breakdown out in words, and every state carries an `aria-label` naming its status.
+
 ### Colour and contrast
 
 Two families of colour token, and the difference matters:
