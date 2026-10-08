@@ -93,7 +93,9 @@ const defaultDir=k=>SOPT[k]&&SOPT[k].date?-1:1;
 
 const state={q:"",j:new Set(),s:new Set(),y:new Set(),m:"",r:"",sort:"status",dir:1,open:new Set(),tile:null,mech:null,
   /* timeline: reading direction, and which kinds of event are shown */
-  tldir:-1, tlk:new Set(["first","latest","effective"])};
+  tldir:-1, tlk:new Set(["first","latest","effective"]),
+  /* a single body (state), set by clicking the map */
+  b:""};
 
 const el=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -195,9 +197,7 @@ const TILES=[
    f:{j:["US State"],s:["law"]}},
   {v:nStatus("moving"), l:"Moving", hint:"Filter", tip:"Filter to legislation that has advanced out of committee or passed a chamber", f:{s:["moving"]}},
   {v:DATA.filter(d=>d.youth==="only").length, l:"Youth-specific", hint:"Filter", youth:true,
-   tip:"Filter to legislation that applies to minors only", f:{y:["only"]}},
-  {v:DATA.filter(d=>d.mechs.includes("causation")).length, l:"Duty to test design", hint:"Filter", alert:true,
-   tip:"Filter to legislation imposing a duty to test the provider's own design against harm", f:{m:"causation"}}
+   tip:"Filter to legislation that applies to minors only", f:{y:["only"]}}
 ];
 el("tiles").innerHTML=TILES.map((t,i)=>
   `<button type="button" class="tile" data-t="${i}" aria-pressed="false" title="${esc(t.tip)}">
@@ -224,7 +224,7 @@ el("tiles").onclick=e=>{
 
 /* clear every filter without touching the tile highlight or re-rendering */
 function resetFilters(){
-  state.q="";state.j.clear();state.s.clear();state.y.clear();state.m="";state.r="";state.tile=null;
+  state.q="";state.j.clear();state.s.clear();state.y.clear();state.m="";state.r="";state.tile=null;state.b="";
 }
 /* push state back into the filter controls */
 function syncControls(){
@@ -299,6 +299,7 @@ document.querySelectorAll("#tbl th[data-k]").forEach(th=>th.onclick=()=>{
 
 /* ---------- filtering ---------- */
 function match(d){
+  if(state.b&&d.body!==state.b)return false;
   if(state.j.size&&!state.j.has(d.juris))return false;
   if(state.s.size&&!state.s.has(d.statusClass))return false;
   if(state.y.size&&!state.y.has(d.youth))return false;
@@ -357,6 +358,11 @@ function render(){
   paintTiles();
   syncSort();
   renderTimeline(rows);   /* same filtered set, read as dated actions */
+  renderMap(rows);        /* and as a map */
+  el("fbody").innerHTML=state.b
+    ? `<button class="chip" id="fbodyclear" aria-pressed="true" title="Clear the state filter">${esc(state.b)} ✕</button>`
+    : "";
+  const fb=el("fbodyclear"); if(fb)fb.onclick=()=>{state.b="";render();};
   const o=SOPT[state.sort]||{l:state.sort};
   el("count").innerHTML=`${rows.length} of ${DATA.length} pieces of legislation · sorted by `+
     `${esc(o.l.toLowerCase())}, ${esc((state.dir===1?o.asc:o.desc)||"").toLowerCase()}`;
@@ -441,6 +447,83 @@ function detail(d){
   </div></td></tr>`;
 }
 
+
+
+/* ---------- map ----------
+   A grid cartogram rather than a geographic map: one equal square per state,
+   laid out so the country is still recognisable. Four of the sixteen states
+   with an enacted statute — Rhode Island, New Hampshire, Delaware-sized
+   neighbours — would be a few pixels wide on a real map, and they are the
+   point of a coverage view, so area is traded for legibility. */
+const STATE_GRID=[
+  ["AK","Alaska",0,0],      ["ME","Maine",0,11],
+  ["VT","Vermont",1,10],    ["NH","New Hampshire",1,11],
+  ["WA","Washington",2,0],  ["ID","Idaho",2,1],      ["MT","Montana",2,2],   ["ND","North Dakota",2,3],
+  ["MN","Minnesota",2,4],   ["IL","Illinois",2,5],   ["WI","Wisconsin",2,6], ["MI","Michigan",2,8],
+  ["NY","New York",2,9],    ["RI","Rhode Island",2,10], ["MA","Massachusetts",2,11],
+  ["OR","Oregon",3,0],      ["NV","Nevada",3,1],     ["WY","Wyoming",3,2],   ["SD","South Dakota",3,3],
+  ["IA","Iowa",3,4],        ["IN","Indiana",3,5],    ["OH","Ohio",3,6],      ["PA","Pennsylvania",3,8],
+  ["NJ","New Jersey",3,9],  ["CT","Connecticut",3,10],
+  ["CA","California",4,0],  ["UT","Utah",4,1],       ["CO","Colorado",4,2],  ["NE","Nebraska",4,3],
+  ["MO","Missouri",4,4],    ["KY","Kentucky",4,5],   ["WV","West Virginia",4,6], ["VA","Virginia",4,7],
+  ["MD","Maryland",4,8],    ["DC","District of Columbia",4,9], ["DE","Delaware",4,10],
+  ["AZ","Arizona",5,1],     ["NM","New Mexico",5,2], ["KS","Kansas",5,3],    ["AR","Arkansas",5,4],
+  ["TN","Tennessee",5,5],   ["NC","North Carolina",5,6], ["SC","South Carolina",5,7],
+  ["OK","Oklahoma",6,3],    ["LA","Louisiana",6,4],  ["MS","Mississippi",6,5], ["AL","Alabama",6,6],
+  ["GA","Georgia",6,7],
+  ["HI","Hawaii",7,0],      ["TX","Texas",7,3],      ["FL","Florida",7,8]
+];
+const MAPORDER=["law","moving","pending","stalled"];
+
+function renderMap(rows){
+  const byState={};
+  rows.filter(d=>d.juris==="US State").forEach(d=>{(byState[d.body]=byState[d.body]||[]).push(d)});
+  const strongest=list=>MAPORDER.find(s=>list.some(d=>d.statusClass===s))||"none";
+
+  const nStates=Object.keys(byState).length;
+  const nLaw=Object.values(byState).filter(l=>strongest(l)==="law").length;
+  el("mapsum").textContent=
+    `${nStates} ${nStates===1?"state has":"states have"} legislation in the current filter · ${nLaw} with an enacted statute · `+
+    `${rows.filter(d=>d.juris==="US Federal").length} federal ${rows.filter(d=>d.juris==="US Federal").length===1?"record":"records"}`;
+
+  el("usmap").innerHTML=STATE_GRID.map(([ab,name,r,c])=>{
+    const list=byState[name]||[], s=strongest(list);
+    const label=list.length
+      ? `${name} — ${list.length} ${list.length===1?"record":"records"}, furthest ${SLABEL[s].toLowerCase()}. Click to filter.`
+      : `${name} — no legislation in the current filter`;
+    return `<button type="button" class="ms ${s}" style="grid-row:${r+1};grid-column:${c+1}"
+      ${list.length?`data-state="${esc(name)}" aria-pressed="${state.b===name}"`:"disabled"}
+      title="${esc(label)}" aria-label="${esc(label)}">
+      <span>${ab}</span>${list.length?`<span class="n">${list.length}</span>`:""}</button>`;
+  }).join("");
+
+  /* federal records sit beside the grid: they are not a state, and dropping
+     them would lose a fifth of the corpus */
+  const fed=rows.filter(d=>d.juris==="US Federal");
+  el("mapfed").innerHTML=`<h3>Federal (${fed.length})</h3>`+
+    (fed.length?fed.sort((a,b)=>SORDER[a.statusClass]-SORDER[b.statusClass]).map(d=>
+      `<div class="fedrow"><span class="cite">${esc(d.cite)}</span> — ${statusHTML(d)}</div>`).join("")
+     :`<div class="fedrow" style="color:var(--muted)">None in the current filter</div>`);
+
+  el("maplegend").innerHTML=`<h3>Furthest status</h3>`+
+    MAPORDER.map(s=>`<div class="lgrow"><span class="lgsw ms ${s}" style="aspect-ratio:auto"></span>${esc(SLABEL[s])}</div>`).join("")+
+    `<div class="lgrow"><span class="lgsw" style="border-style:dashed"></span>No legislation tracked</div>`;
+
+  /* the same information in words, because a shaded square alone is not a
+     readable encoding */
+  el("mapbreak").innerHTML=`<div class="mapbk">`+MAPORDER.map(s=>{
+    const names=Object.keys(byState).filter(n=>strongest(byState[n])===s).sort();
+    return `<h3>${esc(SLABEL[s])} — ${names.length} ${names.length===1?"state":"states"}</h3>`+
+      `<p${names.length?"":' class="none"'}>${names.length?esc(names.join(" · ")):"None"}</p>`;
+  }).join("")+`</div>`;
+}
+el("usmap").onclick=e=>{
+  const b=e.target.closest("[data-state]"); if(!b)return;
+  state.b = state.b===b.dataset.state ? "" : b.dataset.state;
+  state.tile=null;
+  if(state.b){ showView("legislation"); }
+  render();
+};
 
 /* ---------- timeline ----------
    One row per dated EVENT rather than per record, so a bill that was

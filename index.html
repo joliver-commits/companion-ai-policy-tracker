@@ -274,6 +274,40 @@ td.dt{white-space:nowrap;font-variant-numeric:tabular-nums}
   letter-spacing:.05em;color:var(--t-link);cursor:pointer}
 .mp-gb:hover{text-decoration:underline}
 
+/* map */
+.mapwrap{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+.usmap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;flex:1 1 560px;max-width:760px}
+.ms{position:relative;aspect-ratio:1;border:1px solid var(--ring);border-radius:5px;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;padding:0;line-height:1;
+  background:var(--page);color:var(--muted)}
+.ms.none{border-style:dashed;cursor:default}
+.ms .n{font-size:9.5px;font-weight:600;opacity:.85}
+.ms.law{background:#1c5cab;color:#fff;border-color:#1c5cab}
+.ms.moving{background:#86b6ef;color:#0b0b0b;border-color:#86b6ef}
+.ms.pending{background:#cde2fb;color:#0b0b0b;border-color:#cde2fb}
+.ms.stalled{background:#e1e0d9;color:#0b0b0b;border-color:#c3c2b7}
+:root[data-theme="dark"] .ms.law{background:#9ec5f4;color:#0d0d0d;border-color:#9ec5f4}
+:root[data-theme="dark"] .ms.moving{background:#3987e5;color:#0d0d0d;border-color:#3987e5}
+:root[data-theme="dark"] .ms.pending{background:#184f95;color:#fff;border-color:#184f95}
+:root[data-theme="dark"] .ms.stalled{background:#2c2c2a;color:#c3c2b7;border-color:#383835}
+.ms:not(.none):hover{outline:2px solid var(--ink);outline-offset:1px}
+.ms:focus-visible{outline:2px solid var(--seq-400);outline-offset:2px}
+.ms[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:1px}
+.mapside{flex:0 1 240px;min-width:200px}
+.mapfed{background:var(--surface-1);border:1px solid var(--ring);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.mapfed h3,.maplegend h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 7px;font-weight:600}
+.mapfed .fedrow{font-size:13px;margin-bottom:4px}
+.mapfed .fedrow .cite{font-variant-numeric:tabular-nums}
+.maplegend{background:var(--surface-1);border:1px solid var(--ring);border-radius:10px;padding:12px 14px}
+.lgrow{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);margin-bottom:5px}
+.lgsw{width:15px;height:15px;border-radius:4px;border:1px solid var(--ring);flex:none}
+.mapbk{margin-top:26px}
+.mapbk h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:16px 0 5px;font-weight:600}
+.mapbk p{margin:0 0 4px;font-size:13.5px;max-width:80ch}
+.mapbk .none{color:var(--muted)}
+@media(max-width:620px){ .usmap{gap:3px} .ms{font-size:10px} .ms .n{display:none} }
+
 /* timeline */
 .tl-sum{color:var(--muted);font-size:13px;margin:0 0 4px}
 .tl-year{margin:0}
@@ -352,6 +386,7 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
     <div class="tiles" id="tiles"></div>
     <nav class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-v="legislation">Legislation</button>
+      <button role="tab" aria-selected="false" data-v="map">Map</button>
       <button role="tab" aria-selected="false" data-v="timeline">Timeline</button>
       <button role="tab" aria-selected="false" data-v="coverage">Mechanism coverage</button>
       <button role="tab" aria-selected="false" data-v="definitions">Definitional anatomy</button>
@@ -367,6 +402,7 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
     <div class="frow">
       <span class="flab">Search</span>
       <input type="search" id="q" placeholder="Bill number, state, term, mechanism, any word in the notes…">
+      <span id="fbody"></span>
       <button class="clear" id="clearall">Reset all filters</button>
     </div>
     <div class="frow">
@@ -415,6 +451,21 @@ code{background:var(--page);border:1px solid var(--ring);border-radius:4px;paddi
     </tr></thead>
     <tbody id="tb"></tbody>
   </table>
+</section>
+
+<section class="view" id="v-map">
+  <div class="prose">
+    <p style="color:var(--ink-2)">Where the law is, state by state. This is a <b>grid cartogram</b>, not a geographic map: every state gets the same square, so Rhode Island and New Hampshire — both of which have an enacted statute — are as legible as California. Each square is shaded by the furthest its legislation has travelled, and <b>click a state</b> to filter the Legislation tab to it.</p>
+  </div>
+  <p class="tl-sum" id="mapsum"></p>
+  <div class="mapwrap">
+    <div class="usmap" id="usmap" role="group" aria-label="US states, shaded by the status of their companion AI legislation"></div>
+    <div class="mapside">
+      <div class="mapfed" id="mapfed"></div>
+      <div class="maplegend" id="maplegend"></div>
+    </div>
+  </div>
+  <div id="mapbreak"></div>
 </section>
 
 <section class="view" id="v-timeline">
