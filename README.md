@@ -6,13 +6,14 @@ The site is a static page: `index.html` (layout and styling), `data.js` (the dat
 
 **The analysis has moved to the accompanying paper.** The tracker previously carried a fourth tab, *Gaps & analysis*, arguing from the dataset; that argument now lives in the paper, and the tracker documents its own coding instead. The dataset itself is written to describe rather than to evaluate: a record's `note` carries dates, operative detail, quoted statutory language, enforcement provisions and the reasoning behind a coding decision, and does not tell the reader what to conclude from it.
 
-### The five views
+### The six views
 
 | Tab | What it holds |
 |---|---|
 | **Legislation** | One row per instrument, filterable by jurisdiction, status, youth focus, mechanism and reach, and sortable on any coded column or date. Clicking a row expands it: timeline, scope, term, disclosure interval, enforcement, the quoted definitional clause, the coding note, and the mechanisms it carries. |
 | **Mechanism coverage** | How many instruments carry each of the sixteen coded mechanisms, grouped into five clusters, with an instrument × mechanism matrix beneath. Clicking a mechanism opens the drill-down: what the mechanism is as a legal rule, where this dataset draws the line around it, and how each instrument carrying it is worded. |
 | **Definitional anatomy** | Every instrument's term, test, narrowing device, reach coding and scope side by side — the three definitional fields held apart, because they routinely disagree with one another. |
+| **Map** | A grid cartogram of the 50 states and DC, each square shaded by the furthest its legislation has travelled, with federal records listed beside it and the same breakdown written out in words underneath. Clicking a state filters the Legislation tab to it. Equal squares rather than real geography, so the small states with enacted statutes stay legible. |
 | **Timeline** | Every dated action in the corpus as its own entry — first action, latest action, and the date obligations start to bind — grouped by year and month, newest first. The Legislation filters apply to it, and a year-only date sits in a "Month not recorded" bucket rather than being placed in a month the source does not support. |
 | **How to use this tracker** | What the corpus is and what it is not, how to read a row, the filter path for the questions the tracker is built to answer, how far the reading behind each coding goes, and where to send corrections. Every figure on it is computed from `data.js` at render time. |
 
