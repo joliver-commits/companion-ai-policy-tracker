@@ -599,19 +599,20 @@ const DATA = [
   link:"https://www.legislature.mi.gov/"
 },
 {
-  id:"ny-s9051", juris:"US State", body:"New York", cite:"S 9051",
-  name:"Chatbot design and data act", status:"Passed one chamber", statusClass:"moving",
-  dates:"Passed the Assembly and returned to the Senate 5 June 2026 · introduction date not yet recorded",
-  chron:{first:"2026-06-05", latest:"2026-06-05"},
+  id:"ny-s9051", key:true, juris:"US State", body:"New York", cite:"GBL Art. 48 (S 9051-B)",
+  name:"Prohibition on Unsafe AI Companion Features for Minors", status:"Enacted", statusClass:"law",
+  dates:"Passed the Assembly 5 June 2026 (137\u20130) and the Senate (60\u20130) \u00b7 signed 28 Oct 2026 \u00b7 effective 1 Jan 2027",
+  chron:{first:"2026-06-05", latest:"2026-10-28", effective:"2027-01-01"},
   scope:"Minors",
   youth:"only",
-  term:"Chatbot", test:"capability", testNote:"Verify against passed text",
-  narrowing:"Unverified", reaches:"unclear",
-  mechs:["ageAssurance","minorContent","proImpersonation","engagement","sentience","training"],
-  enforce:["State AG"],
-  interval:"—",
-  note:"Passed the legislature and awaiting further action. Combines humanised-system restrictions with age assurance, engagement limits and data-collection limits. Reach is coded unclear pending the passed text.",
-  link:"https://www.nysenate.gov/"
+  term:"Covered AI companion", test:"capability",
+  testNote:"Generative artificial intelligence system with a natural language interface, including via writing or sound, that provides ongoing, adaptive responses to user inputs",
+  narrowing:"Use carve-out, plus an actual-knowledge age gate", reaches:"possibly",
+  mechs:["ageAssurance","minorContent","dependence","proImpersonation","engagement","sentience","training"],
+  enforce:["State AG (reported at up to $25,000 per violation)","AG complaint website and rulemaking"],
+  interval:"\u2014",
+  note:"New York\u2019s second enacted companion statute, adding Article 48 to the General Business Law alongside the Article 47 safeguards already in force, and the more interesting of the two definitionally. Where Article 47 asks whether a system sustains a human-like relationship, Article 48 asks only whether it is a generative system with a natural language interface giving ongoing, adaptive responses \u2014 a capability test broad enough that commentary reads it as reaching mainstream assistants rather than labelled companion apps alone, which is why reach is coded possibly rather than no. It makes it unlawful to provide listed unsafe companion features to a covered minor, those reported to include pretending to be human, fostering emotional dependency, encouraging self-harm and sexually explicit conversation. Sponsored by Sen. Gonzalez and AM Bores; passed both chambers unanimously. CODED FROM SECONDARY SOURCES: the definitional clause and carve-outs are a close paraphrase of a law-firm summary of the chaptered text, not the text itself, which was unreachable from this session. Two things to re-check against it. The obligation is reported to turn on the operator having ACTUAL KNOWLEDGE that a user is a minor, which sits awkwardly with separate reporting of an affirmative age-verification duty offering more than one method, at least one not relying solely on government ID, with the age data deleted after use \u2014 the ageAssurance coding rests on the latter. And the professional-impersonation and training-data codings carry over from the pre-enactment record and are not corroborated by any source read here.",
+  link:"https://www.nysenate.gov/legislation/bills/2025/S9051"
 },
 {
   id:"ny-s9408", juris:"US State", body:"New York", cite:"S 9408",
@@ -718,6 +719,14 @@ const MECHDEF = {
    dataset — see CONTRIBUTING.md.
    ================================================================== */
 const PHRASING = {
+  "ny-s9051":{
+    dependence:{k:"summary", t:"bars providing a covered minor with companion features that foster emotional dependency \u2014 reported alongside sycophancy and fabricated personas as the conduct the Act targets",
+      n:"From secondary summaries of the chaptered text, not the text itself."},
+    sentience:{k:"summary", t:"bars features that hold the system out as human to a covered minor"},
+    minorContent:{k:"summary", t:"bars sexually explicit conversation with a covered minor, and features that encourage self-harm"},
+    ageAssurance:{k:"summary", t:"age verification offering more than one method, at least one not relying solely on a government ID, with the age data deleted once used",
+      n:"Reported in the Governor\u2019s announcement. A law-firm summary of the enacted text instead describes the prohibition as turning on the operator\u2019s ACTUAL KNOWLEDGE that a user is a minor. Re-check which the statute does."}
+  },
   "ca-sb243":{
     disclosure:{k:"quote", t:"disclose to the user that the user is interacting with artificial intelligence",
       n:"Owed where the operator knows the user is a minor. For all users, the duty is triggered by a reasonable-person test: where a reasonable person would be misled into believing they are interacting with a human, the operator must issue a clear and conspicuous notification that the companion chatbot is artificially generated and not human. Minors also get a break reminder at least every three hours of continuous use."},
