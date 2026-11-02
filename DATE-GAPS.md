@@ -1,6 +1,6 @@
 # Dates still to source
 
-13 of 81 dates in `data.js` are not yet recorded to the day, across 13 of 36 records.
+13 of 82 dates in `data.js` are not yet recorded to the day, across 13 of 36 records.
 
 Every date is held at the precision its source actually supports — `YYYY-MM-DD`, `YYYY-MM` or `YYYY` — and a partial date is placed at the midpoint of its period for sorting (a year sorts as 30 June, a month as the 15th) and marked as an estimate on the site. Nothing here is wrong; it is simply less precise than it could be. See the `chron` section of [CONTRIBUTING.md](CONTRIBUTING.md) before filling one in, and keep the human-readable `dates` string in step with any change.
 
