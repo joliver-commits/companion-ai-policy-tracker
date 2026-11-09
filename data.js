@@ -97,7 +97,7 @@ const DATA = [
   mechs:["disclosure","engagement","training","parental"],
   enforce:["FTC","State AG"],
   interval:"Clear, repeated notice (30 min in tracker summaries)",
-  note:"Comes close to reaching retention without doing so: a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than an FTC-set maximum. That governs what may be PROCESSED for personalisation, not how long the system may keep what a user told it, which is why it is not coded as a memory constraint — no instrument in this corpus is. Bans a named list of engagement features: frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available. The private right of action present in the introduced bill was removed during the 5 August 2026 Commerce markup, so enforcement now runs through the FTC and state attorneys general only.",
+  note:"Comes close to reaching retention without doing so: a deployer may not process personal data to personalise outputs unless the data was collected in the current session and more recently than an FTC-set maximum. That governs what may be PROCESSED for personalisation, not how long the system may keep what a user told it, which is why it is not coded as a memory constraint. New York\u2019s Article 48, enacted in October 2026, is the one record that is. Bans a named list of engagement features: frequency rewards, push notifications, usage badges, unprompted outputs, and typing indicators showing the chatbot is available. The private right of action present in the introduced bill was removed during the 5 August 2026 Commerce markup, so enforcement now runs through the FTC and state attorneys general only.",
   link:"https://www.congress.gov/bill/119th-congress/senate-bill/4199/text"
 },
 {
@@ -601,17 +601,17 @@ const DATA = [
 {
   id:"ny-s9051", key:true, juris:"US State", body:"New York", cite:"GBL Art. 48 (S 9051-B)",
   name:"Prohibition on Unsafe AI Companion Features for Minors", status:"Enacted", statusClass:"law",
-  dates:"Passed the Assembly 5 June 2026 (137\u20130) and the Senate (60\u20130) \u00b7 signed 28 Oct 2026 \u00b7 effective 1 Jan 2027",
-  chron:{first:"2026-06-05", latest:"2026-10-28", effective:"2027-01-01"},
+  dates:"Introduced 27 Jan 2026 (Sen. Gonzalez and 13 co-sponsors) \u00b7 passed the Assembly 5 June 2026, 137\u20130, and the Senate, 60\u20130 \u00b7 signed 28 Oct 2026 \u00b7 effective 1 Jan 2027",
+  chron:{first:"2026-01-27", latest:"2026-10-28", effective:"2027-01-01"},
   scope:"Minors",
   youth:"only",
   term:"Covered AI companion", test:"capability",
-  testNote:"Generative artificial intelligence system with a natural language interface, including via writing or sound, that provides ongoing, adaptive responses to user inputs",
-  narrowing:"Use carve-out, plus an actual-knowledge age gate", reaches:"possibly",
-  mechs:["ageAssurance","minorContent","dependence","proImpersonation","engagement","sentience","training"],
-  enforce:["State AG (reported at up to $25,000 per violation)","AG complaint website and rulemaking"],
+  testNote:"A generative artificial intelligence system with a natural language interface, including via writing or sound, that provides ongoing, adaptive responses to user inputs. \u2018Covered AI companion\u2019 includes but is not limited to an AI companion.",
+  narrowing:"Use carve-out, gated on the system being unable to respond outside that purpose", reaches:"yes",
+  mechs:["ageAssurance","minorContent","dependence","proImpersonation","engagement","sentience","memory"],
+  enforce:["State AG","Civil penalties up to $25,000 per violation","Disgorgement, including destruction of unlawfully obtained data and any algorithm trained on it","AG complaint website and rulemaking","Contractual waivers void; joint and several liability for affiliated entities"],
   interval:"\u2014",
-  note:"New York\u2019s second enacted companion statute, adding Article 48 to the General Business Law alongside the Article 47 safeguards already in force, and the more interesting of the two definitionally. Where Article 47 asks whether a system sustains a human-like relationship, Article 48 asks only whether it is a generative system with a natural language interface giving ongoing, adaptive responses \u2014 a capability test broad enough that commentary reads it as reaching mainstream assistants rather than labelled companion apps alone, which is why reach is coded possibly rather than no. It makes it unlawful to provide listed unsafe companion features to a covered minor, those reported to include pretending to be human, fostering emotional dependency, encouraging self-harm and sexually explicit conversation. Sponsored by Sen. Gonzalez and AM Bores; passed both chambers unanimously. CODED FROM SECONDARY SOURCES: the definitional clause and carve-outs are a close paraphrase of a law-firm summary of the chaptered text, not the text itself, which was unreachable from this session. Two things to re-check against it. The obligation is reported to turn on the operator having ACTUAL KNOWLEDGE that a user is a minor, which sits awkwardly with separate reporting of an affirmative age-verification duty offering more than one method, at least one not relying solely on government ID, with the age data deleted after use \u2014 the ageAssurance coding rests on the latter. And the professional-impersonation and training-data codings carry over from the pre-enactment record and are not corroborated by any source read here.",
+  note:"New York\u2019s second enacted companion statute, added alongside Article 47 rather than replacing it \u2014 \u00a7 1804(3) says in terms that it does not supersede, amend or repeal Article 47 \u2014 and the broader of the two by some distance. Article 47 asks whether a system sustains a human-like relationship; Article 48 asks only whether it is generative, has a natural language interface and gives ongoing, adaptive responses, and then says the term \u2018includes but is not limited to an AI companion\u2019. The three carve-outs in \u00a7 1801(2) do not pull a general assistant back out, because each is conditioned on the system being \u2018unable to respond on topics outside of the specified purpose\u2019: a tool that can answer anything cannot satisfy that proviso, which is the opposite of California\u2019s \u2018used only for\u2019 construction. That is why reach is coded yes, and it makes this the second enacted law in the corpus to reach ChatGPT-class systems on the face of its text, and the only one to do so while using companion vocabulary. The prohibition is structured conjunctively: unsafe features may be provided only where the user is not a covered minor AND the operator has used a permitted method to determine that. \u2018Covered minor\u2019 itself turns on actual knowledge, so the age-assurance duty in \u00a7\u00a7 1801(1)(b) and 1804 is what does the work \u2014 more than one method, at least one not relying on government ID or allowing the user to stay anonymous, self-declaration usable only to declare minority, and the data deleted immediately after the attempt. Note also \u00a7 1800(8)(f), which bars using anything personal the user said more than twelve hours ago or in an earlier session: the only constraint on memory in the corpus and the only one in force anywhere in it. It is framed as a use ban rather than a deletion duty, and is coded as a memory constraint because the effect is the same \u2014 see the memory coding line.",
   link:"https://www.nysenate.gov/legislation/bills/2025/S9051"
 },
 {
@@ -672,8 +672,8 @@ const MECHDEF = {
     line:"Only the People-First Chatbot Act defines the dependence it prohibits, by the user's state — reliance on the chatbot as a primary source of support."
   },
   memory:{
-    def:"A clear and explicit cap on retention itself: a rule limiting how long a system may keep what a user has told it. NOTHING IN THIS CORPUS CARRIES IT — the mechanism is listed to mark the gap.",
-    line:"The Youth AI Privacy Act comes closest and does not reach the bar: it limits the data a deployer may PROCESS to personalise outputs — session-scoped, within an FTC-set recency window — which governs personalisation rather than retention. A cap on memory would say how long the record of a conversation may be kept, and nothing in the corpus says it. Using persistent memory as a definitional TRIGGER, as Illinois SB 3262 did before it died in committee in May 2026, is not a constraint either."
+    def:"A clear and explicit cap on memory: a rule limiting how long a system may keep, or may go on drawing on, what a user has told it.",
+    line:"One record carries it, and only since New York\u2019s Article 48 was signed in October 2026: \u00a7 1800(8)(f) bars a covered AI companion from using anything personal a user said more than twelve hours ago or in any earlier session, which for a minor is a bar on cross-session memory. It is framed as a ban on USE rather than a duty to delete, and is coded here because the effect on the product is the same \u2014 the system may not draw on the record of an earlier conversation. Two near misses are not coded. The Youth AI Privacy Act limits the data a deployer may process to PERSONALISE outputs, which constrains one use of the record rather than the drawing on it. And using persistent memory as a definitional TRIGGER, as Illinois SB 3262 did before it died in committee in May 2026, constrains nothing at all."
   },
   proImpersonation:{
     def:"A prohibition on the system holding itself out as a licensed professional — therapist, psychologist, physician, lawyer — or on providing services reserved to one.",
@@ -720,12 +720,20 @@ const MECHDEF = {
    ================================================================== */
 const PHRASING = {
   "ny-s9051":{
-    dependence:{k:"summary", t:"bars providing a covered minor with companion features that foster emotional dependency \u2014 reported alongside sycophancy and fabricated personas as the conduct the Act targets",
-      n:"From secondary summaries of the chaptered text, not the text itself."},
-    sentience:{k:"summary", t:"bars features that hold the system out as human to a covered minor"},
-    minorContent:{k:"summary", t:"bars sexually explicit conversation with a covered minor, and features that encourage self-harm"},
-    ageAssurance:{k:"summary", t:"age verification offering more than one method, at least one not relying solely on a government ID, with the age data deleted once used",
-      n:"Reported in the Governor\u2019s announcement. A law-firm summary of the enacted text instead describes the prohibition as turning on the operator\u2019s ACTUAL KNOWLEDGE that a user is a minor. Re-check which the statute does."}
+    sentience:{k:"quote", t:"generate outputs suggesting that the covered AI companion is a real or fictional individual or character that is human, alive, or experiences human emotions",
+      n:"\u00a7 1800(8)(a). Paragraph (g) adds features that are \u2018deceptive as to minors concerning the mechanical and non-sentient nature of the covered AI companion\u2019."},
+    dependence:{k:"quote", t:"generate outputs that engage in flattery or sycophancy with the user",
+      n:"\u00a7 1800(8)(d). The same list bars outputs \u2018framed as the covered AI companion\u2019s personal opinions or emotional appeals\u2019 (c), \u2018unprompted or unsolicited emotion-based questions\u2019 (e), and any other feature \u2018that simulates companionship or an interpersonal relationship with a user\u2019 as identified by AG regulation (h). Sycophancy is named as a regulated design feature here and nowhere else in the corpus."},
+    engagement:{k:"quote", t:"generate outputs that optimize user engagement that supersede the covered AI companion\u2019s safety guardrails",
+      n:"\u00a7 1800(8)(k)."},
+    minorContent:{k:"quote", t:"generate outputs that are, describe, or facilitate sexually explicit conduct or child sexual abuse material",
+      n:"\u00a7 1800(8)(l). Paragraph (i) adds endorsement, promotion or facilitation of suicide, self-harm, disordered eating and unlawful drug or alcohol use; paragraph (j) adds encouragement \u2018to maintain secrecy about interactions\u2026 to self-isolate, or to not seek help from licensed professionals or appropriate adults\u2019, which is the isolation prohibition and appears in no other enacted law."},
+    proImpersonation:{k:"quote", t:"generate outputs stating or implying that the covered AI companion has a personal relationship, professional relationship, or an authority figure role with the user",
+      n:"\u00a7 1800(8)(b). Broader than the usual bar on posing as a licensed professional: it reaches the claimed relationship itself."},
+    memory:{k:"quote", t:"use information concerning the user\u2019s mental or physical health or well-being, or matters personal to the user, acquired from the user more than twelve hours previously or in any previous user session",
+      n:"\u00a7 1800(8)(f), listed among the unsafe features an operator may not provide to a covered minor. For a minor this is a bar on cross-session memory: the system may not draw on what was said in an earlier conversation, or more than twelve hours ago in this one. The first constraint on memory in the corpus, and the only one in force."},
+    ageAssurance:{k:"quote", t:"an operator must make available more than one age assurance method to covered users, including at least one method that either does not rely on government issued identification or that allows a covered user to maintain anonymity as to the operator",
+      n:"\u00a7 1804(1)(c). The method must also \u2018reasonably guard against circumvention\u2019 and minimise retention, self-declaration counts only where the user declares minority, and under \u00a7 1804(2) the information collected \u2018shall be deleted immediately after an attempt to determine whether a covered user is a covered minor\u2019."}
   },
   "ca-sb243":{
     disclosure:{k:"quote", t:"disclose to the user that the user is interacting with artificial intelligence",
@@ -934,5 +942,5 @@ const GLOSSARY = {
   pra:{t:"Private right of action",
     d:"A statutory route for the harmed individual to sue, rather than leaving enforcement to a regulator. Coded from the enforcement field on each record. New York's enacted Article 47 is attorney-general only; its substantively identical Assembly twin A6767, which let individuals sue, died in the Senate in January 2026. The Youth AI Privacy Act's private right of action was removed in the 5 August 2026 markup."},
   retention:{t:"Retention ceiling",
-    d:"A hard limit on how long a system may keep what a user told it. NOTHING IN THIS CORPUS HAS ONE — not in force, not moving, not proposed. The nearest miss is the Youth AI Privacy Act, which bars personalisation on data outside the current session and an FTC-set recency window: that governs what may be processed rather than how long it may be kept."}
+    d:"A hard limit on how long a system may keep, or go on drawing on, what a user told it. One record in the corpus has one: New York\u2019s Article 48 bars a covered AI companion from using anything personal a minor said more than twelve hours ago or in any earlier session. Everything else leaves the conversation record untouched \u2014 the Youth AI Privacy Act comes nearest, and it reaches personalisation rather than memory."}
 };
