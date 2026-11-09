@@ -133,7 +133,9 @@ Two structures in `data.js` drive this.
 
 **`MECHDEF`** — one entry per mechanism key, with `def` (the rule, stated independently of any one statute) and `line` (the coding boundary, e.g. that a break reminder is disclosure rather than an engagement limit). Every mechanism has a definition; these are the tracker's own, not quotations.
 
-A mechanism can legitimately sit at zero. **`memory` — an explicit cap on retention — is carried by nothing in the corpus**, and is kept in `MECHS` to mark the gap: it renders as a red zero bar in the coverage view and a zero stat tile. Its `line` records the two that come closest and why neither reaches the bar (Illinois SB 3262 uses memory as a definitional trigger; the Youth AI Privacy Act limits processing for personalisation, not retention).
+A mechanism can legitimately sit at zero, and one does. **`humanTakeover` — a duty to hand the conversation to a live person — is carried by nothing in the corpus**, and is kept in `MECHS` to mark the gap: it renders as a red zero bar in the coverage view. Twenty-odd records require a crisis *referral*; none requires a person to join the conversation.
+
+`memory` was a zero too until October 2026, when New York's Article 48 was signed. Its `line` records why that one counts — § 1800(8)(f) bars a covered AI companion from *using* anything personal a minor said more than twelve hours ago or in an earlier session, which is a use ban rather than a deletion duty — and why the two nearer misses do not.
 
 **`PHRASING`** — keyed by record id, then by mechanism key. Each entry carries the wording and its provenance:
 
